@@ -1,6 +1,6 @@
 # WP3 — DPIA Evidence and Fact Provenance Layer
 
-Status: implementation slice
+Status: COMPLETE — draft PR #4; exact-head gates required on final closeout head.
 
 Base: WP2 exact head `017902f3116fac914020a449db3f628df90b485b`
 
@@ -48,6 +48,15 @@ WP3 defines the future `extract_privacy_facts` skill interface but does not choo
 
 The validator and human reviewer remain separate roles.
 
+## Acceptance evidence
+
+Initial WP3 head `e38aeeb85d0e4d80987b8c98c5e5fd3e974e997f` passed both pull-request workflows:
+
+- WP3 evidence/fact gate run `31432376592`: success;
+- inherited WP2 contract/pre-scan run `31432377577`: success.
+
+The final roadmap closeout head must pass the same relevant exact-head gates before PR #4 is considered frozen for review.
+
 ## Acceptance criteria
 
 - schemas pass JSON Schema 2020-12 meta-validation;
@@ -74,4 +83,4 @@ The validator and human reviewer remain separate roles.
 
 ## Next
 
-WP4 should implement AI-assisted fact extraction and a separate validator over these contracts. WP5, not WP4, should introduce DPIA analysis/drafting.
+WP4 implements the minimum safe AI execution boundary plus AI-assisted fact extraction and a separate validator. WP5, not WP4, introduces DPIA analysis/drafting.
