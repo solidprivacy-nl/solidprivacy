@@ -1,6 +1,6 @@
 # Workflow — Document to DPIA
 
-Status: governed analysis implemented through WP5.
+Status: full governed reference slice implemented through Privacy Officer review boundary (WP6 implementation pending exact-head acceptance).
 
 ```text
 SCRUBBED / MINIMISED INPUT
@@ -12,18 +12,19 @@ SCRUBBED / MINIMISED INPUT
   -> deterministic readiness
   -> pre-scan / DPIA-necessity decision support
   -> governed legal-context resolver
-  -> structured canonical DPIA analysis/draft
-  -> detector findings
-  -> traceability/finding validator
-  -> Privacy Officer review
-  -> scrubbed report
-  -> controlled reinsert handoff
+  -> structured DPIA analysis/draft
+  -> traceability validator
+  -> hash-bound Privacy Officer review request
+  -> item-level human review + residual-risk/prior-consultation disposition
+  -> minimal immutable review record
+  -> scrubbed reviewed report
+  -> local controlled reinsert handoff
 ```
 
-Current executable coverage: WP1 canonical processing/DPIA contracts; WP2 pre-scan/legal-decision/integrity gates; WP3 evidence/fact provenance/readiness; WP4 safe AI-call boundary, provider-independent detector interface, provenance validator and contradiction detection; WP5 curated legal rules, jurisdiction/freshness resolution and source/fact-traceable DPIA draft validation.
+Current executable coverage: WP1 canonical processing/DPIA contracts; WP2 pre-scan/legal-decision/integrity gates; WP3 evidence/fact provenance/readiness; WP4 safe AI-call boundary and detector/validator; WP5 governed legal context and source/fact-traceable analysis; WP6 object-level human review, snapshot/audit hashes and scrubbed report/reinsert boundary.
 
-CI uses deterministic fixture providers. No production external AI provider is enabled by WP5. The model does not select legal authority: WP5 resolves legal context from governed source/rule registries. Non-final consultation material may be forward context but cannot support a legal claim.
+CI uses deterministic fixture providers and synthetic scrubbed review evidence. No production external AI provider is enabled. The model never selects legal authority or finalises material human decisions.
 
-Original identifiers and the Scrub Key remain outside this workflow by default. `scrubbed=true` is not proof of anonymisation. External egress of scrubbed-personal-data content requires an explicit approved model-call policy, while direct identifiers and the Scrub Key are rejected by the external boundary.
+`Scrubbed` is not equivalent to anonymous. AI and human-review input privacy contexts remain explicit. The Scrub Key and direct identifiers stay outside cloud-side review packages. The final handoff contains no key or replacement map and only instructs the local Scrub process to perform controlled reinsertion.
 
-Provenance validation is not human fact acceptance. Sections using unreviewed facts must keep those fact IDs explicit. Material legal conclusions and final residual-risk acceptance require designated Privacy Officer/DPO review.
+A reviewed DPIA with `approved_pending_prior_consultation` is a reviewed assessment, **not** authorization to proceed before the required consultation dependency is resolved.

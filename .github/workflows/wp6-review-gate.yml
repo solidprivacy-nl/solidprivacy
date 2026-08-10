@@ -1,0 +1,76 @@
+name: WP6 Privacy Officer review gates
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "skills/privacy_officer/dpia/**"
+      - "workflows/document_to_dpia/**"
+      - "docs/workpackages/WP6_PRIVACY_OFFICER_REVIEW.md"
+      - "ROADMAP.md"
+      - "pyproject.toml"
+      - ".github/workflows/wp6-review-gate.yml"
+  push:
+    branches: ["agent/**"]
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "skills/privacy_officer/dpia/**"
+      - "workflows/document_to_dpia/**"
+      - "docs/workpackages/WP6_PRIVACY_OFFICER_REVIEW.md"
+      - "ROADMAP.md"
+      - "pyproject.toml"
+      - ".github/workflows/wp6-review-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  privacy-officer-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install runtime and test dependencies
+        run: python -m pip install -e ".[test]"
+      - name: Run full deterministic regression suite
+        run: python -m pytest
+      - name: Run deterministic governed Privacy Officer review
+        run: |
+          solidprivacy fixture-review-dpia evals/dpia_analysis/request_ready.json evals/dpia_analysis/policy_fixture_external.json evals/dpia_analysis/result_ready.json evals/dpia_review/decisions_approved.json > /tmp/review.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/review.json'))['review_package']
+          assert p['status']=='approved_with_changes'
+          assert p['report'] is not None
+          assert p['report']['privacy_context']=={'scrubbed': True, 'scrub_key_present': False, 'contains_direct_identifiers': False}
+          assert p['reinsert_handoff']['mode']=='local_scrub_reinsert'
+          assert p['reinsert_handoff']['scrub_key_included'] is False
+          assert p['reinsert_handoff']['replacement_mapping_included'] is False
+          assert len(p['audit_record']['record_hash'])==64
+          assert any(x['rule_id']=='gdpr-art36-1-prior-consultation' for x in p['source_appendix'])
+          assert any(x['evidence_id']=='EV-REV-001' for x in p['evidence_appendix'])
+          PY
+      - name: Preserve WP5 governed legal-analysis gate
+        run: |
+          solidprivacy validate-legal-rules
+          solidprivacy resolve-legal-context evals/legal_context/request_dpia.json > /tmp/legal.json
+          solidprivacy fixture-draft-dpia evals/dpia_analysis/request_ready.json evals/dpia_analysis/policy_fixture_external.json evals/dpia_analysis/result_ready.json > /tmp/draft.json
+      - name: Preserve WP4 model/extraction, WP3 evidence and WP2 DPIA/pre-scan gates
+        run: |
+          solidprivacy check-model-call evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json
+          solidprivacy fixture-extract-facts evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json evals/ai_fact_extraction/result_ready.json > /tmp/facts.json
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_ready.json
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_blocked.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_basic.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_high_risk.json
+          solidprivacy prescan evals/prescan_smoke_input.json
