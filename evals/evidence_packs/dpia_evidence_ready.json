@@ -1,0 +1,87 @@
+{
+  "id": "EP-DPIA-NL-001",
+  "case_id": "SYN-DPIA-NL-INTAKE-001",
+  "jurisdiction": ["EU/EEA", "NL"],
+  "evidence": [
+    {
+      "id": "EV-001",
+      "kind": "document",
+      "source": "synthetic_scrubbed_intake.md",
+      "locator": "section:processing",
+      "excerpt": "Een intern medewerkersportaal verwerkt zakelijke profielgegevens voor accountbeheer.",
+      "content_hash": "synthetic:001",
+      "contains_personal_data": false,
+      "metadata": {"scrubbed": true}
+    },
+    {
+      "id": "EV-002",
+      "kind": "user_input",
+      "source": "synthetic_questionnaire",
+      "locator": "answer:hosting",
+      "excerpt": "Hosting en support vinden binnen de EER plaats.",
+      "content_hash": null,
+      "contains_personal_data": false,
+      "metadata": {"synthetic": true}
+    }
+  ],
+  "facts": [
+    {
+      "id": "F-001",
+      "fact_type": "processing_description",
+      "canonical_path": "processing_activities[PA-001].description",
+      "value": "Beheer van zakelijke medewerkersprofielen voor interne dienstverlening.",
+      "epistemic_status": "observed",
+      "confidence": 0.95,
+      "evidence_ids": ["EV-001"],
+      "basis_summary": null,
+      "review_status": "accepted",
+      "sensitivity": "ordinary",
+      "notes": null
+    },
+    {
+      "id": "F-002",
+      "fact_type": "purpose",
+      "canonical_path": "processing_activities[PA-001].purposes[PUR-001]",
+      "value": "Accountbeheer en interne dienstverlening",
+      "epistemic_status": "observed",
+      "confidence": 0.93,
+      "evidence_ids": ["EV-001"],
+      "basis_summary": null,
+      "review_status": "accepted",
+      "sensitivity": "ordinary",
+      "notes": null
+    },
+    {
+      "id": "F-003",
+      "fact_type": "location",
+      "canonical_path": "processing_activities[PA-001].locations",
+      "value": {"hosting": "EEA", "support": "EEA"},
+      "epistemic_status": "user_confirmed",
+      "confidence": 1.0,
+      "evidence_ids": ["EV-002"],
+      "basis_summary": null,
+      "review_status": "accepted",
+      "sensitivity": "ordinary",
+      "notes": null
+    }
+  ],
+  "contradictions": [],
+  "missing_information": [],
+  "readiness": {
+    "stage": "analysis",
+    "status": "ready",
+    "blockers": [],
+    "rationale": "Accepted facts are evidence-backed and no blocking uncertainty is known."
+  },
+  "human_review": {
+    "required": true,
+    "status": "pending",
+    "reviewer_role": "privacy_officer",
+    "reviewed_at": null,
+    "rationale": null,
+    "changes_required": [],
+    "unresolved_issues": []
+  },
+  "source_versions": ["solidprivacy:evidence-pack-v1"],
+  "notes": "Synthetic, scrubbed test fixture."
+}

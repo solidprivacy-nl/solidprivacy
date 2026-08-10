@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/privacy_fact.schema.json",
+  "title": "SolidPrivacy Privacy Fact",
+  "type": "object",
+  "required": [
+    "id",
+    "fact_type",
+    "canonical_path",
+    "value",
+    "epistemic_status",
+    "confidence",
+    "evidence_ids",
+    "review_status",
+    "sensitivity"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "fact_type": {
+      "type": "string",
+      "enum": [
+        "processing_description",
+        "purpose",
+        "personal_data",
+        "data_subject",
+        "party",
+        "processing_operation",
+        "technology",
+        "location",
+        "transfer",
+        "legal_basis_candidate",
+        "retention_candidate",
+        "rights_procedure",
+        "special_category_candidate",
+        "automated_decision_context",
+        "scale_context",
+        "security_measure",
+        "risk_context",
+        "other"
+      ]
+    },
+    "canonical_path": {"type": "string", "minLength": 1},
+    "value": {},
+    "epistemic_status": {"type": "string", "enum": ["observed", "inferred", "assumption", "user_confirmed"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "basis_summary": {"type": ["string", "null"]},
+    "review_status": {"type": "string", "enum": ["pending", "accepted", "rejected", "needs_clarification"]},
+    "sensitivity": {"type": "string", "enum": ["ordinary", "potential_personal_data", "special_category_or_highly_sensitive", "unknown"]},
+    "notes": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"epistemic_status": {"enum": ["observed", "inferred", "user_confirmed"]}}, "required": ["epistemic_status"]},
+      "then": {"properties": {"evidence_ids": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"epistemic_status": {"const": "inferred"}}, "required": ["epistemic_status"]},
+      "then": {"required": ["basis_summary"], "properties": {"basis_summary": {"type": "string", "minLength": 1}}}
+    }
+  ],
+  "additionalProperties": false
+}

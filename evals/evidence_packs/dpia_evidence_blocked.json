@@ -1,0 +1,106 @@
+{
+  "id": "EP-DPIA-NL-002",
+  "case_id": "SYN-DPIA-NL-INTAKE-002",
+  "jurisdiction": ["EU/EEA", "NL"],
+  "evidence": [
+    {
+      "id": "EV-101",
+      "kind": "document",
+      "source": "synthetic_scrubbed_vendor_sheet.md",
+      "locator": "section:retention",
+      "excerpt": "Gegevens worden twee jaar bewaard.",
+      "content_hash": "synthetic:101",
+      "contains_personal_data": false,
+      "metadata": {"scrubbed": true}
+    },
+    {
+      "id": "EV-102",
+      "kind": "document",
+      "source": "synthetic_scrubbed_policy.md",
+      "locator": "section:retention",
+      "excerpt": "De bewaartermijn bedraagt zeven jaar.",
+      "content_hash": "synthetic:102",
+      "contains_personal_data": false,
+      "metadata": {"scrubbed": true}
+    }
+  ],
+  "facts": [
+    {
+      "id": "F-101",
+      "fact_type": "retention_candidate",
+      "canonical_path": "processing_activities[PA-101].retention",
+      "value": "2 years",
+      "epistemic_status": "observed",
+      "confidence": 0.9,
+      "evidence_ids": ["EV-101"],
+      "basis_summary": null,
+      "review_status": "needs_clarification",
+      "sensitivity": "ordinary",
+      "notes": null
+    },
+    {
+      "id": "F-102",
+      "fact_type": "retention_candidate",
+      "canonical_path": "processing_activities[PA-101].retention",
+      "value": "7 years",
+      "epistemic_status": "observed",
+      "confidence": 0.9,
+      "evidence_ids": ["EV-102"],
+      "basis_summary": null,
+      "review_status": "needs_clarification",
+      "sensitivity": "ordinary",
+      "notes": null
+    },
+    {
+      "id": "F-103",
+      "fact_type": "legal_basis_candidate",
+      "canonical_path": "processing_activities[PA-101].legal_bases",
+      "value": "public_task",
+      "epistemic_status": "assumption",
+      "confidence": 0.4,
+      "evidence_ids": [],
+      "basis_summary": "Working assumption pending confirmation of the statutory task.",
+      "review_status": "pending",
+      "sensitivity": "ordinary",
+      "notes": null
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "C-101",
+      "fact_ids": ["F-101", "F-102"],
+      "severity": "high",
+      "status": "open",
+      "description": "Two evidence sources state incompatible retention periods.",
+      "resolution": null
+    }
+  ],
+  "missing_information": [
+    {
+      "id": "MI-101",
+      "target_path": "processing_activities[PA-101].legal_bases",
+      "question": "Welke concrete wettelijke taak of andere rechtsgrond draagt deze verwerking?",
+      "criticality": "critical",
+      "blocks_stage": "analysis",
+      "status": "open",
+      "resolution": null
+    }
+  ],
+  "readiness": {
+    "stage": "analysis",
+    "status": "blocked",
+    "blockers": ["contradiction:C-101", "missing:MI-101"],
+    "rationale": "A high-severity contradiction and critical legal-basis gap block analysis."
+  },
+  "human_review": {
+    "required": true,
+    "status": "pending",
+    "reviewer_role": "privacy_officer",
+    "reviewed_at": null,
+    "rationale": null,
+    "changes_required": [],
+    "unresolved_issues": ["retention conflict", "legal basis"]
+  },
+  "source_versions": ["solidprivacy:evidence-pack-v1"],
+  "notes": "Synthetic blocked case."
+}

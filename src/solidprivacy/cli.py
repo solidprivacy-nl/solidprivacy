@@ -5,10 +5,12 @@ import json
 from pathlib import Path
 from typing import Any
 
+from solidprivacy.runtime.facts import derive_readiness, validate_evidence_pack_integrity
 from solidprivacy.runtime.integrity import validate_dpia_integrity
 from solidprivacy.runtime.prescan import evaluate_prescan
 from solidprivacy.runtime.schema_validation import (
     validate_dpia,
+    validate_evidence_pack,
     validate_prescan_decision,
     validate_prescan_input,
 )
@@ -40,6 +42,22 @@ def _prescan(path: str) -> int:
     return 0
 
 
+def _validate_evidence_pack(path: str) -> int:
+    payload = _load(path)
+    validate_evidence_pack(payload)
+    validate_evidence_pack_integrity(payload)
+    _dump({"status": "valid", "contract": "evidence_pack", "path": path})
+    return 0
+
+
+def _evidence_readiness(path: str, stage: str) -> int:
+    payload = _load(path)
+    validate_evidence_pack(payload)
+    validate_evidence_pack_integrity(payload)
+    _dump(derive_readiness(payload, stage))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="solidprivacy")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -50,6 +68,19 @@ def build_parser() -> argparse.ArgumentParser:
     prescan = sub.add_parser("prescan", help="Evaluate a Dutch DPIA pre-scan input")
     prescan.add_argument("path")
 
+    evidence = sub.add_parser(
+        "validate-evidence-pack", help="Validate an evidence/fact provenance pack"
+    )
+    evidence.add_argument("path")
+
+    readiness = sub.add_parser(
+        "evidence-readiness", help="Derive deterministic evidence-pack readiness"
+    )
+    readiness.add_argument("path")
+    readiness.add_argument(
+        "--stage", choices=["analysis", "finalisation"], default="analysis"
+    )
+
     return parser
 
 
@@ -59,4 +90,8 @@ def main() -> int:
         return _validate_dpia(args.path)
     if args.command == "prescan":
         return _prescan(args.path)
+    if args.command == "validate-evidence-pack":
+        return _validate_evidence_pack(args.path)
+    if args.command == "evidence-readiness":
+        return _evidence_readiness(args.path, args.stage)
     raise AssertionError(f"unknown command {args.command!r}")
