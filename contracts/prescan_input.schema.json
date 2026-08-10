@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/prescan_input.schema.json",
+  "title": "SolidPrivacy Dutch DPIA Pre-scan Input",
+  "type": "object",
+  "required": [
+    "source_model",
+    "source_version",
+    "answers",
+    "legal_context"
+  ],
+  "properties": {
+    "source_model": {
+      "const": "nl_rijksmodel_prescan"
+    },
+    "source_version": {
+      "const": "2.0"
+    },
+    "source_commit": {
+      "type": ["string", "null"]
+    },
+    "answers": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]+(\\.[0-9]+)*$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {"type": "boolean"},
+          {"type": "string"},
+          {"type": "number"},
+          {"type": "null"},
+          {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {"type": "string"},
+                {"type": "boolean"},
+                {"type": "number"},
+                {"type": "null"}
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "legal_context": {
+      "type": "object",
+      "required": [
+        "article_35_3",
+        "law_or_regulation_requires_dpia",
+        "ap_list_selection_verified"
+      ],
+      "properties": {
+        "article_35_3": {
+          "type": "object",
+          "required": [
+            "systematic_extensive_automated_evaluation_significant_effect",
+            "large_scale_special_or_criminal_data",
+            "large_scale_systematic_public_monitoring"
+          ],
+          "properties": {
+            "systematic_extensive_automated_evaluation_significant_effect": {"type": ["boolean", "null"]},
+            "large_scale_special_or_criminal_data": {"type": ["boolean", "null"]},
+            "large_scale_systematic_public_monitoring": {"type": ["boolean", "null"]}
+          },
+          "additionalProperties": false
+        },
+        "law_or_regulation_requires_dpia": {"type": ["boolean", "null"]},
+        "ap_list_selection_verified": {"type": ["boolean", "null"]},
+        "notes": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
