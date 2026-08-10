@@ -10,6 +10,7 @@ on:
       - "methodologies/nl_rijksmodel_dpia/**"
       - "legal_sources/**"
       - "pyproject.toml"
+      - "docs/workpackages/WP2_EXECUTABLE_DPIA_PRESCAN.md"
       - ".github/workflows/wp2-contract-gate.yml"
   push:
     branches:
@@ -22,6 +23,7 @@ on:
       - "methodologies/nl_rijksmodel_dpia/**"
       - "legal_sources/**"
       - "pyproject.toml"
+      - "docs/workpackages/WP2_EXECUTABLE_DPIA_PRESCAN.md"
       - ".github/workflows/wp2-contract-gate.yml"
 
 permissions:
