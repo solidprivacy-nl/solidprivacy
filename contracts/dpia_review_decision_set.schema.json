@@ -3,7 +3,7 @@
   "$id": "https://solidprivacy.nl/schemas/dpia_review_decision_set.schema.json",
   "title": "SolidPrivacy DPIA Privacy Officer Decision Set",
   "type": "object",
-  "required": ["id", "review_request_id", "reviewer", "overall_disposition", "overall_rationale", "decisions", "supplemental_evidence", "question_resolutions", "assumption_resolutions", "residual_risk", "dpo_consultation", "management_summary", "signed_at"],
+  "required": ["id", "review_request_id", "reviewer", "review_input_privacy_context", "overall_disposition", "overall_rationale", "decisions", "supplemental_evidence", "question_resolutions", "assumption_resolutions", "residual_risk", "dpo_consultation", "management_summary", "signed_at"],
   "properties": {
     "id": {"type": "string", "minLength": 1},
     "review_request_id": {"type": "string", "minLength": 1},
@@ -14,6 +14,17 @@
         "actor_type": {"const": "human"},
         "reviewer_id": {"type": "string", "minLength": 1},
         "role": {"type": "string", "enum": ["privacy_officer", "dpo", "legal_privacy_reviewer"]}
+      },
+      "additionalProperties": false
+    },
+    "review_input_privacy_context": {
+      "type": "object",
+      "required": ["scrubbed", "scrub_key_present", "contains_direct_identifiers", "content_classification"],
+      "properties": {
+        "scrubbed": {"const": true},
+        "scrub_key_present": {"const": false},
+        "contains_direct_identifiers": {"const": false},
+        "content_classification": {"type": "string", "enum": ["public", "internal", "scrubbed_personal_data"]}
       },
       "additionalProperties": false
     },
