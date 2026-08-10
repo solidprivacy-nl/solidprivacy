@@ -1,0 +1,35 @@
+{
+  "id": "nl_rijksmodel_prescan_dpia_gate",
+  "version": "1.0",
+  "methodology_source": {
+    "source_id": "nl-government-par-dpia-model",
+    "source_version": "2.0",
+    "pinned_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+    "locator": "sources/prescan.yaml#assessments.DPIA"
+  },
+  "methodology_rules": [
+    {"id": "new_legislation_scope", "source_field": "0.1", "level": "required", "condition": "true"},
+    {"id": "rijksmodel_risk_score_gt_4", "level": "required", "condition": "risk_score > 4"},
+    {"id": "ap_list_item_selected", "source_field": "3.1", "level": "required", "condition": "count >= 1"},
+    {"id": "edpb_two_or_more_criteria", "source_field": "4.1", "level": "required", "condition": "count >= 2"},
+    {"id": "edpb_one_criterion", "source_field": "4.1", "level": "recommended", "condition": "count == 1"}
+  ],
+  "legal_gate": {
+    "principle": "Methodology output and legal conclusion remain separate.",
+    "required_when": [
+      {"id": "gdpr_article_35_3", "source_id": "eu-gdpr-eurlex", "classification": "LAW_REQUIRED"},
+      {"id": "applicable_law_requires_dpia", "source_id": "eu-gdpr-eurlex", "classification": "LAW_REQUIRED"},
+      {"id": "verified_nl_ap_mandatory_list_match", "source_id": "nl-ap-dpia-mandatory-list-2019", "classification": "LAW_REQUIRED"}
+    ],
+    "recommend_when": [
+      {"id": "edpb_two_or_more_criteria", "source_id": "edpb-dpia-guidelines-wp248", "classification": "REGULATOR_GUIDANCE"},
+      {"id": "edpb_single_criterion_can_still_require_dpia", "source_id": "edpb-dpia-guidelines-wp248", "classification": "REGULATOR_GUIDANCE"}
+    ],
+    "needs_review_when": [
+      "AP list item is selected but the match has not been verified",
+      "Rijksmodel risk score alone creates the methodology-required outcome",
+      "new-legislation scope alone creates the methodology-required outcome",
+      "legal context required to exclude direct Article 35(3) triggers is incomplete"
+    ]
+  }
+}
