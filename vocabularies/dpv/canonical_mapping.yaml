@@ -1,0 +1,67 @@
+version: 1
+mapping_id: solidprivacy_canonical_to_dpv
+reviewed_at: 2026-08-10
+dpv_reference:
+  repository: https://github.com/w3c-cg/dpv
+  commit: c85ffacc97041b90a7a3afb3b6417f0b4d9fafbc
+  vocabulary_path: 2.1/dpv/dpv.csv
+  namespace: https://w3id.org/dpv#
+  role: semantic_interoperability
+  legal_authority: false
+mappings:
+  - canonical: processing_activity
+    dpv: dpv:Processing
+    relation: represented_by
+  - canonical: processing_activity.processing_operations
+    dpv: dpv:Processing
+    relation: narrower_processing_taxonomy
+  - canonical: processing_activity.personal_data
+    dpv: dpv:PersonalData
+    relation: represented_by
+  - canonical: processing_activity.data_subjects
+    dpv: dpv:DataSubject
+    relation: represented_by
+  - canonical: processing_activity.purposes
+    dpv: dpv:Purpose
+    relation: represented_by
+  - canonical: processing_activity.parties.roles.controller
+    dpv: dpv:DataController
+    relation: equivalent_role
+  - canonical: processing_activity.parties.roles.processor
+    dpv: dpv:DataProcessor
+    relation: equivalent_role
+  - canonical: processing_activity.parties.roles.recipient
+    dpv: dpv:Recipient
+    relation: equivalent_role
+  - canonical: processing_activity.parties.roles.third_party
+    dpv: dpv:ThirdParty
+    relation: equivalent_role
+  - canonical: processing_activity.legal_bases
+    dpv: dpv:LegalBasis
+    relation: represented_by
+  - canonical: processing_activity.locations
+    dpv: dpv:Location
+    relation: represented_by
+  - canonical: processing_activity.retention
+    dpv: dpv:StorageCondition
+    relation: broader_mapping
+  - canonical: processing_activity.technologies
+    dpv: dpv:Technology
+    relation: represented_by
+  - canonical: dpia.risks
+    dpv: dpv:Risk
+    relation: represented_by
+  - canonical: dpia.measures[type=technical]
+    dpv: dpv:TechnicalMeasure
+    relation: represented_by
+  - canonical: dpia.measures[type=organisational]
+    dpv: dpv:OrganisationalMeasure
+    relation: represented_by
+  - canonical: dpia
+    dpv: dpv:Assessment
+    relation: broader_mapping
+policy:
+  - Do not infer legal compliance from a DPV mapping.
+  - Keep SolidPrivacy identifiers stable even when DPV evolves.
+  - Version mappings and regression-test them before changing canonical semantics.
+  - Prefer DPV extensions for jurisdiction-specific semantics where appropriate, but legal claims must still cite approved legal sources.
