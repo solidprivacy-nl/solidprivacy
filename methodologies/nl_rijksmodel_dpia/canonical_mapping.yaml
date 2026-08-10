@@ -20,12 +20,13 @@ rules:
     mapping_quality: structural
     child_mappings:
       "2.1.1": name
-      "2.1.2": data_subject_reference
+      "2.1.2": data_subject_ids
       "2.1.3": category
       "2.1.4": sensitivity
       "2.1.5": original_purpose
       "2.1.7": source_party
       "2.1.8": source
+    note: Human-readable data-subject labels from the source must be resolved to canonical data-subject IDs.
 
   - source_id: "3"
     source_label: Gegevensverwerking
@@ -35,14 +36,14 @@ rules:
     child_mappings:
       "3.1.1": name
       "3.1.2": description
-      "3.1.3": personal_data
+      "3.1.3": personal_data_references
 
   - source_id: "4"
     source_label: Technieken en methoden
     target: $.processing_activities[*].technologies
     classification: OFFICIAL_METHODOLOGY
     mapping_quality: partial
-    note: Canonical model keeps technologies as structured facts; AI/algorithm/cloud specifics can be extended without changing the core contract.
+    note: Canonical model stores technology facts without turning technology use itself into a legal conclusion.
 
   - source_id: "5"
     source_label: Verwerkingsdoeleinden
@@ -68,7 +69,9 @@ rules:
 
   - source_id: "8"
     source_label: Verwerkingslocaties
-    target: $.processing_activities[*].locations_and_transfers
+    targets:
+      - $.processing_activities[*].locations
+      - $.processing_activities[*].transfers
     classification: OFFICIAL_METHODOLOGY
     mapping_quality: structural
     child_mappings:
@@ -88,11 +91,12 @@ rules:
     classification: OFFICIAL_METHODOLOGY
     mapping_quality: structural
     child_mappings:
-      "10.1.1.1": purpose_reference
-      "10.1.1.2": data_subject_reference
-      "10.1.1.3": personal_data_reference
+      "10.1.1.1": purpose_ids
+      "10.1.1.2": data_subject_ids
+      "10.1.1.3": personal_data_ids
       "10.1.1.4": period
       "10.1.1.5": rationale
+    note: Source labels are resolved to canonical IDs before persistence.
 
   - source_id: "11"
     source_label: Rechtsgrond
@@ -147,7 +151,9 @@ rules:
 
   - source_id: "17"
     source_label: Maatregelen
-    target: $.measures_and_residual_risk
+    targets:
+      - $.measures
+      - $.residual_risk_conclusion
     classification: OFFICIAL_METHODOLOGY
     mapping_quality: structural
     child_mappings:
@@ -173,5 +179,5 @@ prescan_relationship:
   contract_role: intake_and_dpia_triggering
   note: >-
     The upstream pre-scan definition already carries references into DPIA fields.
-    SolidPrivacy will preserve those relationships as adapter metadata rather than
+    SolidPrivacy preserves those relationships as adapter metadata rather than
     duplicating answer values across separate AI prompts.

@@ -60,6 +60,9 @@
       "type": "object",
       "required": ["data_type", "exception_or_authorisation"],
       "properties": {
+        "processing_activity_ids": {"type": "array", "items": {"type": "string"}},
+        "personal_data_ids": {"type": "array", "items": {"type": "string"}},
+        "data_subject_ids": {"type": "array", "items": {"type": "string"}},
         "data_type": {"type": "string"},
         "exception_or_authorisation": {"type": "string"},
         "legal_reference": {"type": ["string", "null"]}
@@ -81,6 +84,7 @@
       "required": ["id", "description", "origin", "likelihood", "impact", "inherent_level", "rationale"],
       "properties": {
         "id": {"type": "string"},
+        "processing_activity_ids": {"type": "array", "items": {"type": "string"}},
         "description": {"type": "string"},
         "origin": {"type": "string"},
         "likelihood": {"type": "string", "enum": ["low", "medium", "high", "unknown"]},

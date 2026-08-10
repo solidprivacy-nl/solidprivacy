@@ -23,10 +23,10 @@
       "id": "PA-101",
       "name": "AI-ondersteunde triage",
       "description": "Analyse van aanvraaggegevens en gezondheidsinformatie om een prioriteitscategorie voor een medewerker voor te stellen.",
-      "purposes": [{"id": "PUR-101", "description": "Ondersteunen van tijdige behandeling van zorgaanvragen", "original_purpose": null}],
+      "purposes": [{"id": "PUR-101", "description": "Ondersteunen van tijdige behandeling van zorgaanvragen"}],
       "personal_data": [
-        {"id": "PD-101", "name": "Contactgegevens", "category": "identificatie en contact", "sensitivity": "ordinary", "source": "aanvrager", "source_party": null},
-        {"id": "PD-102", "name": "Gezondheidsgegevens", "category": "gezondheid", "sensitivity": "special_category", "source": "aanvrager", "source_party": null}
+        {"id": "PD-101", "name": "Contactgegevens", "category": "identificatie en contact", "sensitivity": "ordinary", "data_subject_ids": ["DS-101"], "original_purpose": "Behandeling zorgaanvraag", "source": "aanvrager", "source_party": null},
+        {"id": "PD-102", "name": "Gezondheidsgegevens", "category": "gezondheid", "sensitivity": "special_category", "data_subject_ids": ["DS-101"], "original_purpose": "Behandeling zorgaanvraag", "source": "aanvrager", "source_party": null}
       ],
       "data_subjects": [{"id": "DS-101", "name": "Zorgaanvragers", "vulnerable": true, "vulnerability_context": "De verwerking kan personen in een afhankelijke of kwetsbare positie raken."}],
       "parties": [
@@ -38,7 +38,7 @@
       "locations": [{"country": "Netherlands", "eea": true}],
       "transfers": [],
       "legal_bases": [{"basis": "other", "rationale": "Onopgeloste synthetische casus: rechtsgrond en uitzonderingsgrond voor gezondheidsgegevens moeten door een privacyprofessional worden vastgesteld.", "legal_reference": null}],
-      "retention": [{"scope": "aanvraag en triage-uitkomst", "period": "onbekend", "rationale": "Nog vast te stellen", "owner": null, "end_action": null}],
+      "retention": [{"purpose_ids": ["PUR-101"], "data_subject_ids": ["DS-101"], "personal_data_ids": ["PD-101", "PD-102"], "period": "onbekend", "rationale": "Nog vast te stellen", "owner": null, "end_action": null}],
       "rights_procedures": [
         {"right": "access", "procedure_status": "unknown", "procedure": null, "restriction_basis": null},
         {"right": "automated_decision_making", "procedure_status": "unknown", "procedure": null, "restriction_basis": null}
@@ -54,12 +54,13 @@
     "balancing_or_public_interest_reasoning": null
   },
   "special_data_assessment": [
-    {"data_type": "gezondheidsgegevens", "exception_or_authorisation": "onbekend", "legal_reference": null}
+    {"processing_activity_ids": ["PA-101"], "personal_data_ids": ["PD-102"], "data_subject_ids": ["DS-101"], "data_type": "gezondheidsgegevens", "exception_or_authorisation": "onbekend", "legal_reference": null}
   ],
   "purpose_compatibility": [{"processing_activity_id": "PA-101", "decision": "unknown", "rationale": "Compatibiliteit en eventuele verdere modeltraining zijn nog niet beoordeeld."}],
   "risks": [
     {
       "id": "R-101",
+      "processing_activity_ids": ["PA-101"],
       "description": "Onjuiste of discriminerende prioritering kan toegang tot tijdige zorg beïnvloeden",
       "origin": "Modelbias, datakwaliteit of onvoldoende menselijke controle",
       "likelihood": "medium",
@@ -71,6 +72,7 @@
     },
     {
       "id": "R-102",
+      "processing_activity_ids": ["PA-101"],
       "description": "Onbevoegde toegang tot gezondheidsgegevens",
       "origin": "Te brede toegang of onvoldoende scheiding van omgevingen",
       "likelihood": "medium",

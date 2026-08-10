@@ -27,19 +27,20 @@
       "required": ["id", "description"],
       "properties": {
         "id": {"type": "string"},
-        "description": {"type": "string"},
-        "original_purpose": {"type": ["string", "null"]}
+        "description": {"type": "string"}
       },
       "additionalProperties": false
     },
     "personalData": {
       "type": "object",
-      "required": ["id", "name", "category", "sensitivity"],
+      "required": ["id", "name", "category", "sensitivity", "data_subject_ids"],
       "properties": {
         "id": {"type": "string"},
         "name": {"type": "string"},
         "category": {"type": "string"},
         "sensitivity": {"type": "string", "enum": ["ordinary", "sensitive_context", "special_category", "criminal", "national_identifier"]},
+        "data_subject_ids": {"type": "array", "items": {"type": "string"}},
+        "original_purpose": {"type": ["string", "null"]},
         "source": {"type": ["string", "null"]},
         "source_party": {"type": ["string", "null"]}
       },
@@ -99,9 +100,11 @@
     },
     "retention": {
       "type": "object",
-      "required": ["scope", "period", "rationale"],
+      "required": ["period", "rationale"],
       "properties": {
-        "scope": {"type": "string"},
+        "purpose_ids": {"type": "array", "items": {"type": "string"}},
+        "data_subject_ids": {"type": "array", "items": {"type": "string"}},
+        "personal_data_ids": {"type": "array", "items": {"type": "string"}},
         "period": {"type": "string"},
         "rationale": {"type": "string"},
         "owner": {"type": ["string", "null"]},
