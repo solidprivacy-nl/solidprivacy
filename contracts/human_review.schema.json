@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/human_review.schema.json",
+  "title": "SolidPrivacy Human Review",
+  "type": "object",
+  "required": ["required", "status"],
+  "properties": {
+    "required": {"type": "boolean"},
+    "status": {"type": "string", "enum": ["not_required", "pending", "approved", "approved_with_changes", "rejected"]},
+    "reviewer_role": {"type": ["string", "null"]},
+    "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+    "rationale": {"type": ["string", "null"]},
+    "changes_required": {"type": "array", "items": {"type": "string"}},
+    "unresolved_issues": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
