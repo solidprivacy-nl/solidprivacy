@@ -59,7 +59,7 @@ Status: COMPLETE — exact-head CI green
 - extractor boundary and document-to-DPIA stage model.
 
 ### WP4 / PR #5 — Safe AI boundary + fact extraction validator
-Status: COMPLETE IMPLEMENTATION — initial exact-head CI green; closeout head must remain green
+Status: COMPLETE — exact-head CI green
 
 - provider-independent fact-extraction interface;
 - executable model-call privacy policy;
@@ -74,44 +74,41 @@ Status: COMPLETE IMPLEMENTATION — initial exact-head CI green; closeout head m
 
 No real external provider is approved or enabled by WP4.
 
-### WP5 — Governed legal context + AI-assisted DPIA analysis/drafting
-Status: NEXT
+### WP5 / PR #6 — Governed legal context + AI-assisted DPIA analysis/drafting
+Status: COMPLETE IMPLEMENTATION — exact-head CI green on implementation head; closeout head must remain green
 
-**First prerequisite:** make approved legal context executable before drafting.
+Delivered:
+- curated source-bound DPIA legal rules;
+- legal-context request/bundle contracts;
+- resolver against the full governed source registry;
+- jurisdiction, authority and freshness checks;
+- explicit forward-only treatment of non-final consultation material;
+- structured DPIA analysis contract;
+- fact/rule/claim/risk/measure traceability validator;
+- unreviewed facts remain explicitly unresolved in draft sections;
+- provider cannot self-validate or finalise residual risk;
+- deterministic fixture analysis and adversarial regressions.
 
-Required legal-context layer:
-- machine-readable `legal_context_bundle` contract;
-- resolver against `legal_sources/source_registry.yaml`;
-- jurisdiction and source-status filtering;
-- production exclusion of consultation/candidate-only material unless explicitly requested as non-authoritative context;
-- freshness/review-due checks;
-- locator/citation metadata;
-- explicit distinction among binding law, regulator guidance, official methodology, policy and assumptions;
-- deterministic failure/needs-review when required legal context is stale, unresolved or unavailable.
-
-Then structured AI analysis/drafting may:
-- consume only validated evidence/facts plus the approved legal-context bundle;
-- produce section-level evidence/source traceability;
-- classify every legal claim;
-- preserve assumptions/open questions;
-- link risks ↔ measures;
-- abstain where evidence/legal support is insufficient;
-- never accept final residual risk or prior-consultation disposition;
-- pass a separate validator plus legal-accuracy/omission evals.
-
-CI should use deterministic fixture generation first; production-provider enablement remains separate.
+No real external analysis provider is approved or enabled by WP5.
 
 ### WP6 — Privacy Officer review + report/reinsert boundary
-Status: PLANNED
+Status: NEXT
 
-- AI proposal vs accepted-version diff;
-- unresolved issue queue;
-- approve/reject/change workflow;
+Goal: turn the governed AI draft into a human-accountable decision package and scrubbed deliverable.
+
+Required:
+- item-level review decisions for facts, claims, risks, measures and draft sections;
+- accept / reject / change / request-evidence actions;
+- rationale requirements for material changes/rejections;
+- explicit human residual-risk conclusion;
+- explicit prior-consultation disposition;
+- unresolved issue queue and finalisation gate;
 - evidence/source appendix;
-- management summary + full report;
-- scrubbed report contract;
-- controlled Scrub reinsertion handoff;
-- immutable review/execution record.
+- management summary + full scrubbed report representation;
+- controlled Scrub reinsertion handoff containing **no Scrub Key** and no direct identifiers;
+- immutable minimal review record containing reviewed draft hash/version, source/evidence/model/policy versions and reviewer decision timestamps.
+
+**Roadmap dependency note:** a minimal immutable review/audit record is required inside WP6 because accountable human sign-off is not meaningful without it. WP7 still generalises workflow/run event sourcing, replayability and audit infrastructure across all workflows.
 
 **DPIA milestone:** representative synthetic corpus proves scrubbed input → evidence → facts → pre-scan → legal context → DPIA draft → validator → Privacy Officer review → report/reinsert handoff.
 
@@ -120,13 +117,13 @@ Status: PLANNED
 Extract reusable capabilities from the completed DPIA slice rather than building later workflows as bespoke agents.
 
 ### WP7 — Workflow execution + audit model
-- run/workflow IDs and versions;
+- generalised run/workflow IDs and versions;
 - step state/replayability;
 - input/output hashes;
 - source/model/prompt/policy versions;
 - human decisions;
 - failure/abstention states;
-- immutable audit events.
+- immutable audit events across workflows.
 
 ### WP8 — Control/evidence/remediation model
 - executable OSCAL-inspired control objects;

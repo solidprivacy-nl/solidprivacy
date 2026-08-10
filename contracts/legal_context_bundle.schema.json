@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/legal_context_bundle.schema.json",
+  "title": "SolidPrivacy Governed Legal Context Bundle",
+  "type": "object",
+  "required": ["id", "request_id", "status", "jurisdiction", "as_of", "rules", "context_sources", "warnings", "blockers", "registry_version", "rules_version"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["ready", "blocked"]},
+    "jurisdiction": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "as_of": {"type": "string", "format": "date"},
+    "rules": {"type": "array", "items": {"$ref": "#/$defs/resolvedRule"}},
+    "context_sources": {"type": "array", "items": {"$ref": "#/$defs/contextSource"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "registry_version": {"type": ["string", "integer"]},
+    "rules_version": {"type": ["string", "integer"]}
+  },
+  "$defs": {
+    "resolvedRule": {
+      "type": "object",
+      "required": ["id", "source_id", "source_title", "authority", "source_kind", "source_status", "jurisdiction", "locator", "classification", "statement", "canonical_url", "source_last_verified", "rule_last_verified"],
+      "properties": {
+        "id": {"type": "string"},
+        "source_id": {"type": "string"},
+        "source_title": {"type": "string"},
+        "authority": {"type": "string"},
+        "source_kind": {"type": "string"},
+        "source_status": {"type": "string"},
+        "jurisdiction": {"type": "string"},
+        "locator": {"type": "string"},
+        "classification": {"type": "string", "enum": ["LAW_REQUIRED", "REGULATOR_GUIDANCE"]},
+        "statement": {"type": "string"},
+        "canonical_url": {"type": "string"},
+        "source_last_verified": {"type": "string", "format": "date"},
+        "rule_last_verified": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "contextSource": {
+      "type": "object",
+      "required": ["source_id", "title", "authority", "jurisdiction", "kind", "status", "canonical_url", "use_mode", "last_verified"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "title": {"type": "string"},
+        "authority": {"type": "string"},
+        "jurisdiction": {"type": "string"},
+        "kind": {"type": "string"},
+        "status": {"type": "string"},
+        "canonical_url": {"type": "string"},
+        "use_mode": {"type": "string", "enum": ["authoritative_context", "official_methodology", "forward_context_only", "reference_only", "excluded"]},
+        "last_verified": {"type": "string", "format": "date"},
+        "reason": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

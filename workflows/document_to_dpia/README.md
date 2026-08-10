@@ -1,6 +1,6 @@
 # Workflow — Document to DPIA
 
-Status: staged implementation.
+Status: governed analysis implemented through WP5.
 
 ```text
 SCRUBBED / MINIMISED INPUT
@@ -11,18 +11,19 @@ SCRUBBED / MINIMISED INPUT
   -> contradiction + missing-information gate
   -> deterministic readiness
   -> pre-scan / DPIA-necessity decision support
-  -> canonical DPIA analysis
+  -> governed legal-context resolver
+  -> structured canonical DPIA analysis/draft
   -> detector findings
-  -> finding validator
+  -> traceability/finding validator
   -> Privacy Officer review
   -> scrubbed report
   -> controlled reinsert handoff
 ```
 
-Current executable coverage: WP1 canonical processing/DPIA contracts; WP2 pre-scan/legal-decision/integrity gates; WP3 evidence/fact provenance/readiness; WP4 safe AI-call boundary, provider-independent detector interface, provenance validator and contradiction detection.
+Current executable coverage: WP1 canonical processing/DPIA contracts; WP2 pre-scan/legal-decision/integrity gates; WP3 evidence/fact provenance/readiness; WP4 safe AI-call boundary, provider-independent detector interface, provenance validator and contradiction detection; WP5 curated legal rules, jurisdiction/freshness resolution and source/fact-traceable DPIA draft validation.
 
-CI uses a deterministic fixture provider. No production external AI provider is enabled by WP4. Generative DPIA analysis remains downstream of validated evidence/facts.
+CI uses deterministic fixture providers. No production external AI provider is enabled by WP5. The model does not select legal authority: WP5 resolves legal context from governed source/rule registries. Non-final consultation material may be forward context but cannot support a legal claim.
 
-Original identifiers and the Scrub Key remain outside this workflow by default. `scrubbed=true` is not proof of anonymisation. External egress of scrubbed-personal-data content requires an explicit approved model-call policy, while direct identifiers and the Scrub Key are rejected by the WP4 external boundary.
+Original identifiers and the Scrub Key remain outside this workflow by default. `scrubbed=true` is not proof of anonymisation. External egress of scrubbed-personal-data content requires an explicit approved model-call policy, while direct identifiers and the Scrub Key are rejected by the external boundary.
 
-Provenance validation is not human fact acceptance. Material legal conclusions and final residual-risk acceptance require designated human review.
+Provenance validation is not human fact acceptance. Sections using unreviewed facts must keep those fact IDs explicit. Material legal conclusions and final residual-risk acceptance require designated Privacy Officer/DPO review.

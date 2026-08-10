@@ -10,7 +10,7 @@
     "execution_mode": {"type":"string","enum":["local","external"]},
     "provider": {"type":"string","minLength":1},
     "model": {"type":"string","minLength":1},
-    "allowed_tasks": {"type":"array","items":{"type":"string","enum":["extract_privacy_facts"]},"minItems":1,"uniqueItems":true},
+    "allowed_tasks": {"type":"array","items":{"type":"string","enum":["extract_privacy_facts","draft_dpia_analysis"]},"minItems":1,"uniqueItems":true},
     "require_scrubbed": {"type":"boolean"},
     "max_content_classification": {"type":"string","enum":["public","internal","scrubbed_personal_data","personal_data","special_category"]},
     "allow_scrubbed_personal_data_egress": {"type":"boolean"},

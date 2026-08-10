@@ -1,0 +1,59 @@
+name: WP5 governed DPIA analysis gates
+
+on:
+  pull_request:
+    paths: ["src/**","contracts/**","evals/**","tests/**","legal_sources/rules/**","legal_sources/source_registry.yaml","skills/privacy_officer/dpia/**","workflows/document_to_dpia/**","docs/workpackages/WP5_GOVERNED_DPIA_ANALYSIS.md","ROADMAP.md","pyproject.toml",".github/workflows/wp5-governed-analysis-gate.yml"]
+  push:
+    branches: ["agent/**"]
+    paths: ["src/**","contracts/**","evals/**","tests/**","legal_sources/rules/**","legal_sources/source_registry.yaml","skills/privacy_officer/dpia/**","workflows/document_to_dpia/**","docs/workpackages/WP5_GOVERNED_DPIA_ANALYSIS.md","ROADMAP.md","pyproject.toml",".github/workflows/wp5-governed-analysis-gate.yml"]
+permissions:
+  contents: read
+jobs:
+  governed-dpia-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install runtime and test dependencies
+        run: python -m pip install -e ".[test]"
+      - name: Run full deterministic regression suite
+        run: python -m pytest
+      - name: Validate curated legal rules
+        run: solidprivacy validate-legal-rules
+      - name: Resolve current governed legal context
+        run: |
+          solidprivacy resolve-legal-context evals/legal_context/request_dpia.json > /tmp/legal-context.json
+          python - <<'PY'
+          import json
+          b=json.load(open('/tmp/legal-context.json'))
+          assert b['status']=='ready'
+          assert any(s['source_id']=='edpb-dpia-template-2026' and s['use_mode']=='forward_context_only' for s in b['context_sources'])
+          assert all(r['source_id']!='edpb-dpia-template-2026' for r in b['rules'])
+          PY
+      - name: Run deterministic governed DPIA analysis
+        run: |
+          solidprivacy fixture-draft-dpia evals/dpia_analysis/request_ready.json evals/dpia_analysis/policy_fixture_external.json evals/dpia_analysis/result_ready.json > /tmp/dpia-analysis.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/dpia-analysis.json')); a=p['analysis']
+          assert p['legal_context']['status']=='ready'
+          assert a['validation_status']=='traceability_validated'
+          assert a['residual_risk_status']=='requires_human_assessment'
+          assert a['human_review_required'] is True
+          assert all(s['unresolved_fact_ids'] for s in a['sections'] if s['fact_ids'])
+          PY
+      - name: Preserve WP4 model and extraction boundary
+        run: |
+          solidprivacy check-model-call evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json
+          solidprivacy fixture-extract-facts evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json evals/ai_fact_extraction/result_ready.json > /tmp/facts.json
+      - name: Preserve WP3 evidence and WP2 DPIA/pre-scan gates
+        run: |
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_ready.json
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_blocked.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_basic.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_high_risk.json
+          solidprivacy prescan evals/prescan_smoke_input.json

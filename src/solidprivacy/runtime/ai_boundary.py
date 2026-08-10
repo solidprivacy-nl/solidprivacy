@@ -4,7 +4,9 @@ from dataclasses import dataclass
 from typing import Any
 
 from solidprivacy.runtime.schema_validation import (
+    validate_dpia_analysis_request,
     validate_fact_extraction_request,
+    validate_model_call_request,
     validate_model_call_policy,
 )
 
@@ -36,7 +38,11 @@ class ModelCallDecision:
 
 
 def evaluate_model_call_policy(request: dict[str, Any], policy: dict[str, Any]) -> ModelCallDecision:
-    validate_fact_extraction_request(request)
+    validate_model_call_request(request)
+    if request["task"] == "extract_privacy_facts":
+        validate_fact_extraction_request(request)
+    elif request["task"] == "draft_dpia_analysis":
+        validate_dpia_analysis_request(request)
     validate_model_call_policy(policy)
 
     reasons: list[str] = []

@@ -95,3 +95,27 @@ def validate_fact_extraction_request(instance: Any) -> None:
 
 def validate_fact_extraction_result(instance: Any) -> None:
     validate_contract("fact_extraction_result.schema.json", instance)
+
+
+def validate_model_call_request(instance: Any) -> None:
+    validate_contract("model_call_request.schema.json", instance)
+
+
+def validate_legal_rule(instance: Any) -> None:
+    validate_contract("legal_rule.schema.json", instance)
+
+
+def validate_legal_context_request(instance: Any) -> None:
+    validate_contract("legal_context_request.schema.json", instance)
+
+
+def validate_legal_context_bundle(instance: Any) -> None:
+    validate_contract("legal_context_bundle.schema.json", instance)
+
+
+def validate_dpia_analysis_request(instance: Any) -> None:
+    validate_contract("dpia_analysis_request.schema.json", instance)
+
+
+def validate_dpia_analysis_result(instance: Any) -> None:
+    validate_contract("dpia_analysis_result.schema.json", instance)
