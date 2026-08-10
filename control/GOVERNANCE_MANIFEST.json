@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "repository": "solidprivacy-nl/solidprivacy",
+  "required_paths": [
+    "control/PROJECT_GOVERNANCE_BOOTSTRAP.md",
+    "control/SOLIDPRIVACY_RELEASE_ASSURANCE_CONTRACT_V1.md",
+    "control/WORK_CLAIMS.json",
+    "control/GOVERNANCE_MANIFEST.json",
+    "CURRENT_STATE.md",
+    "ROADMAP.md",
+    "WORKPACKAGES.md",
+    "CHANGELOG.md",
+    "DECISION_LOG.md",
+    "docs/architecture.md",
+    "docs/DATA_ARCHITECTURE.md",
+    "docs/POAAS_REFERENCE_WORKFLOW.md",
+    "docs/POAAS_OPERATING_ECONOMICS.md",
+    "handover/README.md"
+  ],
+  "required_workpackage_specs": [
+    "docs/workpackages/WP1_CANONICAL_DPIA_MODEL.md",
+    "docs/workpackages/WP2_EXECUTABLE_DPIA_PRESCAN.md",
+    "docs/workpackages/WP3_EVIDENCE_FACTS.md",
+    "docs/workpackages/WP4_AI_FACT_EXTRACTION.md",
+    "docs/workpackages/WP5_GOVERNED_DPIA_ANALYSIS.md",
+    "docs/workpackages/WP6_PRIVACY_OFFICER_REVIEW.md",
+    "docs/workpackages/WP8_CLIENT_DATA_PLANE.md"
+  ],
+  "allowed_claim_statuses": [
+    "ACTIVE",
+    "BLOCKED",
+    "HANDOVER_READY",
+    "CLOSED",
+    "SUPERSEDED"
+  ],
+  "forbidden_repository_paths": [
+    "client_data",
+    "customer_data",
+    "customer_dossiers",
+    "dossiers",
+    "uploads",
+    "scrub_keys",
+    "production_secrets"
+  ],
+  "source_of_truth": {
+    "sequencing": "ROADMAP.md",
+    "current_state": "CURRENT_STATE.md",
+    "workpackage_index": "WORKPACKAGES.md",
+    "work_claims": "control/WORK_CLAIMS.json",
+    "decisions": "DECISION_LOG.md",
+    "changes": "CHANGELOG.md",
+    "handovers": "handover/",
+    "architecture": "docs/architecture.md",
+    "client_data_architecture": "docs/DATA_ARCHITECTURE.md",
+    "cross_project_governance": "market-predictions/control-plane"
+  }
+}

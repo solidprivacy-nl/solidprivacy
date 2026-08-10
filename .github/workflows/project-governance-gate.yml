@@ -1,0 +1,21 @@
+name: Project governance structure gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'agent/**'
+
+permissions:
+  contents: read
+
+jobs:
+  governance-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Validate project governance structure
+        run: python tools/validate_project_governance.py

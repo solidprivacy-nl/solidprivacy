@@ -4,7 +4,7 @@
 
 This document defines the reference customer-lifecycle workflow for SolidPrivacy **Privacy Officer as a Service (POaaS)**. It translates the repository's governed privacy-workflow architecture into a repeatable service flow from signed engagement to initial deliverables and continuous operation.
 
-It is a product/architecture reference, not a promise that all stages are implemented today. `ROADMAP.md` defines the implementation sequence.
+It is a product/architecture reference, not a promise that all stages are implemented today. `ROADMAP.md` defines the implementation sequence. `docs/DATA_ARCHITECTURE.md` defines where real client dossiers/state physically live and how AI obtains bounded access.
 
 ## Reference customer
 
@@ -21,25 +21,35 @@ No real customer evidence or identifiers belong in the shared SolidPrivacy repos
 
 ## Architectural interpretation
 
-The governed repository is the **capability factory**. It contains canonical semantics, legal-source governance, methodologies, contracts, workflows, controls, policies and evaluations.
+The governed repository is the **capability factory and project source of truth**. It contains canonical semantics, legal-source governance, methodologies, contracts, workflows, controls, policies, evaluations and project/release governance.
 
-Each customer requires an isolated **client operating state** containing the organisation-specific facts and evidence over which those capabilities operate.
+Each customer requires both:
+
+1. a private physical **Client Data Plane** that stores real evidence/state/artifacts securely; and
+2. an isolated logical **client operating state** containing the organisation-specific facts and decisions over which governed capabilities operate.
 
 ```text
-SHARED / GOVERNED                         ISOLATED / CLIENT-SPECIFIC
+SHARED / GOVERNED                  PRIVATE DATA PLANE                 LOGICAL CLIENT STATE
 
-legal sources                             organisation + legal entities
-jurisdiction packs                        engagement + service commitments
-methodologies                             evidence inventory
-canonical schemas          --->           accepted privacy facts
-workflow definitions                      processing inventory
-model-call policies                       systems + processors
-control definitions                       assessments + findings
-regression/evals                          actions + deliverables
-                                           review/audit history
+legal sources                      evidence vault                     organisation + entities
+jurisdiction packs                 relational state store              engagement + commitments
+methodologies                      tenant retrieval index              accepted privacy facts
+canonical schemas          --->    workflow/audit store       --->    processing inventory
+workflow definitions               delivery artifact vault             systems + processors
+model-call policies                KMS/secrets                          assessments + findings
+control definitions                tenant backups                       actions + deliverables
+regression/evals                                                       review history
 ```
 
-The shared layer may know *how* to perform a Dutch DPIA. The client layer knows *which processing activity, evidence, systems and decisions* belong to one customer.
+The shared layer may know *how* to perform a Dutch DPIA. The client state knows *which processing activity, evidence, systems and decisions* belong to one customer. The private data plane controls *where that real information resides and who/what may access it*.
+
+### Initial data-plane posture
+
+For the first production cohort, especially healthcare customers, the reference design assumes one dedicated EU/EEA client data project/account per customer with separate database, object storage, retrieval/index and encryption-key/credential scope.
+
+The AI/model provider is not given direct database access. The SolidPrivacy runtime authorizes one tenant and task, retrieves only required state/evidence, applies minimisation/Scrub and provider policy, then assembles a bounded context. Model output returns through validation/review before it can affect durable state.
+
+Cross-client model memory and global cross-client customer retrieval indexes are prohibited. See `docs/DATA_ARCHITECTURE.md`.
 
 ## Central design rule: documents are evidence and projections
 
@@ -51,7 +61,7 @@ Outgoing RoPA, DPIA and management reports are projections of reviewed structure
 incoming documents / answers / collector evidence
                    |
                    v
-             evidence objects
+        private evidence objects
                    |
                    v
        extracted / proposed facts
@@ -82,6 +92,7 @@ Input:
 - designated customer contacts and SolidPrivacy reviewers.
 
 System output:
+- isolated tenant/client-data project identity;
 - organisation record;
 - engagement record;
 - deliverable manifest;
@@ -98,7 +109,7 @@ Example deliverables might include:
 - improvement/action register;
 - management report.
 
-### 2. Evidence request and intake
+### 2. Evidence request and secure intake
 
 The service package and known organisation profile determine an initial evidence request. Typical categories:
 - existing RoPA;
@@ -113,9 +124,9 @@ The service package and known organisation profile determine an initial evidence
 - architecture diagrams;
 - care-technology documentation.
 
-Each item receives evidence metadata including source, date/version, scope, client ownership and privacy classification.
+Each received item enters the tenant Evidence Vault and receives evidence metadata including source, date/version, scope, content hash, client ownership, privacy classification and retention state.
 
-Sensitive input is routed according to the Scrub/minimisation and model-egress policy. The presence of a workflow never implies permission for cloud processing.
+Sensitive input is routed according to the Scrub/minimisation and model-egress policy. The presence of a workflow never implies permission for cloud/model processing. Original direct-identifier material may be retained in the private evidence boundary where appropriate but is not automatically eligible for external model egress.
 
 ### 3. Classification and evidence registration
 
@@ -144,7 +155,9 @@ AI or deterministic parsers propose privacy facts and map them to canonical conc
 - retention;
 - technical/organisational measure.
 
-Observed/inferred facts remain tied to evidence and exact support. Assumptions remain explicit.
+Observed/inferred facts remain tied to tenant-scoped evidence and exact support. Assumptions remain explicit.
+
+For AI stages, the runtime retrieves only the bounded tenant context needed for the task. Reading a fact does not create persistent model memory and does not make the fact accepted state.
 
 ### 5. Provenance, contradiction and missing-information analysis
 
@@ -180,7 +193,7 @@ Answers become evidence/user-confirmed facts with provenance. Model-generated wo
 
 ### 7. Persistent organisational privacy state
 
-Accepted facts are promoted into versioned client state.
+Accepted facts are promoted into versioned tenant client state.
 
 Important objects include:
 - organisation/legal entity;
@@ -280,7 +293,7 @@ Potential initial package:
 - governance summary;
 - management report.
 
-Each deliverable records the state/evidence/source/review version from which it was produced.
+Each deliverable is stored as a tenant delivery artifact and records the state/evidence/source/review version from which it was produced.
 
 ### 13. Delivery state
 
@@ -326,6 +339,22 @@ processor changed
 
 Previously approved conclusions are not silently rewritten.
 
+### 15. Service economics and learning loop
+
+The service flow records non-content operational timing/resource events so SolidPrivacy can measure whether automation actually reduces human effort without lowering assurance.
+
+Required reference metrics include:
+- Human Minutes per Privacy Outcome (HMPO);
+- operator versus qualified Privacy Officer/FG/DPO minutes;
+- client waiting/touch time;
+- cycle time;
+- model/compute cost;
+- first-pass acceptance and rework;
+- exception/escalation rate;
+- evidence/state reuse across deliverables.
+
+The M2 synthetic onboarding must produce this measurement report. No pricing or automation-reduction claim is considered proven merely because output generation is fast. See `docs/POAAS_OPERATING_ECONOMICS.md`.
+
 ## Division of labour
 
 ### AI / deterministic automation
@@ -359,15 +388,17 @@ This separation enables scaling without representing AI confidence as legal trut
 
 The customer journey exposes several objects that a single DPIA workflow does not require but POaaS does:
 
-1. `organisation` — durable client identity/scope without mixing tenants;
-2. `engagement` — what service is currently contracted;
-3. `deliverable_commitment` — what has been promised and its state;
-4. `evidence_requirement` — what information/evidence the service needs;
-5. `client_question` — targeted unresolved dependency and answer provenance;
-6. `organisational_privacy_state` — accepted reusable facts independent of one workflow run;
-7. `state_change_event` / dependency impact — what became stale after a change;
-8. `work_item` — who must do what next and why;
-9. `deliverable_projection` — client document/report generated from known reviewed state.
+1. `tenant/client_data_project` — private physical boundary for one customer's evidence/state/artifacts;
+2. `organisation` — durable client identity/scope without mixing tenants;
+3. `engagement` — what service is currently contracted;
+4. `deliverable_commitment` — what has been promised and its state;
+5. `evidence_requirement` — what information/evidence the service needs;
+6. `client_question` — targeted unresolved dependency and answer provenance;
+7. `organisational_privacy_state` — accepted reusable facts independent of one workflow run;
+8. `state_change_event` / dependency impact — what became stale after a change;
+9. `work_item` — who must do what next and why;
+10. `deliverable_projection` — client document/report generated from known reviewed state;
+11. `operating_metric_event` — timing/role/cost event without unnecessary customer content.
 
 These should be implemented as explicit contracts or canonical objects rather than hidden fields inside prompts or UI databases.
 
@@ -376,6 +407,9 @@ These should be implemented as explicit contracts or canonical objects rather th
 A feature is not POaaS-ready merely because it can generate a plausible document.
 
 A reference customer flow is acceptable only when the system can demonstrate:
+- where the customer's data resides and what tenant boundary applies;
+- who/what accessed evidence and for what task;
+- what exact context was eligible for model egress;
 - why information was requested;
 - where each material fact came from;
 - which contradictions remain;
@@ -383,6 +417,7 @@ A reference customer flow is acceptable only when the system can demonstrate:
 - who approved high-impact conclusions;
 - what deliverables remain due/blocked;
 - what client state was current at delivery;
-- what changed later and which prior outputs require reassessment.
+- what changed later and which prior outputs require reassessment;
+- how much human professional effort and machine cost the accepted outcome required.
 
 See `ROADMAP.md` for M1 (integrated DPIA) and M2 (integrated synthetic POaaS onboarding) acceptance milestones.
