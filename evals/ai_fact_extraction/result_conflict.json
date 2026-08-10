@@ -1,0 +1,16 @@
+{
+  "request_id":"FX-REQ-002",
+  "provider":"fixture",
+  "model":"fixture-privacy-extractor-v1",
+  "facts":[
+    {"id":"F-FX-101","fact_type":"retention_candidate","canonical_path":"processing_activities[PA-101].retention","value":"2 years","epistemic_status":"observed","confidence":0.95,"evidence_ids":["EV-FX-101"],"basis_summary":null,"review_status":"pending","sensitivity":"ordinary","notes":null,"validation_status":"unvalidated","validator_notes":[]},
+    {"id":"F-FX-102","fact_type":"retention_candidate","canonical_path":"processing_activities[PA-101].retention","value":"7 years","epistemic_status":"observed","confidence":0.95,"evidence_ids":["EV-FX-102"],"basis_summary":null,"review_status":"pending","sensitivity":"ordinary","notes":null,"validation_status":"unvalidated","validator_notes":[]}
+  ],
+  "missing_information":[],
+  "abstentions":[],
+  "support_proofs":[
+    {"fact_id":"F-FX-101","evidence_id":"EV-FX-101","excerpt":"bewaart de gegevens twee jaar"},
+    {"fact_id":"F-FX-102","evidence_id":"EV-FX-102","excerpt":"bewaartermijn is zeven jaar"}
+  ],
+  "model_metadata":{"prompt_version":"extract-facts-v1","response_id":"fixture-response-002","raw_output_hash":"synthetic:result2"}
+}

@@ -1,0 +1,16 @@
+{
+  "id":"FX-REQ-002",
+  "case_id":"SYN-AI-FACT-002",
+  "task":"extract_privacy_facts",
+  "jurisdiction":["EU/EEA","NL"],
+  "input_type":"scrubbed_document",
+  "content":"Synthetische gescrubde beschrijving van bewaartermijnen.",
+  "evidence":[
+    {"id":"EV-FX-101","kind":"document","source":"synthetic_contract.md","locator":"retention:1","excerpt":"De leverancier bewaart de gegevens twee jaar.","content_hash":"synthetic:fx101","contains_personal_data":false,"metadata":{"scrubbed":true}},
+    {"id":"EV-FX-102","kind":"document","source":"synthetic_policy.md","locator":"retention:1","excerpt":"De interne bewaartermijn is zeven jaar.","content_hash":"synthetic:fx102","contains_personal_data":false,"metadata":{"scrubbed":true}}
+  ],
+  "privacy_context":{"scrubbed":true,"scrub_key_present":false,"contains_direct_identifiers":false,"content_classification":"scrubbed_personal_data"},
+  "requested_provider":"fixture",
+  "requested_model":"fixture-privacy-extractor-v1",
+  "prompt_version":"extract-facts-v1"
+}

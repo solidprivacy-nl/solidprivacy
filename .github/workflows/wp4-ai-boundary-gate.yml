@@ -1,0 +1,73 @@
+name: WP4 AI boundary and fact extraction gates
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "model_policies/**"
+      - "skills/document_processing/extract_privacy_facts/**"
+      - "docs/workpackages/WP4_AI_FACT_EXTRACTION.md"
+      - "ROADMAP.md"
+      - "pyproject.toml"
+      - ".github/workflows/wp4-ai-boundary-gate.yml"
+  push:
+    branches: ["agent/**"]
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "model_policies/**"
+      - "skills/document_processing/extract_privacy_facts/**"
+      - "docs/workpackages/WP4_AI_FACT_EXTRACTION.md"
+      - "ROADMAP.md"
+      - "pyproject.toml"
+      - ".github/workflows/wp4-ai-boundary-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  safe-ai-fact-extraction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install runtime and test dependencies
+        run: python -m pip install -e ".[test]"
+      - name: Run full deterministic regression suite
+        run: python -m pytest
+      - name: Validate permitted synthetic model call
+        run: solidprivacy check-model-call evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json
+      - name: Run deterministic ready extraction
+        run: |
+          solidprivacy fixture-extract-facts evals/ai_fact_extraction/request_ready.json evals/ai_fact_extraction/policy_fixture_external.json evals/ai_fact_extraction/result_ready.json > /tmp/ready-pack.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/ready-pack.json'))
+          assert p['readiness']['status'] == 'needs_review'
+          assert all(f['validation_status']=='provenance_validated' for f in p['facts'])
+          PY
+      - name: Run deterministic conflict extraction
+        run: |
+          solidprivacy fixture-extract-facts evals/ai_fact_extraction/request_conflict.json evals/ai_fact_extraction/policy_fixture_external.json evals/ai_fact_extraction/result_conflict.json > /tmp/conflict-pack.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/conflict-pack.json'))
+          assert p['readiness']['status'] == 'blocked'
+          assert any(c['severity']=='high' for c in p['contradictions'])
+          PY
+      - name: Preserve inherited evidence, DPIA and pre-scan gates
+        run: |
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_ready.json
+          solidprivacy validate-evidence-pack evals/evidence_packs/dpia_evidence_blocked.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_basic.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_high_risk.json
+          solidprivacy prescan evals/prescan_smoke_input.json

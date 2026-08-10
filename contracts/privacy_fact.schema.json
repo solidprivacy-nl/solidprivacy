@@ -47,7 +47,9 @@
     "basis_summary": {"type": ["string", "null"]},
     "review_status": {"type": "string", "enum": ["pending", "accepted", "rejected", "needs_clarification"]},
     "sensitivity": {"type": "string", "enum": ["ordinary", "potential_personal_data", "special_category_or_highly_sensitive", "unknown"]},
-    "notes": {"type": ["string", "null"]}
+    "notes": {"type": ["string", "null"]},
+    "validation_status": {"type": "string", "enum": ["unvalidated", "provenance_validated", "challenged"]},
+    "validator_notes": {"type": "array", "items": {"type": "string"}}
   },
   "allOf": [
     {

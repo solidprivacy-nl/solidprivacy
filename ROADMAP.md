@@ -2,245 +2,192 @@
 
 Status date: 2026-08-10
 
-When workflow ordering in older architecture text conflicts with this file, **this roadmap is authoritative for sequencing**. Architecture layer responsibilities remain authoritative in `docs/architecture.md`.
+This file is authoritative for sequencing. `docs/architecture.md` remains authoritative for architectural responsibilities.
 
 ## Product objective
 
-Build SolidPrivacy into a controlled Privacy Officer operating system for EU/EEA + Netherlands: AI performs high-volume analysis and drafting over scrubbed/minimised information, while deterministic contracts, authoritative sources, evidence provenance and qualified human review control material privacy conclusions.
+Build a controlled Privacy Officer operating system for EU/EEA + Netherlands. AI may perform high-volume extraction, analysis and drafting over approved scrubbed/minimised inputs, while deterministic contracts, authoritative legal sources, provenance, privacy-boundary policies and qualified human review control material conclusions.
 
-The roadmap is intentionally **capability-first**, not prompt-count-first. A new workflow is production-oriented only when its facts, legal sources, deterministic gates, evaluations and review path are explicit.
+## Principles
 
-## Roadmap principles
-
-1. **Evidence before reasoning.** AI-generated findings must trace to evidence or be labelled inference/assumption.
-2. **Methodology is not law.** Government/regulator assessment methods never silently become binding legal requirements.
-3. **Deterministic gates before generative layers.** Schema, integrity, source and high-impact decision gates run before AI authoring.
-4. **One canonical processing model.** DPIA, RoPA, breach, vendor and DSAR workflows should reuse shared processing concepts.
-5. **Human accountability at material decisions.** AI may prepare; designated privacy professionals approve or reject.
-6. **Scrub is the privacy boundary.** Sensitive originals and the Scrub Key remain outside cloud AI workflows by default.
-7. **Vertical slices before breadth.** Complete one trustworthy workflow before importing dozens of partial skills.
-8. **Exact-head assurance.** Production-capability work packages require executable regression evidence on the exact reviewed commit.
-9. **No model call without an egress policy.** Before production AI receives content, the provider, data class, allowed content and logging/retention posture must be explicit.
+1. **Evidence before reasoning.** Findings trace to evidence or remain explicit inference/assumption.
+2. **Methodology is not law.** Assessment templates never silently become binding legal requirements.
+3. **Deterministic gates before generative layers.** Schema, integrity, source, privacy-boundary and high-impact gates precede authoring.
+4. **One canonical processing model.** DPIA, RoPA, breach, vendor, retention and DSAR reuse shared concepts.
+5. **Human accountability.** Designated privacy professionals approve/reject material conclusions.
+6. **Scrub is a privacy boundary, not an anonymity claim.** Original identifiers and the Scrub Key stay outside external AI calls; scrubbed/pseudonymised content can still be personal data.
+7. **No model call without an egress policy.** Provider/model, content class, permitted egress and training/retention/logging posture must be explicit.
+8. **Vertical slices before breadth.** Complete one trustworthy end-to-end workflow before mass-importing skills.
+9. **Exact-head assurance.** Capability work packages require executable regression evidence on the reviewed commit.
+10. **Approved legal context before legal drafting.** Generative analysis may only consume a deterministically assembled, source-governed legal context bundle.
 
 ## Phase 0 — Operating architecture
 
+### WP0 / PR #1 — Privacy operating architecture
 Status: COMPLETE IN DRAFT STACK
 
-- WP0 / PR #1 — privacy operating architecture, source governance, provenance, contracts, methodology/vocabulary/control/evidence layers.
-- Gate: architecture is explicit and third-party material is not treated as legal authority.
+Delivered: architecture layers, contracts, vocabularies, jurisdictions, methodologies, source governance, provenance, control/evidence concepts and workflow structure.
 
-## Phase 1 — DPIA vertical slice
+## Phase 1 — DPIA reference vertical slice
 
-The DPIA is the first reference workflow because it exercises the full architecture: facts, methodology, legal sources, risk, controls, evidence, human advice and report generation.
+DPIA remains the first reference workflow because it exercises facts, methodology, legal sources, risk, controls, evidence, AI boundaries and human review.
 
-### WP1 — Canonical privacy + Dutch DPIA model
+### WP1 / PR #2 — Canonical privacy + Dutch DPIA model
+Status: COMPLETE
 
-Status: COMPLETE, draft PR #2
-
-- reusable processing-activity model;
-- canonical DPIA model;
+- canonical processing activity and DPIA contracts;
 - Dutch Rijksmodel adapter;
-- DPV mapping;
-- synthetic positive/high-risk cases.
+- DPV semantic mapping;
+- synthetic normal/high-risk cases.
 
-### WP2 — Executable DPIA contracts + pre-scan
+### WP2 / PR #3 — Executable DPIA contracts + pre-scan
+Status: COMPLETE — exact-head CI green
 
-Status: COMPLETE, draft PR #3, exact-head CI green
+- JSON Schema + referential integrity;
+- deterministic Dutch pre-scan;
+- legal decision separated from methodology score;
+- governed AP/EDPB handling;
+- high-residual-risk safeguards.
 
-- executable JSON Schema and referential-integrity gates;
-- deterministic Dutch pre-scan methodology;
-- legal decision gate separated from methodology;
-- source-governed AP/EDPB handling;
-- regression matrix and GitHub Actions.
+### WP3 / PR #4 — Evidence + fact provenance
+Status: COMPLETE — exact-head CI green
 
-### WP3 — Evidence and fact provenance layer
+- privacy-fact and evidence-pack contracts;
+- observed/inferred/assumption/user-confirmed states;
+- contradictions and missing information;
+- deterministic analysis/finalisation readiness;
+- extractor boundary and document-to-DPIA stage model.
 
-Status: COMPLETE, draft PR #4, exact-head CI green before roadmap closeout commit
+### WP4 / PR #5 — Safe AI boundary + fact extraction validator
+Status: COMPLETE IMPLEMENTATION — initial exact-head CI green; closeout head must remain green
 
-Goal: make evidence-backed facts, uncertainty, contradictions and missing information first-class before any AI drafting.
-
-Delivered:
-- privacy-fact contract;
-- evidence-pack contract;
-- deterministic provenance/integrity gate;
-- deterministic analysis/finalisation readiness gate;
-- synthetic ready and blocked evidence packs;
-- fact-extraction skill boundary;
-- document-to-DPIA workflow stage model;
-- exact-head CI gates preserving WP1/WP2 regressions.
-
-### WP4 — Minimal AI execution boundary + fact extraction + validator
-
-Status: IN PROGRESS NEXT
-
-Goal: convert scrubbed documents/questionnaire material into candidate canonical facts without allowing unsupported facts to pass silently, while establishing the minimum provider/data-egress controls required before a model is called.
-
-Required:
-- model/provider-independent interface;
-- explicit model-call policy containing provider/model, content classification, local/external mode, allowed egress and logging/retention posture;
-- hard refusal when a request violates the model-call policy;
-- evidence locators for every observed/inferred fact;
-- detector -> validator architecture;
-- contradiction detection;
-- confidence retained for calibration rather than treated as truth;
-- abstention/missing-information behaviour;
-- adversarial/near-miss evaluations;
+- provider-independent fact-extraction interface;
+- executable model-call privacy policy;
+- explicit scrubbed-personal-data egress permission;
+- external Scrub Key/direct-identifier blocks;
+- provider training/retention/logging gates;
 - deterministic fixture provider for CI;
-- no autonomous legal conclusion.
+- detector → provenance validator;
+- support-proof verification;
+- contradiction detection;
+- no automatic fact/legal acceptance.
 
-A production external provider adapter is not required to prove the architecture, but the interface and policy gate must exist before one can be enabled.
+No real external provider is approved or enabled by WP4.
 
-### WP5 — AI-assisted DPIA analysis and drafting
+### WP5 — Governed legal context + AI-assisted DPIA analysis/drafting
+Status: NEXT
 
+**First prerequisite:** make approved legal context executable before drafting.
+
+Required legal-context layer:
+- machine-readable `legal_context_bundle` contract;
+- resolver against `legal_sources/source_registry.yaml`;
+- jurisdiction and source-status filtering;
+- production exclusion of consultation/candidate-only material unless explicitly requested as non-authoritative context;
+- freshness/review-due checks;
+- locator/citation metadata;
+- explicit distinction among binding law, regulator guidance, official methodology, policy and assumptions;
+- deterministic failure/needs-review when required legal context is stale, unresolved or unavailable.
+
+Then structured AI analysis/drafting may:
+- consume only validated evidence/facts plus the approved legal-context bundle;
+- produce section-level evidence/source traceability;
+- classify every legal claim;
+- preserve assumptions/open questions;
+- link risks ↔ measures;
+- abstain where evidence/legal support is insufficient;
+- never accept final residual risk or prior-consultation disposition;
+- pass a separate validator plus legal-accuracy/omission evals.
+
+CI should use deterministic fixture generation first; production-provider enablement remains separate.
+
+### WP6 — Privacy Officer review + report/reinsert boundary
 Status: PLANNED
 
-Goal: turn a validated evidence pack into structured DPIA analysis and draft narrative.
-
-Required:
-- consume only validated canonical facts + approved sources;
-- section-level source/evidence traceability;
-- explicit assumptions and open questions;
-- legal-claim classification;
-- risk/measure linkage;
-- no final residual-risk acceptance;
-- validator pass after generation;
-- legal-accuracy and omission evals.
-
-### WP6 — Privacy Officer review package + report/reinsert boundary
-
-Status: PLANNED
-
-Goal: make DPIA output operationally usable by a certified Privacy Officer and compatible with Scrub.
-
-Required:
-- review diff: AI proposal vs accepted version;
+- AI proposal vs accepted-version diff;
 - unresolved issue queue;
 - approve/reject/change workflow;
-- source/evidence appendix;
-- management summary and full report;
-- scrubbed output contract;
-- controlled reinsertion handoff;
-- immutable execution/audit record.
+- evidence/source appendix;
+- management summary + full report;
+- scrubbed report contract;
+- controlled Scrub reinsertion handoff;
+- immutable review/execution record.
 
-**DPIA capability milestone:** after WP6, validate the full scrubbed-document → evidence → facts → pre-scan → DPIA → human review → report chain on a representative synthetic corpus.
+**DPIA milestone:** representative synthetic corpus proves scrubbed input → evidence → facts → pre-scan → legal context → DPIA draft → validator → Privacy Officer review → report/reinsert handoff.
 
 ## Phase 2 — Shared operating substrate
 
-Do not build each later privacy workflow as a bespoke agent. Extract reusable runtime capabilities from the DPIA vertical slice.
+Extract reusable capabilities from the completed DPIA slice rather than building later workflows as bespoke agents.
 
-### WP7 — Workflow execution and audit model
-
-- workflow/run IDs and versioning;
-- step status and replayability;
+### WP7 — Workflow execution + audit model
+- run/workflow IDs and versions;
+- step state/replayability;
 - input/output hashes;
-- source/model/prompt versions;
+- source/model/prompt/policy versions;
 - human decisions;
-- immutable audit events;
-- failure/abstention states.
+- failure/abstention states;
+- immutable audit events.
 
 ### WP8 — Control/evidence/remediation model
-
 - executable OSCAL-inspired control objects;
-- implementation/evidence/finding/remediation linkage;
-- reusable measures library without copying licensed normative text;
-- owner, due date, status and verification evidence.
+- control ↔ implementation ↔ evidence ↔ finding ↔ remediation;
+- owners/status/due dates/verification;
+- no unlicensed normative-text replication.
 
-### WP9 — Model gateway and privacy-policy hardening
+### WP9 — Model gateway + privacy-policy hardening
+WP4 is the minimum call boundary; WP9 generalises it:
+- real/multiple provider adapters and routing;
+- organisation-level data classification;
+- local/external inference routing;
+- prompt/model/policy registry;
+- secrets isolation;
+- retries/cost/latency controls;
+- safe telemetry;
+- provider terms/retention/training review cycle.
 
-WP4 establishes the minimum safe AI-call boundary. WP9 generalises and operationalises it across workflows:
+## Phase 3 — Privacy Officer workflow expansion
 
-- multiple provider adapters and routing;
-- organisation-level data-classification policy;
-- local vs external inference policy;
-- prompt/model/version registry;
-- deterministic Scrub preconditions;
-- key/secret isolation;
-- cost/latency/retry controls;
-- telemetry without leaking personal data;
-- provider retention/training policy metadata and periodic review.
+Current order after DPIA:
 
-## Phase 3 — Expand Privacy Officer workflows
-
-Order revised on 2026-08-10.
-
-### 1. RoPA / processing inventory
-
-Priority: HIGH
-
-Reason for moving before DSAR: RoPA is shared organisational state. It reuses the canonical processing model and supports DPIA, retention, vendor, transfer and later DSAR scoping.
-
-### 2. Personal-data-breach assessment
-
-Priority: HIGH
-
-Reason: bounded, high-value Privacy Officer workflow with clear evidence, timeline, risk and notification review gates. Human sign-off remains mandatory.
-
-### 3. DSAR / right of access
-
-Priority: HIGH, after RoPA + breach
-
-Reason for moving later: production DSAR is operationally broader than a legal Q&A skill. It needs identity assurance, scope, deadline control, system/document discovery, third-party data handling, exemptions/restrictions, Scrub/redaction, delivery evidence and auditability.
-
-### 4. Vendor / processor agreement assessment
-
-- Article 28 requirement mapping;
-- contract clause extraction;
-- divergence/missing-clause analysis;
-- human legal/privacy review.
-
-### 5. International transfers
-
-- transfer inventory;
-- mechanism;
-- SCC/BCR/adequacy context;
-- transfer-impact evidence;
-- supplementary measures;
-- human approval.
-
-### 6. Retention and deletion governance
-
-- processing/data-purpose retention mapping;
-- legal/policy basis separation;
-- evidence of deletion/archiving;
-- exceptions and holds.
-
-### 7. AI privacy / fundamental-rights assessment
-
-- coordinate DPIA, AI Act and IAMA/FRIA-style workflows without conflating their legal bases.
+1. **RoPA / processing inventory** — shared organisational state supporting DPIA, retention, vendor, transfer and DSAR scoping.
+2. **Personal-data-breach assessment** — bounded evidence/timeline/risk/notification workflow with mandatory human sign-off.
+3. **DSAR / right of access** — remains high priority but needs identity, deadline control, system/document discovery, third-party data handling, exemptions, Scrub/redaction, delivery evidence and auditability.
+4. **Vendor / Article 28 assessment** — clause extraction, requirement mapping, divergences, human review.
+5. **International transfers** — inventory, mechanism, SCC/BCR/adequacy, transfer-impact evidence and supplementary measures.
+6. **Retention/deletion governance** — purpose/data retention mappings, legal/policy basis, deletion evidence and holds.
+7. **AI privacy / IAMA / FRIA coordination** — coordinate but do not conflate GDPR DPIA, AI Act and rights-assessment obligations.
 
 ## Phase 4 — DPO operating layer
 
-After several workflows share the substrate:
-
-- obligations/open-risk dashboard;
+After multiple workflows share the substrate:
+- obligations/open-risk view;
 - annual DPO reporting;
 - audit programme;
-- recurring source-freshness review;
+- recurring legal-source freshness review;
 - policy/control maturity;
-- portfolio-level evidence;
+- portfolio evidence;
 - management actions;
-- certified officer sign-off and accountability records.
+- certified officer sign-off/accountability records.
 
 ## Explicitly deferred
 
-These are useful, but should not outrank the trusted workflow core:
-
-- mass-importing third-party prompt/skill collections;
-- broad multi-jurisdiction support;
+- mass-importing prompt/skill collections;
+- broad multi-jurisdiction expansion;
 - autonomous final legal decisions;
-- large GRC UI/platform build before workflow contracts stabilise;
-- website evidence collection unless a concrete workflow consumes it;
-- ISO normative-content replication without licensing.
+- large GRC UI/platform before workflow contracts stabilise;
+- website evidence collection without a consuming workflow;
+- ISO normative-content replication without licensing;
+- real external AI-provider enablement without verified/approved model-call policy.
 
 ## Roadmap health checks
 
-Revisit this roadmap when any of the following becomes true:
-
+Revisit ordering when:
 - EDPB finalises the 2026 DPIA or breach template;
-- Dutch government materially updates the Rijksmodel/PAR model;
-- a completed vertical slice exposes a missing shared platform capability;
+- the Dutch Rijksmodel/PAR model materially changes;
+- a completed vertical slice exposes a missing shared prerequisite;
 - Scrub changes its integration contract;
-- source/legal changes invalidate an executable rule;
-- a new workflow has materially higher user value or regulatory urgency.
+- a source/legal change invalidates an executable rule;
+- provider data-handling terms change;
+- another workflow has materially higher operational/regulatory value.
 
-Every roadmap change should explain **why the ordering changed**, not only rename work packages.
+Every roadmap change must explain **why the dependency/order changed**, not merely rename work packages.

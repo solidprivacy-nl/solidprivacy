@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/fact_extraction_result.schema.json",
+  "title": "SolidPrivacy Fact Extraction Detector Result",
+  "type": "object",
+  "required": ["request_id","provider","model","facts","missing_information","support_proofs","abstentions","model_metadata"],
+  "properties": {
+    "request_id":{"type":"string","minLength":1},
+    "provider":{"type":"string","minLength":1},
+    "model":{"type":"string","minLength":1},
+    "facts":{"type":"array","items":{"$ref":"privacy_fact.schema.json"}},
+    "missing_information":{"type":"array","items":{"$ref":"evidence_pack.schema.json#/$defs/missingInformation"}},
+    "abstentions":{"type":"array","items":{"type":"object","required":["target_path","reason"],"properties":{"target_path":{"type":"string","minLength":1},"reason":{"type":"string","minLength":1}},"additionalProperties":false}},
+    "support_proofs":{"type":"array","items":{"type":"object","required":["fact_id","evidence_id","excerpt"],"properties":{"fact_id":{"type":"string","minLength":1},"evidence_id":{"type":"string","minLength":1},"excerpt":{"type":"string","minLength":1}},"additionalProperties":false}},
+    "model_metadata":{"type":"object","required":["prompt_version"],"properties":{"prompt_version":{"type":"string","minLength":1},"response_id":{"type":["string","null"]},"raw_output_hash":{"type":["string","null"]}},"additionalProperties":false}
+  },
+  "additionalProperties":false
+}
