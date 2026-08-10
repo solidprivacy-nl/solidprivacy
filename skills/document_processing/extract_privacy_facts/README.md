@@ -1,30 +1,27 @@
 # Skill — Extract privacy facts
 
-Status: contract boundary for WP3; executable AI implementation belongs to WP4.
+Status: WP4 executable detector/validator boundary.
 
 ## Purpose
 
-Convert scrubbed/minimised source material into **candidate privacy facts** without turning model output into accepted truth.
+Convert scrubbed/minimised source material into candidate privacy facts without turning model output into accepted truth.
 
-## Input
+```text
+fact extraction request
+  -> model-call privacy policy gate
+  -> provider detector
+  -> detector-result contract
+  -> provenance validator
+  -> contradiction detector
+  -> evidence pack
+  -> deterministic readiness
+  -> human review / downstream analysis
+```
 
-Use `contracts/skill_input.schema.json`. Expected production input is normally scrubbed document or mixed scrubbed/structured questionnaire material with evidence identifiers and locators, jurisdiction and explicit privacy constraints.
+Every provider call must pass `contracts/model_call_policy.schema.json`. `scrubbed=true` never means automatically safe for external egress. The WP4 boundary rejects the Scrub Key and direct identifiers from external calls and requires explicit permission for scrubbed-personal-data egress.
 
-## Output boundary
+The detector proposes candidate facts, missing information, abstentions and support proofs. It must not invent evidence locators/quotes, self-accept/reject facts, self-declare user confirmation, self-validate provenance, verify AP-list applicability, decide final DPIA necessity or accept residual risk.
 
-The extractor proposes objects conforming to `contracts/privacy_fact.schema.json` inside an `contracts/evidence_pack.schema.json` evidence pack.
+Observed/inferred candidates require an exact support proof inside registered evidence. Passing provenance validation changes only `validation_status`; it is not factual/legal approval. Conflicts remain explicit contradictions.
 
-The extractor must attach evidence IDs to observed/inferred/user-confirmed facts, label inference separately from observation, label assumptions explicitly, provide a concise basis summary for inferred facts, preserve contradictory candidates, emit missing-information items and abstain rather than invent canonical values.
-
-## Prohibited behaviour
-
-The skill must not invent evidence locators or quotations, treat an assumption as observed, infer a legal requirement merely from a methodology field, verify a Dutch AP mandatory-DPIA list condition from keyword similarity, decide final DPIA necessity, accept residual risk, or erase conflicting facts.
-
-## Detector → validator
-
-WP4 must implement extraction as two separate stages:
-
-1. **detector** — high-recall candidate facts and gaps;
-2. **validator** — challenge provenance, contradiction, canonical mapping and evidence support.
-
-Only validated candidate facts may progress to DPIA analysis.
+CI uses a deterministic fixture provider with no network access. Production-provider enablement is separate and requires an approved model-call policy first.

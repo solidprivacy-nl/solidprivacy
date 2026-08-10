@@ -83,3 +83,15 @@ def validate_privacy_fact(instance: Any) -> None:
 
 def validate_evidence_pack(instance: Any) -> None:
     validate_contract("evidence_pack.schema.json", instance)
+
+
+def validate_model_call_policy(instance: Any) -> None:
+    validate_contract("model_call_policy.schema.json", instance)
+
+
+def validate_fact_extraction_request(instance: Any) -> None:
+    validate_contract("fact_extraction_request.schema.json", instance)
+
+
+def validate_fact_extraction_result(instance: Any) -> None:
+    validate_contract("fact_extraction_result.schema.json", instance)

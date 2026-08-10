@@ -1,0 +1,16 @@
+{
+  "request_id":"FX-REQ-001",
+  "provider":"fixture",
+  "model":"fixture-privacy-extractor-v1",
+  "facts":[
+    {"id":"F-FX-001","fact_type":"processing_description","canonical_path":"processing_activities[PA-001].description","value":"Intern medewerkersportaal voor zakelijke profielgegevens en accountbeheer.","epistemic_status":"observed","confidence":0.91,"evidence_ids":["EV-FX-001"],"basis_summary":null,"review_status":"pending","sensitivity":"ordinary","notes":null,"validation_status":"unvalidated","validator_notes":[]},
+    {"id":"F-FX-002","fact_type":"location","canonical_path":"processing_activities[PA-001].locations","value":{"hosting":"EEA","support":"EEA"},"epistemic_status":"inferred","confidence":0.88,"evidence_ids":["EV-FX-002"],"basis_summary":"Mapped the explicit hosting/support statement to the canonical location field.","review_status":"pending","sensitivity":"ordinary","notes":null,"validation_status":"unvalidated","validator_notes":[]}
+  ],
+  "missing_information":[],
+  "abstentions":[],
+  "support_proofs":[
+    {"fact_id":"F-FX-001","evidence_id":"EV-FX-001","excerpt":"medewerkersportaal verwerkt zakelijke profielgegevens voor accountbeheer"},
+    {"fact_id":"F-FX-002","evidence_id":"EV-FX-002","excerpt":"Hosting en support vinden binnen de EER plaats"}
+  ],
+  "model_metadata":{"prompt_version":"extract-facts-v1","response_id":"fixture-response-001","raw_output_hash":"synthetic:result1"}
+}

@@ -1,0 +1,20 @@
+{
+  "id": "POLICY-WP4-FIXTURE-001",
+  "approved": true,
+  "execution_mode": "external",
+  "provider": "fixture",
+  "model": "fixture-privacy-extractor-v1",
+  "allowed_tasks": ["extract_privacy_facts"],
+  "require_scrubbed": true,
+  "max_content_classification": "scrubbed_personal_data",
+  "allow_scrubbed_personal_data_egress": true,
+  "allow_personal_data_egress": false,
+  "allow_special_category_egress": false,
+  "provider_training_use": "disabled",
+  "provider_retention": "defined_limited",
+  "logging_policy": "metadata_only",
+  "approved_by": "test_policy_owner",
+  "approved_at": "2026-08-10T23:00:00+02:00",
+  "review_due": "2026-09-10",
+  "notes": "Synthetic CI policy. Does not authorize a real external provider."
+}

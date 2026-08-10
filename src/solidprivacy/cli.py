@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from solidprivacy.runtime.ai_boundary import evaluate_model_call_policy
+from solidprivacy.runtime.fact_extraction import FixtureFactExtractionProvider, run_fact_extraction
 from solidprivacy.runtime.facts import derive_readiness, validate_evidence_pack_integrity
 from solidprivacy.runtime.integrity import validate_dpia_integrity
 from solidprivacy.runtime.prescan import evaluate_prescan
@@ -58,6 +60,31 @@ def _evidence_readiness(path: str, stage: str) -> int:
     return 0
 
 
+def _check_model_call(request_path: str, policy_path: str) -> int:
+    decision = evaluate_model_call_policy(_load(request_path), _load(policy_path))
+    _dump({
+        "allowed": decision.allowed,
+        "policy_id": decision.policy_id,
+        "provider": decision.provider,
+        "model": decision.model,
+        "reasons": list(decision.reasons),
+    })
+    return 0 if decision.allowed else 2
+
+
+def _fixture_extract(request_path: str, policy_path: str, result_path: str) -> int:
+    request = _load(request_path)
+    policy = _load(policy_path)
+    result = _load(result_path)
+    provider = FixtureFactExtractionProvider(
+        provider_name=result["provider"],
+        model_name=result["model"],
+        results={request["id"]: result},
+    )
+    _dump(run_fact_extraction(request, policy, provider))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="solidprivacy")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -81,6 +108,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--stage", choices=["analysis", "finalisation"], default="analysis"
     )
 
+    model_call = sub.add_parser(
+        "check-model-call", help="Evaluate a fact-extraction request against a model-call privacy policy"
+    )
+    model_call.add_argument("request")
+    model_call.add_argument("policy")
+
+    fixture = sub.add_parser(
+        "fixture-extract-facts", help="Run deterministic fixture-provider fact extraction"
+    )
+    fixture.add_argument("request")
+    fixture.add_argument("policy")
+    fixture.add_argument("result")
     return parser
 
 
@@ -94,4 +133,8 @@ def main() -> int:
         return _validate_evidence_pack(args.path)
     if args.command == "evidence-readiness":
         return _evidence_readiness(args.path, args.stage)
+    if args.command == "check-model-call":
+        return _check_model_call(args.request, args.policy)
+    if args.command == "fixture-extract-facts":
+        return _fixture_extract(args.request, args.policy, args.result)
     raise AssertionError(f"unknown command {args.command!r}")

@@ -1,0 +1,16 @@
+{
+  "id":"FX-REQ-001",
+  "case_id":"SYN-AI-FACT-001",
+  "task":"extract_privacy_facts",
+  "jurisdiction":["EU/EEA","NL"],
+  "input_type":"scrubbed_document",
+  "content":"Synthetische gescrubde beschrijving van een intern medewerkersportaal.",
+  "evidence":[
+    {"id":"EV-FX-001","kind":"document","source":"synthetic_scrubbed_portal.md","locator":"paragraph:1","excerpt":"Het interne medewerkersportaal verwerkt zakelijke profielgegevens voor accountbeheer.","content_hash":"synthetic:fx1","contains_personal_data":false,"metadata":{"scrubbed":true}},
+    {"id":"EV-FX-002","kind":"document","source":"synthetic_scrubbed_hosting.md","locator":"paragraph:1","excerpt":"Hosting en support vinden binnen de EER plaats.","content_hash":"synthetic:fx2","contains_personal_data":false,"metadata":{"scrubbed":true}}
+  ],
+  "privacy_context":{"scrubbed":true,"scrub_key_present":false,"contains_direct_identifiers":false,"content_classification":"scrubbed_personal_data"},
+  "requested_provider":"fixture",
+  "requested_model":"fixture-privacy-extractor-v1",
+  "prompt_version":"extract-facts-v1"
+}
