@@ -1,0 +1,73 @@
+version: 1
+last_reviewed: 2026-08-10
+rules:
+  - id: gdpr-art35-1-high-risk
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(1)
+    classification: LAW_REQUIRED
+    statement: Before processing, the controller must carry out a DPIA where the type of processing is likely to result in a high risk to natural persons' rights and freedoms, taking account of its nature, scope, context and purposes, particularly where new technologies are used.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-2-dpo-advice
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(2)
+    classification: LAW_REQUIRED
+    statement: When a data protection officer has been designated, the controller must seek the DPO's advice when carrying out the DPIA.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-3-a-automated-evaluation
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(3)(a)
+    classification: LAW_REQUIRED
+    statement: A DPIA is in particular required for systematic and extensive evaluation of personal aspects based on automated processing, including profiling, where decisions based on that evaluation have legal or similarly significant effects on a person.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-3-b-large-scale-sensitive
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(3)(b)
+    classification: LAW_REQUIRED
+    statement: A DPIA is in particular required for large-scale processing of special-category data or personal data relating to criminal convictions and offences.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-3-c-public-monitoring
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(3)(c)
+    classification: LAW_REQUIRED
+    statement: A DPIA is in particular required for systematic monitoring of a publicly accessible area on a large scale.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-7-minimum-content
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(7)(a)-(d)
+    classification: LAW_REQUIRED
+    statement: A DPIA must at least describe the envisaged processing and purposes, assess necessity and proportionality, assess risks to rights and freedoms, and describe measures intended to address those risks and demonstrate compliance.
+    last_verified: 2026-08-10
+  - id: gdpr-art35-11-review
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 35(11)
+    classification: LAW_REQUIRED
+    statement: Where necessary, the controller must review whether processing remains in accordance with the DPIA, at least when the risk represented by processing operations changes.
+    last_verified: 2026-08-10
+  - id: gdpr-art36-1-prior-consultation
+    source_id: eu-gdpr-eurlex
+    jurisdiction: EU/EEA
+    locator: Article 36(1)
+    classification: LAW_REQUIRED
+    statement: The controller must consult the supervisory authority before processing where the DPIA indicates that processing would result in a high risk in the absence of measures taken by the controller to mitigate that risk.
+    last_verified: 2026-08-10
+  - id: edpb-wp248-two-criteria
+    source_id: edpb-dpia-guidelines-wp248
+    jurisdiction: EU/EEA
+    locator: WP248 rev.01 high-risk criteria
+    classification: REGULATOR_GUIDANCE
+    statement: In most situations, processing meeting two of the WP248 high-risk criteria should be assessed through a DPIA; depending on context, one criterion can also be sufficient.
+    last_verified: 2026-08-10
+  - id: nl-ap-list-mandatory-and-nonexhaustive
+    source_id: nl-ap-dpia-mandatory-list-2019
+    jurisdiction: NL
+    locator: Staatscourant 2019, 64418 — decision and considerations
+    classification: LAW_REQUIRED
+    statement: Processing that meets the full conditions of a processing type on the Dutch AP mandatory list requires a DPIA before processing; the list is not exhaustive, so processing outside the list can still require a DPIA when it is likely to result in high risk.
+    last_verified: 2026-08-10
