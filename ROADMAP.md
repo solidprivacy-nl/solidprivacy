@@ -20,6 +20,7 @@ The roadmap is intentionally **capability-first**, not prompt-count-first. A new
 6. **Scrub is the privacy boundary.** Sensitive originals and the Scrub Key remain outside cloud AI workflows by default.
 7. **Vertical slices before breadth.** Complete one trustworthy workflow before importing dozens of partial skills.
 8. **Exact-head assurance.** Production-capability work packages require executable regression evidence on the exact reviewed commit.
+9. **No model call without an egress policy.** Before production AI receives content, the provider, data class, allowed content and logging/retention posture must be explicit.
 
 ## Phase 0 — Operating architecture
 
@@ -54,11 +55,11 @@ Status: COMPLETE, draft PR #3, exact-head CI green
 
 ### WP3 — Evidence and fact provenance layer
 
-Status: IN PROGRESS
+Status: COMPLETE, draft PR #4, exact-head CI green before roadmap closeout commit
 
 Goal: make evidence-backed facts, uncertainty, contradictions and missing information first-class before any AI drafting.
 
-Deliverables:
+Delivered:
 - privacy-fact contract;
 - evidence-pack contract;
 - deterministic provenance/integrity gate;
@@ -66,23 +67,28 @@ Deliverables:
 - synthetic ready and blocked evidence packs;
 - fact-extraction skill boundary;
 - document-to-DPIA workflow stage model;
-- exact-head CI.
+- exact-head CI gates preserving WP1/WP2 regressions.
 
-### WP4 — AI fact extraction + validator
+### WP4 — Minimal AI execution boundary + fact extraction + validator
 
-Status: PLANNED
+Status: IN PROGRESS NEXT
 
-Goal: convert scrubbed documents/questionnaire material into candidate canonical facts without allowing unsupported facts to pass silently.
+Goal: convert scrubbed documents/questionnaire material into candidate canonical facts without allowing unsupported facts to pass silently, while establishing the minimum provider/data-egress controls required before a model is called.
 
 Required:
-- model/provider-independent extraction interface;
+- model/provider-independent interface;
+- explicit model-call policy containing provider/model, content classification, local/external mode, allowed egress and logging/retention posture;
+- hard refusal when a request violates the model-call policy;
 - evidence locators for every observed/inferred fact;
 - detector -> validator architecture;
 - contradiction detection;
-- confidence calibration;
+- confidence retained for calibration rather than treated as truth;
 - abstention/missing-information behaviour;
 - adversarial/near-miss evaluations;
+- deterministic fixture provider for CI;
 - no autonomous legal conclusion.
+
+A production external provider adapter is not required to prove the architecture, but the interface and policy gate must exist before one can be enabled.
 
 ### WP5 — AI-assisted DPIA analysis and drafting
 
@@ -139,14 +145,19 @@ Do not build each later privacy workflow as a bespoke agent. Extract reusable ru
 - reusable measures library without copying licensed normative text;
 - owner, due date, status and verification evidence.
 
-### WP9 — Model gateway and privacy policy
+### WP9 — Model gateway and privacy-policy hardening
 
-- model/provider abstraction;
-- data-classification policy controlling which model may receive which content;
+WP4 establishes the minimum safe AI-call boundary. WP9 generalises and operationalises it across workflows:
+
+- multiple provider adapters and routing;
+- organisation-level data-classification policy;
 - local vs external inference policy;
-- prompt/version registry;
-- deterministic redaction/scrub precondition;
-- telemetry without leaking personal data.
+- prompt/model/version registry;
+- deterministic Scrub preconditions;
+- key/secret isolation;
+- cost/latency/retry controls;
+- telemetry without leaking personal data;
+- provider retention/training policy metadata and periodic review.
 
 ## Phase 3 — Expand Privacy Officer workflows
 
