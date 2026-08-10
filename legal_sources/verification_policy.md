@@ -29,6 +29,19 @@ A material legal claim must record:
 
 Use `contracts/legal_claim.schema.json`.
 
+## Methodology output is not a legal conclusion
+
+Official templates, questionnaires and assessment methods can be operationally authoritative as methodologies without making every field or calculated outcome a binding legal rule.
+
+When a workflow uses such a methodology:
+
+1. preserve the methodology result separately;
+2. identify the legal or regulator source supporting any material legal conclusion;
+3. do not upgrade a methodology threshold into `LAW_REQUIRED` unless an approved legal source supports the upgrade;
+4. return `NEEDS_REVIEW` when a methodology says an action is required but the legal basis for that requirement is unresolved.
+
+The Dutch Rijksmodel pre-scan is the first production implementation of this separation.
+
 ## Freshness
 
 Time-sensitive rules must be reverified before a workflow version is promoted to production. A skill must not rely on an upstream repository's publication date as proof that the underlying law is current.
@@ -49,6 +62,17 @@ Never silently transfer a rule from one jurisdiction to another. UK GDPR, EU GDP
 ## Standards
 
 Standards such as ISO/IEC 27701 may be copyrighted/licensed. This repository should record mappings and implementation metadata without copying normative standard text unless licensing explicitly permits it.
+
+## Deterministic decision gates
+
+Legal decision engines must fail conservatively:
+
+- a direct mandatory outcome may be emitted only when its required factual/legal trigger is explicit;
+- missing context may not be coerced to `false`;
+- an unverified AP-list selection may not be treated as a verified mandatory-list match;
+- an AP-list verification must assess the full conditions of the listed processing type, not only a matching category label;
+- regulator criteria may produce recommendations/review gates without being mislabeled as binding law;
+- high-impact conclusions retain human-review metadata.
 
 ## Legal update process
 
