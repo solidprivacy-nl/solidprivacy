@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/skill_output.schema.json",
+  "title": "SolidPrivacy Skill Output",
+  "type": "object",
+  "required": ["status", "facts", "findings", "legal_basis", "evidence", "assumptions", "missing_information", "confidence", "requires_human_review", "source_versions"],
+  "properties": {
+    "status": {"type": "string", "enum": ["completed", "blocked", "needs_review"]},
+    "facts": {"type": "array", "items": {}},
+    "findings": {"type": "array", "items": {}},
+    "legal_basis": {"type": "array", "items": {"$ref": "legal_claim.schema.json"}},
+    "evidence": {"type": "array", "items": {"$ref": "evidence.schema.json"}},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "missing_information": {"type": "array", "items": {"type": "string"}},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "requires_human_review": {"type": "boolean"},
+    "source_versions": {"type": "array", "items": {"type": "string"}},
+    "human_review": {"anyOf": [{"$ref": "human_review.schema.json"}, {"type": "null"}]}
+  },
+  "additionalProperties": true
+}
