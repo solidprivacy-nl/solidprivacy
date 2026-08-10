@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/evidence.schema.json",
+  "title": "SolidPrivacy Evidence Reference",
+  "type": "object",
+  "required": ["id", "kind", "source", "locator"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "enum": ["document", "extracted_fact", "user_input", "legal_source", "framework_rule", "automated_check"]},
+    "source": {"type": "string", "minLength": 1},
+    "locator": {"type": "string", "minLength": 1},
+    "excerpt": {"type": ["string", "null"]},
+    "content_hash": {"type": ["string", "null"]},
+    "contains_personal_data": {"type": "boolean", "default": false},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}
