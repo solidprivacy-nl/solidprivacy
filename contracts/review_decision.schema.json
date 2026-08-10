@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/review_decision.schema.json",
+  "title": "SolidPrivacy Privacy Officer Review Decision",
+  "type": "object",
+  "required": ["target_type", "target_id", "action", "rationale", "replacement", "evidence_ids", "decided_at"],
+  "properties": {
+    "target_type": {"type": "string", "enum": ["fact", "claim", "risk", "measure", "section"]},
+    "target_id": {"type": "string", "minLength": 1},
+    "action": {"type": "string", "enum": ["accept", "reject", "change", "request_evidence"]},
+    "rationale": {"type": ["string", "null"]},
+    "replacement": {},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "decided_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"action": {"const": "accept"}}, "required": ["action"]},
+      "then": {"properties": {"replacement": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"action": {"const": "change"}}, "required": ["action"]},
+      "then": {
+        "properties": {
+          "rationale": {"type": "string", "minLength": 1},
+          "replacement": {"not": {"type": "null"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"action": {"enum": ["reject", "request_evidence"]}}, "required": ["action"]},
+      "then": {
+        "properties": {
+          "rationale": {"type": "string", "minLength": 1},
+          "replacement": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

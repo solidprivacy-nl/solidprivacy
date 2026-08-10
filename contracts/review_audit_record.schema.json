@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/review_audit_record.schema.json",
+  "title": "SolidPrivacy Minimal Immutable Review Audit Record",
+  "type": "object",
+  "required": ["id", "review_request_id", "review_request_hash", "analysis_request_hash", "evidence_pack_hash", "legal_context_hash", "analysis_hash", "decision_set_hash", "reviewer_id", "reviewer_role", "signed_at", "runtime_version", "record_hash"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "review_request_id": {"type": "string", "minLength": 1},
+    "review_request_hash": {"$ref": "#/$defs/hash"},
+    "analysis_request_hash": {"$ref": "#/$defs/hash"},
+    "evidence_pack_hash": {"$ref": "#/$defs/hash"},
+    "legal_context_hash": {"$ref": "#/$defs/hash"},
+    "analysis_hash": {"$ref": "#/$defs/hash"},
+    "decision_set_hash": {"$ref": "#/$defs/hash"},
+    "reviewer_id": {"type": "string", "minLength": 1},
+    "reviewer_role": {"type": "string", "enum": ["privacy_officer", "dpo", "legal_privacy_reviewer"]},
+    "signed_at": {"type": "string", "format": "date-time"},
+    "runtime_version": {"type": "string", "minLength": 1},
+    "record_hash": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+  "additionalProperties": false
+}

@@ -1,0 +1,79 @@
+{
+  "id": "REVIEW-DECISIONS-001",
+  "review_request_id": "RR-DPIA-AN-REQ-001",
+  "reviewer": {
+    "actor_type": "human",
+    "reviewer_id": "reviewer-fixture-001",
+    "role": "privacy_officer"
+  },
+  "review_input_privacy_context": {
+    "scrubbed": true,
+    "scrub_key_present": false,
+    "contains_direct_identifiers": false,
+    "content_classification": "scrubbed_personal_data"
+  },
+  "overall_disposition": "approve",
+  "overall_rationale": "De gestructureerde analyse is beoordeeld, de open vragen zijn met aanvullend gescrubd bewijs opgelost en de resterende risico's zijn expliciet beoordeeld.",
+  "decisions": [
+    {"target_type":"fact","target_id":"F-FX-001","action":"accept","rationale":null,"replacement":null,"evidence_ids":["EV-FX-001"],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"fact","target_id":"F-FX-002","action":"accept","rationale":null,"replacement":null,"evidence_ids":["EV-FX-002"],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"claim","target_id":"CL-001","action":"accept","rationale":null,"replacement":null,"evidence_ids":[],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"claim","target_id":"CL-002","action":"accept","rationale":null,"replacement":null,"evidence_ids":[],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"claim","target_id":"CL-003","action":"accept","rationale":null,"replacement":null,"evidence_ids":[],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"risk","target_id":"R-DRAFT-001","action":"accept","rationale":null,"replacement":null,"evidence_ids":["EV-FX-001"],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"measure","target_id":"M-DRAFT-001","action":"accept","rationale":null,"replacement":null,"evidence_ids":["EV-REV-001"],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"section","target_id":"SEC-001","action":"accept","rationale":null,"replacement":null,"evidence_ids":[],"decided_at":"2026-08-10T23:55:00+02:00"},
+    {"target_type":"section","target_id":"SEC-002","action":"change","rationale":"De review heeft aanvullend bewijs over toegangsmaatregelen en de FG-status opgeleverd.","replacement":"De organisatie heeft role-based access control, kwartaalreviews van autorisaties en logging bevestigd. Voor deze synthetische organisatie is geen functionaris voor gegevensbescherming aangewezen. De juridische DPIA-vereisten en EDPB-guidance blijven als beoordelingskader opgenomen.","evidence_ids":["EV-REV-001","EV-REV-002"],"decided_at":"2026-08-10T23:55:00+02:00"}
+  ],
+  "supplemental_evidence": [
+    {
+      "id": "EV-REV-001",
+      "kind": "user_input",
+      "source": "synthetic_scrubbed_review_material",
+      "locator": "controls:access",
+      "excerpt": "Role-based access control is geïmplementeerd; autorisaties worden per kwartaal gereviewd en relevante toegang wordt gelogd.",
+      "content_hash": "synthetic:review1",
+      "contains_personal_data": false,
+      "metadata": {"scrubbed": true, "synthetic": true}
+    },
+    {
+      "id": "EV-REV-002",
+      "kind": "user_input",
+      "source": "synthetic_scrubbed_governance_statement",
+      "locator": "governance:dpo",
+      "excerpt": "Voor deze synthetische organisatie is geen functionaris voor gegevensbescherming aangewezen.",
+      "content_hash": "synthetic:review2",
+      "contains_personal_data": false,
+      "metadata": {"scrubbed": true, "synthetic": true}
+    }
+  ],
+  "question_resolutions": [
+    {
+      "question": "Welke concrete autorisatie- en loggingmaatregelen zijn geïmplementeerd?",
+      "status": "resolved",
+      "rationale": "Aanvullend gescrubd reviewbewijs beschrijft de geïmplementeerde maatregelen.",
+      "evidence_ids": ["EV-REV-001"]
+    },
+    {
+      "question": "Is een functionaris voor gegevensbescherming aangewezen voor deze organisatie?",
+      "status": "resolved",
+      "rationale": "De governanceverklaring bevestigt dat in deze synthetische casus geen FG is aangewezen.",
+      "evidence_ids": ["EV-REV-002"]
+    }
+  ],
+  "assumption_resolutions": [],
+  "residual_risk": {
+    "level": "low",
+    "rationale": "Na beoordeling van de beperkte gegevensset en de bevestigde toegangsmaatregelen acht de menselijke reviewer het resterende risico in deze synthetische casus laag.",
+    "prior_consultation_disposition": "not_required",
+    "prior_consultation_rationale": "De menselijke reviewer heeft geen hoog restrisico vastgesteld; artikel 36 blijft als expliciet beoordelingskader geregistreerd.",
+    "source_rule_ids": ["gdpr-art36-1-prior-consultation"]
+  },
+  "dpo_consultation": {
+    "status": "not_designated",
+    "advice_summary": null,
+    "evidence_ids": ["EV-REV-002"]
+  },
+  "management_summary": "De Privacy Officer heeft de gescrubde DPIA-draft en onderliggende evidence beoordeeld. De verwerking betreft een beperkt intern medewerkersportaal; aanvullende review bevestigt toegangsbeheersing en logging. Het resterende risico is voor deze synthetische casus als laag beoordeeld.",
+  "signed_at": "2026-08-10T23:55:00+02:00"
+}

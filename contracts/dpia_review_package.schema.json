@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/dpia_review_package.schema.json",
+  "title": "SolidPrivacy Reviewed DPIA Package",
+  "type": "object",
+  "required": ["id", "review_request_id", "case_id", "status", "reviewer", "decisions", "overall_rationale", "unresolved_issues", "residual_risk", "dpo_consultation", "source_appendix", "evidence_appendix", "report", "reinsert_handoff", "audit_record", "signed_at"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "review_request_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["approved", "approved_with_changes", "approved_pending_prior_consultation", "needs_revision", "rejected"]},
+    "reviewer": {
+      "type": "object",
+      "required": ["actor_type", "reviewer_id", "role"],
+      "properties": {
+        "actor_type": {"const": "human"},
+        "reviewer_id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "enum": ["privacy_officer", "dpo", "legal_privacy_reviewer"]}
+      },
+      "additionalProperties": false
+    },
+    "decisions": {"type": "array", "items": {"$ref": "review_decision.schema.json"}},
+    "overall_rationale": {"type": "string", "minLength": 1},
+    "unresolved_issues": {"type": "array", "items": {"type": "string"}},
+    "residual_risk": {"$ref": "dpia_review_decision_set.schema.json#/$defs/residualRisk"},
+    "dpo_consultation": {"$ref": "dpia_review_decision_set.schema.json#/$defs/dpoConsultation"},
+    "source_appendix": {"type": "array", "items": {"$ref": "#/$defs/sourceAppendixItem"}},
+    "evidence_appendix": {"type": "array", "items": {"$ref": "#/$defs/evidenceAppendixItem"}},
+    "report": {"anyOf": [{"$ref": "#/$defs/report"}, {"type": "null"}]},
+    "reinsert_handoff": {"anyOf": [{"$ref": "#/$defs/reinsertHandoff"}, {"type": "null"}]},
+    "audit_record": {"$ref": "review_audit_record.schema.json"},
+    "signed_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"enum": ["approved", "approved_with_changes", "approved_pending_prior_consultation"]}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "report": {"not": {"type": "null"}},
+          "reinsert_handoff": {"not": {"type": "null"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["needs_revision", "rejected"]}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "report": {"type": "null"},
+          "reinsert_handoff": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sourceAppendixItem": {
+      "type": "object",
+      "required": ["rule_id", "source_id", "title", "authority", "locator", "canonical_url", "classification"],
+      "properties": {
+        "rule_id": {"type": "string"},
+        "source_id": {"type": "string"},
+        "title": {"type": "string"},
+        "authority": {"type": "string"},
+        "locator": {"type": "string"},
+        "canonical_url": {"type": "string"},
+        "classification": {"type": "string", "enum": ["LAW_REQUIRED", "REGULATOR_GUIDANCE"]}
+      },
+      "additionalProperties": false
+    },
+    "evidenceAppendixItem": {
+      "type": "object",
+      "required": ["evidence_id", "kind", "source", "locator", "contains_personal_data"],
+      "properties": {
+        "evidence_id": {"type": "string"},
+        "kind": {"type": "string"},
+        "source": {"type": "string"},
+        "locator": {"type": "string"},
+        "contains_personal_data": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "required": ["id", "format", "management_summary", "body", "privacy_context", "generated_at"],
+      "properties": {
+        "id": {"type": "string"},
+        "format": {"const": "markdown"},
+        "management_summary": {"type": "string", "minLength": 1},
+        "body": {"type": "string", "minLength": 1},
+        "privacy_context": {
+          "type": "object",
+          "required": ["scrubbed", "scrub_key_present", "contains_direct_identifiers"],
+          "properties": {
+            "scrubbed": {"const": true},
+            "scrub_key_present": {"const": false},
+            "contains_direct_identifiers": {"const": false}
+          },
+          "additionalProperties": false
+        },
+        "generated_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "reinsertHandoff": {
+      "type": "object",
+      "required": ["id", "mode", "scrubbed_report_id", "local_reinsert_required", "scrub_key_included", "replacement_mapping_included", "contains_direct_identifiers"],
+      "properties": {
+        "id": {"type": "string"},
+        "mode": {"const": "local_scrub_reinsert"},
+        "scrubbed_report_id": {"type": "string"},
+        "local_reinsert_required": {"const": true},
+        "scrub_key_included": {"const": false},
+        "replacement_mapping_included": {"const": false},
+        "contains_direct_identifiers": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

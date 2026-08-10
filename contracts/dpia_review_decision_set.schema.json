@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/dpia_review_decision_set.schema.json",
+  "title": "SolidPrivacy DPIA Privacy Officer Decision Set",
+  "type": "object",
+  "required": ["id", "review_request_id", "reviewer", "review_input_privacy_context", "overall_disposition", "overall_rationale", "decisions", "supplemental_evidence", "question_resolutions", "assumption_resolutions", "residual_risk", "dpo_consultation", "management_summary", "signed_at"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "review_request_id": {"type": "string", "minLength": 1},
+    "reviewer": {
+      "type": "object",
+      "required": ["actor_type", "reviewer_id", "role"],
+      "properties": {
+        "actor_type": {"const": "human"},
+        "reviewer_id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "enum": ["privacy_officer", "dpo", "legal_privacy_reviewer"]}
+      },
+      "additionalProperties": false
+    },
+    "review_input_privacy_context": {
+      "type": "object",
+      "required": ["scrubbed", "scrub_key_present", "contains_direct_identifiers", "content_classification"],
+      "properties": {
+        "scrubbed": {"const": true},
+        "scrub_key_present": {"const": false},
+        "contains_direct_identifiers": {"const": false},
+        "content_classification": {"type": "string", "enum": ["public", "internal", "scrubbed_personal_data"]}
+      },
+      "additionalProperties": false
+    },
+    "overall_disposition": {"type": "string", "enum": ["approve", "request_revision", "reject"]},
+    "overall_rationale": {"type": "string", "minLength": 1},
+    "decisions": {"type": "array", "items": {"$ref": "review_decision.schema.json"}, "minItems": 1},
+    "supplemental_evidence": {"type": "array", "items": {"$ref": "evidence.schema.json"}},
+    "question_resolutions": {"type": "array", "items": {"$ref": "#/$defs/questionResolution"}},
+    "assumption_resolutions": {"type": "array", "items": {"$ref": "#/$defs/assumptionResolution"}},
+    "residual_risk": {"$ref": "#/$defs/residualRisk"},
+    "dpo_consultation": {"$ref": "#/$defs/dpoConsultation"},
+    "management_summary": {"type": "string", "minLength": 1},
+    "signed_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "questionResolution": {
+      "type": "object",
+      "required": ["question", "status", "rationale", "evidence_ids"],
+      "properties": {
+        "question": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["resolved", "not_applicable", "open"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "assumptionResolution": {
+      "type": "object",
+      "required": ["assumption", "status", "rationale", "evidence_ids"],
+      "properties": {
+        "assumption": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["confirmed", "rejected", "not_applicable", "open"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "confirmed"}}, "required": ["status"]},
+          "then": {"properties": {"evidence_ids": {"minItems": 1}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "residualRisk": {
+      "type": "object",
+      "required": ["level", "rationale", "prior_consultation_disposition", "prior_consultation_rationale", "source_rule_ids"],
+      "properties": {
+        "level": {"type": "string", "enum": ["low", "medium", "high", "unknown"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "prior_consultation_disposition": {"type": "string", "enum": ["required", "not_required", "needs_legal_review"]},
+        "prior_consultation_rationale": {"type": "string", "minLength": 1},
+        "source_rule_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "dpoConsultation": {
+      "type": "object",
+      "required": ["status", "advice_summary", "evidence_ids"],
+      "properties": {
+        "status": {"type": "string", "enum": ["designated_and_consulted", "not_designated", "unknown"]},
+        "advice_summary": {"type": ["string", "null"]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "designated_and_consulted"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "advice_summary": {"type": "string", "minLength": 1},
+              "evidence_ids": {"minItems": 1}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
