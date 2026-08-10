@@ -1,0 +1,25 @@
+version: 1
+upstreams:
+  - id: privacy-data-protection-skills
+    repository: https://github.com/mukul975/Privacy-Data-Protection-Skills
+    license: Apache-2.0
+    role: workflow_raw_material
+    imported: false
+    policy: Adapt selectively; verify legal assertions independently; preserve required notices and modification markings when content is imported.
+
+  - id: claude-skills-grc
+    repository: https://github.com/Sushegaad/Claude-Skills-Governance-Risk-and-Compliance
+    license: MIT
+    role: framework_and_eval_raw_material
+    imported: false
+    policy: Adapt selectively; use framework/evaluation patterns as inspiration; verify time-sensitive legal assertions independently.
+
+required_fields_for_future_imports:
+  - upstream_id
+  - upstream_path
+  - upstream_commit_or_version
+  - imported_path
+  - license
+  - adaptation_status
+  - legal_verification_status
+  - notes
