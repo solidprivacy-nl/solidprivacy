@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/prescan_decision.schema.json",
+  "title": "SolidPrivacy Dutch DPIA Pre-scan Decision",
+  "type": "object",
+  "required": [
+    "decision_version",
+    "input",
+    "methodology",
+    "legal",
+    "human_review",
+    "source_versions"
+  ],
+  "properties": {
+    "decision_version": {"type": "string"},
+    "input": {
+      "type": "object",
+      "required": ["source_model", "source_version"],
+      "properties": {
+        "source_model": {"type": "string"},
+        "source_version": {"type": "string"},
+        "source_commit": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "methodology": {
+      "type": "object",
+      "required": [
+        "level",
+        "risk_score",
+        "risk_components",
+        "ap_list_count",
+        "ap_list_items",
+        "edpb_criteria_count",
+        "edpb_criteria",
+        "reasons",
+        "source"
+      ],
+      "properties": {
+        "level": {"type": "string", "enum": ["required", "recommended", "not_indicated"]},
+        "risk_score": {"type": "integer", "minimum": 0},
+        "risk_components": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "ap_list_count": {"type": "integer", "minimum": 0},
+        "ap_list_items": {"type": "array", "items": {"type": "string"}},
+        "edpb_criteria_count": {"type": "integer", "minimum": 0},
+        "edpb_criteria": {"type": "array", "items": {"type": "string"}},
+        "reasons": {"type": "array", "items": {"type": "string"}},
+        "source": {
+          "type": "object",
+          "required": ["source_id", "version", "locator", "classification"],
+          "properties": {
+            "source_id": {"type": "string"},
+            "version": {"type": "string"},
+            "locator": {"type": "string"},
+            "classification": {"const": "OFFICIAL_METHODOLOGY"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "legal": {
+      "type": "object",
+      "required": ["decision", "reasons", "requires_human_review"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["DPIA_REQUIRED", "DPIA_RECOMMENDED", "DPIA_NOT_INDICATED", "NEEDS_REVIEW"]
+        },
+        "requires_human_review": {"type": "boolean"},
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "classification", "source_id"],
+            "properties": {
+              "id": {"type": "string"},
+              "classification": {
+                "type": "string",
+                "enum": ["LAW_REQUIRED", "REGULATOR_GUIDANCE", "ASSUMPTION"]
+              },
+              "source_id": {"type": "string"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "human_review": {
+      "type": "object",
+      "required": ["required", "status", "reasons"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "status": {"type": "string", "enum": ["pending", "not_required"]},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "source_versions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
