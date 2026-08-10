@@ -1,5 +1,6 @@
-version: 1
+version: 2
 policy: legal_sources/verification_policy.md
+last_catalog_review: 2026-08-10
 sources:
   - id: eu-gdpr-eurlex
     title: General Data Protection Regulation (EU) 2016/679
@@ -8,22 +9,7 @@ sources:
     kind: binding_law
     canonical_url: https://eur-lex.europa.eu/eli/reg/2016/679/oj
     status: authoritative
-
-  - id: edpb-guidance
-    title: European Data Protection Board guidance
-    authority: European Data Protection Board
-    jurisdiction: EU/EEA
-    kind: regulator_guidance
-    canonical_url: https://www.edpb.europa.eu/our-work-tools/general-guidance_en
-    status: authoritative_guidance
-
-  - id: nl-ap
-    title: Autoriteit Persoonsgegevens
-    authority: Autoriteit Persoonsgegevens
-    jurisdiction: NL
-    kind: regulator_guidance
-    canonical_url: https://autoriteitpersoonsgegevens.nl/
-    status: authoritative_guidance
+    last_verified: 2026-08-10
 
   - id: eu-ai-act-eurlex
     title: Artificial Intelligence Act
@@ -32,6 +18,119 @@ sources:
     kind: binding_law
     canonical_url: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
     status: authoritative
+    last_verified: 2026-08-10
+
+  - id: edpb-general-guidance
+    title: European Data Protection Board guidance
+    authority: European Data Protection Board
+    jurisdiction: EU/EEA
+    kind: regulator_guidance
+    canonical_url: https://www.edpb.europa.eu/our-work-tools/general-guidance_en
+    status: authoritative_guidance
+    last_verified: 2026-08-10
+
+  - id: edpb-right-of-access-01-2022
+    title: Guidelines 01/2022 on data subject rights - Right of access
+    authority: European Data Protection Board
+    jurisdiction: EU/EEA
+    kind: regulator_guidance
+    canonical_url: https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-012022-data-subject-rights-right-access_en
+    status: authoritative_guidance
+    last_verified: 2026-08-10
+
+  - id: edpb-dpia-template-2026
+    title: EDPB Data Protection Impact Assessment template 2026
+    authority: European Data Protection Board
+    jurisdiction: EU/EEA
+    kind: methodology_template
+    canonical_url: https://www.edpb.europa.eu/our-work-tools/documents/public-consultations/2026/edpb-dpia-template_en
+    status: consultation_draft
+    adoption_stage: adopted_for_public_consultation
+    last_verified: 2026-08-10
+    production_use: forward_compatibility_only
+
+  - id: edpb-breach-template-2026
+    title: EDPB personal data breach notification template 2026
+    authority: European Data Protection Board
+    jurisdiction: EU/EEA
+    kind: methodology_template
+    canonical_url: https://www.edpb.europa.eu/public-consultations/template-for-personal-data-breach-notification_en
+    status: consultation_closed_pending_finalisation
+    last_verified: 2026-08-10
+    production_use: forward_compatibility_only
+
+  - id: nl-ap
+    title: Autoriteit Persoonsgegevens
+    authority: Autoriteit Persoonsgegevens
+    jurisdiction: NL
+    kind: regulator_guidance
+    canonical_url: https://autoriteitpersoonsgegevens.nl/
+    status: authoritative_guidance
+    last_verified: 2026-08-10
+
+  - id: nl-ap-data-breach
+    title: Autoriteit Persoonsgegevens - datalek guidance and notification
+    authority: Autoriteit Persoonsgegevens
+    jurisdiction: NL
+    kind: regulator_guidance
+    canonical_url: https://autoriteitpersoonsgegevens.nl/datalek-melden
+    status: authoritative_guidance
+    last_verified: 2026-08-10
+
+  - id: nl-government-par-dpia-model
+    title: Dutch Government DPIA reporting model / PAR assessment definitions
+    authority: Dutch Government
+    jurisdiction: NL
+    kind: official_methodology
+    canonical_url: https://github.com/MinBZK/par-dpia-form
+    status: official_methodology
+    last_verified: 2026-08-10
+    note: Methodology/template source; individual fields are not automatically binding-law requirements.
+
+  - id: nl-government-dpia-information-model
+    title: Dutch Government DPIA information model
+    authority: Dutch Government / Ministry of Justice and Security data-model publication
+    jurisdiction: NL
+    kind: official_information_model
+    canonical_url: https://modellen.jenvgegevens.nl/dpia/
+    status: official_methodology
+    last_verified: 2026-08-10
+
+  - id: eu-commission-scc
+    title: European Commission Standard Contractual Clauses
+    authority: European Commission
+    jurisdiction: EU/EEA
+    kind: official_contractual_clauses
+    canonical_url: https://commission.europa.eu/publications/publications-standard-contractual-clauses-sccs_en
+    status: authoritative
+    last_verified: 2026-08-10
+
+  - id: cnil-pia
+    title: CNIL Privacy Impact Assessment methodology and software
+    authority: CNIL
+    jurisdiction: FR/EU
+    kind: supervisory_authority_methodology
+    canonical_url: https://www.cnil.fr/fr/outil-pia-telechargez-et-installez-le-logiciel-de-la-cnil
+    status: authoritative_guidance
+    last_verified: 2026-08-10
+
+  - id: nist-pram
+    title: NIST Privacy Risk Assessment Methodology
+    authority: NIST
+    jurisdiction: methodology
+    kind: risk_methodology
+    canonical_url: https://www.nist.gov/itl/applied-cybersecurity/privacy-engineering/collaboration-space/privacy-risk-assessment/tools
+    status: standard_reference
+    last_verified: 2026-08-10
+
+  - id: nist-oscal
+    title: Open Security Controls Assessment Language
+    authority: NIST
+    jurisdiction: methodology
+    kind: control_model
+    canonical_url: https://pages.nist.gov/OSCAL/
+    status: standard_reference
+    last_verified: 2026-08-10
 
   - id: iso-iec-27701
     title: ISO/IEC 27701 Privacy Information Management
@@ -40,3 +139,4 @@ sources:
     kind: standard
     canonical_url: https://www.iso.org/standard/85819.html
     status: licensed_standard_required_for_normative_detail
+    last_verified: 2026-08-10

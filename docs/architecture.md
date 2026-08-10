@@ -2,82 +2,134 @@
 
 ## Purpose
 
-This repository is the controlled AI workflow and privacy-officer automation layer for SolidPrivacy. It is intentionally **not** a dump of third-party prompt/skill repositories.
+This repository is the controlled AI workflow and privacy-officer automation layer for SolidPrivacy. It is intentionally **not** a dump of third-party prompts, legal text or GRC applications.
 
-The design separates:
+The architecture separates legal authority, privacy semantics, assessment methodologies, execution logic, controls/evidence and evaluation so each can evolve independently and remain auditable.
 
-1. reusable task skills;
-2. legal and management-system framework knowledge;
-3. end-to-end workflows;
-4. machine-readable contracts;
-5. evaluation and regression evidence;
-6. authoritative legal-source governance; and
-7. provenance and licensing.
-
-The architectural goal is to make privacy automation testable, auditable, updateable, and safe to combine with SolidPrivacy Scrub.
-
-## Target repository structure
+## Architecture layers
 
 ```text
 solidprivacy/
-├── skills/
-│   ├── document_processing/
-│   │   ├── classify_document/
-│   │   ├── extract_privacy_facts/
-│   │   ├── detect_sensitive_content/
-│   │   ├── analyse_scrubbed_document/
-│   │   └── validate_ai_output/
-│   └── privacy_officer/
-│       ├── dsar/
-│       ├── dpia/
-│       ├── ropa/
-│       ├── breach_assessment/
-│       ├── retention/
-│       ├── vendor_assessment/
-│       ├── international_transfers/
-│       └── ai_privacy_assessment/
-├── frameworks/
-│   ├── gdpr/
-│   ├── iso27701/
-│   └── eu_ai_act/
-├── workflows/
-│   ├── document_to_dpia/
-│   ├── document_to_ropa/
-│   ├── vendor_documents_to_assessment/
-│   ├── incident_to_breach_assessment/
-│   └── dsar_document_review/
-├── contracts/
-│   ├── skill_input.schema.json
-│   ├── skill_output.schema.json
-│   ├── evidence.schema.json
-│   ├── legal_claim.schema.json
-│   └── human_review.schema.json
-├── evals/
-│   ├── synthetic_cases/
-│   ├── assertions/
-│   ├── regression/
-│   └── legal_accuracy/
-├── legal_sources/
-│   ├── source_registry.yaml
-│   └── verification_policy.md
-├── provenance/
-│   ├── upstream_manifest.yaml
-│   └── THIRD_PARTY_NOTICES.md
+├── vocabularies/              # canonical privacy concepts and semantic mappings
+├── jurisdictions/             # EU/NL first: jurisdiction-specific legal overlays
+├── legal_sources/             # approved source registry and freshness/verification policy
+├── methodologies/             # DPIA/risk/assessment methods independent of agent prompts
+├── control_models/            # controls, implementation, evidence, findings, remediation
+├── evidence_collectors/       # bounded tools that produce reproducible evidence
+├── mappings/                  # adapters between external models and canonical concepts
+├── frameworks/                # GDPR, ISO 27701, EU AI Act knowledge packages
+├── skills/                    # reusable atomic AI tasks
+├── workflows/                 # end-to-end privacy-officer processes
+├── contracts/                 # machine-readable execution interfaces
+├── evals/                     # synthetic, regression and legal-accuracy evaluations
+├── provenance/                # upstream source/license/adaptation history
 └── docs/
-    └── architecture.md
 ```
 
-## Core design decision: framework knowledge is separate from workflows
+## Layer responsibilities
 
-A workflow defines **what happens and in which order**. A framework defines **which legal or governance rules apply**.
+### 1. Vocabularies
 
-For example, a DSAR workflow may orchestrate intake, identity checks, scope determination, search, exemptions, compilation, quality assurance, response and closure. It must not hard-code every GDPR rule in its own prompt. Instead, it consumes current rules from the GDPR framework layer and records which version/source supported each legal conclusion.
+The canonical semantic layer answers: **what is this thing?**
 
-This avoids duplicating stale law across many skills and makes legal updates centrally maintainable.
+SolidPrivacy should align privacy concepts with the W3C Data Privacy Vocabulary (DPV) where practical rather than inventing incompatible terminology. Examples include personal data, purpose, processing, controller, processor, data subject, recipient, legal basis, risk, technical measure and organisational measure.
+
+DPV is a semantic reference, not legal authority. Local SolidPrivacy identifiers may be retained where product needs require them, with explicit mappings.
+
+### 2. Jurisdictions and legal sources
+
+The jurisdiction layer answers: **which law, regulator or official guidance applies here?**
+
+EU and Netherlands are the initial production jurisdictions. Other jurisdictions may be added only as explicit overlays. UK guidance, for example, must never silently become an EU/NL rule.
+
+Every material legal claim must reference an approved entry in `legal_sources/source_registry.yaml`, including source status and verification date.
+
+### 3. Methodologies
+
+The methodology layer answers: **how should this assessment be performed?**
+
+Examples:
+
+- Dutch Government DPIA model / pre-scan;
+- EDPB DPIA template or meta-template;
+- CNIL PIA methodology;
+- NIST Privacy Risk Assessment Methodology (PRAM).
+
+Methodologies may contain regulator or government guidance, but their procedural structure is kept separate from binding legal requirements.
+
+### 4. Control model
+
+The control layer answers: **what measure should exist, is it implemented, what evidence supports that, and what remains unresolved?**
+
+The design is OSCAL-inspired rather than a wholesale OSCAL implementation. SolidPrivacy should support at least:
+
+```text
+control
+implementation
+assessment
+finding
+evidence
+remediation
+approval
+```
+
+This enables privacy recommendations to become trackable work instead of disappearing into prose reports.
+
+### 5. Evidence collectors
+
+Evidence collectors produce bounded, reproducible observations. They do not make final legal decisions.
+
+Potential examples include website tracker/cookie collection, document metadata inspection, repository privacy review and structured questionnaire ingestion. Collectors must state their scope and limitations and should prefer local processing where sensitive data is involved.
+
+### 6. Skills
+
+A skill is an atomic AI capability such as:
+
+- classify a privacy document;
+- extract processing facts;
+- map facts to canonical concepts;
+- identify missing DPIA information;
+- compare a processor agreement to an approved requirement set;
+- draft a finding from validated facts and legal sources;
+- validate an AI output against evidence and contracts.
+
+A skill must not become its own hidden legal knowledge base.
+
+### 7. Workflows
+
+A workflow orchestrates skills, methodologies, sources, evidence and review gates.
+
+Initial production priority:
+
+1. DPIA / pre-scan;
+2. DSAR / right of access;
+3. RoPA;
+4. personal-data-breach assessment.
+
+Later candidates include retention, vendor/processor assessment, international transfers, AI privacy assessments and DPO annual reporting.
+
+## Canonical execution model
+
+```text
+INPUT
+  -> classify / extract facts
+  -> normalize to canonical privacy concepts
+  -> select jurisdiction
+  -> select methodology
+  -> resolve approved legal sources
+  -> execute assessment steps
+  -> collect / link evidence
+  -> detector findings
+  -> validator / suppression / contradiction checks
+  -> human review gate where required
+  -> structured output / report / remediation
+```
+
+The detector/validator split is intentional. Candidate findings should be generated broadly, then challenged against evidence, transformations, context, source authority and false-positive suppression rules before they become reportable findings.
 
 ## Common execution contract
 
-Every production-oriented skill or workflow should be able to emit a normalized result containing at least:
+Every production-oriented skill or workflow should emit a normalized result containing at least:
 
 ```yaml
 status: completed | blocked | needs_review
@@ -92,49 +144,57 @@ requires_human_review: true
 source_versions: []
 ```
 
-The JSON Schemas in `contracts/` are the machine-readable source of truth for these interfaces.
+JSON Schemas in `contracts/` are the machine-readable source of truth.
 
 ## Legal-claim classification
 
-Legal and compliance statements must be classified. The initial taxonomy is:
+Every compliance statement must be classified as one of:
 
-- `LAW_REQUIRED`: directly required by binding law/regulation;
-- `REGULATOR_GUIDANCE`: non-binding regulator or supervisory-authority guidance;
-- `ORGANISATION_POLICY`: rule chosen by the organisation;
-- `BEST_PRACTICE`: recommended control or practice not itself legally mandatory;
-- `ASSUMPTION`: unresolved premise used for analysis.
+- `LAW_REQUIRED` — directly required by binding law/regulation;
+- `REGULATOR_GUIDANCE` — non-binding regulator or supervisory-authority guidance;
+- `ORGANISATION_POLICY` — rule chosen by the organisation;
+- `BEST_PRACTICE` — recommended practice not itself legally mandatory;
+- `ASSUMPTION` — unresolved premise used for analysis.
 
-A workflow must not silently promote guidance, policy, best practice, or assumptions into legal requirements.
+A workflow must not silently promote guidance, policy, best practice or assumptions into legal requirements.
+
+## Source authority hierarchy
+
+For EU/NL work, prefer sources in this order when resolving a legal proposition:
+
+1. binding EU/NL law and official consolidated legal text;
+2. CJEU or other binding case law where applicable;
+3. EDPB guidance and decisions;
+4. Autoriteit Persoonsgegevens guidance for NL application;
+5. official Dutch government assessment models and explanatory material;
+6. other EU supervisory-authority guidance where useful;
+7. recognised standards and methodologies;
+8. third-party professional material;
+9. upstream AI skill/prompt repositories.
+
+Lower-tier material may inform workflow design but must not override higher-tier authority.
+
+## Source lifecycle and freshness
+
+Each source entry has a lifecycle state such as `authoritative`, `authoritative_guidance`, `consultation_draft`, `official_methodology`, `standard_reference`, `engineering_reference` or `candidate_raw_material`.
+
+Time-sensitive sources must have `last_verified` and `review_due` metadata. Draft/consultation documents may be used for forward-compatible design but cannot be presented as final legal requirements.
 
 ## Human review
 
-Privacy workflows are decision-support systems. High-impact outputs require explicit human review. Examples include:
+Privacy workflows are decision-support systems. Human review is mandatory for high-impact conclusions, including:
 
-- final DPIA risk acceptance;
-- legal exemptions or refusal of a data-subject request;
+- final DPIA residual-risk acceptance;
+- refusal, restriction or exemption in a data-subject request;
 - breach-notification decisions;
 - international-transfer conclusions;
-- advice materially affecting rights of data subjects;
-- outputs with missing or conflicting legal authority.
-
-The `human_review.schema.json` contract records reviewer status, rationale and unresolved issues.
-
-## Evidence model
-
-Findings should be traceable to evidence. Evidence can originate from:
-
-- source documents;
-- extracted facts;
-- structured user input;
-- authoritative legal sources;
-- framework rules;
-- automated checks.
-
-Evidence references should be precise enough to reproduce the conclusion without requiring access to unredacted personal data when that is not necessary.
+- conclusions materially affecting data-subject rights;
+- unresolved conflicts between authoritative sources;
+- low-confidence or incomplete outputs.
 
 ## Integration with SolidPrivacy Scrub
 
-The intended privacy-preserving workflow is:
+The intended privacy-preserving flow is:
 
 ```text
 ORIGINAL DOCUMENT
@@ -144,41 +204,40 @@ ORIGINAL DOCUMENT
        local Scrub Key
   -> SCRUBBED DOCUMENT
   -> SolidPrivacy AI Workflow
-       DPIA / DSAR / RoPA / vendor / breach / other analysis
+       facts / DPIA / DSAR / RoPA / vendor / breach / other analysis
   -> SCRUBBED AI RESULT
   -> controlled Reinsert
   -> Export / Audit
 ```
 
-The Scrub Key and original identifiers should remain outside the AI workflow unless a separately approved use case explicitly requires otherwise.
+The Scrub Key and original identifiers remain outside the AI workflow unless a separately approved use case explicitly requires otherwise. Cloud processing is never implied merely because a workflow exists.
 
-Introducing cloud processing of documents is a separate architectural/security decision and is not implied by this repository structure.
+## Third-party ingestion policy
 
-## Third-party skill ingestion policy
+Third-party privacy/GRC skill repositories and applications are donor material, not legal authority.
 
-Third-party privacy/GRC skill repositories are treated as **raw material**, not legal authority.
+Before upstream content becomes SolidPrivacy-native:
 
-Before upstream content is promoted into a SolidPrivacy-native skill:
+1. record repository/source, path, version/commit and license in provenance;
+2. identify whether the donor contributes semantics, methodology, workflow, engineering, templates or legal assertions;
+3. separate reusable process logic from jurisdiction-specific assertions;
+4. verify material legal assertions against approved sources;
+5. map concepts to canonical vocabulary;
+6. adapt inputs/outputs to `contracts/`;
+7. add evidence and human-review gates;
+8. add positive, negative and near-miss evaluations;
+9. preserve required attribution and modification notices.
 
-1. record upstream repository, path, commit/version and license in `provenance/upstream_manifest.yaml`;
-2. separate workflow logic from legal assertions;
-3. verify material legal assertions against authoritative sources;
-4. classify legal claims using `contracts/legal_claim.schema.json`;
-5. remove organisation-specific, jurisdiction-specific or cloud-specific assumptions unless intentionally retained;
-6. adapt the skill to the common input/output/evidence contracts;
-7. add synthetic evaluation cases and regression assertions;
-8. define explicit human-review gates.
+## Initial donor strategy
 
-## Initial implementation priority
+The initial architecture recognises four distinct donor classes:
 
-The first production-oriented workflow tranche should be deliberately small:
+- **semantic:** W3C DPV;
+- **official methodology:** Dutch Government DPIA/pre-scan model, EDPB templates, CNIL PIA;
+- **control/evidence engineering:** NIST OSCAL/PRAM and EDPS evidence tooling;
+- **agent engineering:** selected privacy/GRC skill repositories, Meta SecPriv and open-source GRC systems such as Probo.
 
-1. DPIA;
-2. DSAR;
-3. RoPA;
-4. breach assessment.
-
-Only after these pass legal-accuracy and regression evaluations should the library expand to retention, vendor assessment, international transfers, ISO/IEC 27701 overlays and EU AI Act workflows.
+These classes must remain distinct in code and provenance.
 
 ## Non-goals
 
@@ -186,7 +245,8 @@ This repository is not intended to:
 
 - replace a qualified privacy professional or DPO;
 - treat third-party prompts as authoritative law;
-- embed sensitive source documents in tests;
+- copy complete external GRC products;
+- embed real personal data in tests;
 - create uncontrolled autonomous legal decisions;
 - duplicate the Scrub anonymisation engine;
 - introduce cloud document processing by default.

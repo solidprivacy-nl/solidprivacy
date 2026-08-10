@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/source_reference.schema.json",
+  "title": "SolidPrivacy Source Reference",
+  "type": "object",
+  "required": ["source_id", "source_status", "jurisdiction", "verified_at"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "source_status": {
+      "type": "string",
+      "enum": [
+        "authoritative",
+        "authoritative_guidance",
+        "official_methodology",
+        "consultation_draft",
+        "consultation_closed_pending_finalisation",
+        "standard_reference",
+        "engineering_reference",
+        "candidate_raw_material"
+      ]
+    },
+    "jurisdiction": {"type": "string", "minLength": 1},
+    "version": {"type": ["string", "null"]},
+    "effective_date": {"type": ["string", "null"], "format": "date"},
+    "verified_at": {"type": "string", "format": "date-time"},
+    "review_due": {"type": ["string", "null"], "format": "date"},
+    "locator": {"type": ["string", "null"]},
+    "notes": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}
