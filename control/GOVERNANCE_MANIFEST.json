@@ -1,9 +1,10 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "repository": "solidprivacy-nl/solidprivacy",
   "required_paths": [
     "control/PROJECT_GOVERNANCE_BOOTSTRAP.md",
     "control/SOLIDPRIVACY_RELEASE_ASSURANCE_CONTRACT_V1.md",
+    "control/PROJECT_STATE.json",
     "control/WORK_CLAIMS.json",
     "control/GOVERNANCE_MANIFEST.json",
     "CURRENT_STATE.md",
@@ -12,6 +13,7 @@
     "CHANGELOG.md",
     "DECISION_LOG.md",
     "docs/architecture.md",
+    "docs/PROJECT_CONTROL_ARCHITECTURE.md",
     "docs/DATA_ARCHITECTURE.md",
     "docs/POAAS_REFERENCE_WORKFLOW.md",
     "docs/POAAS_OPERATING_ECONOMICS.md",
@@ -33,6 +35,17 @@
     "CLOSED",
     "SUPERSEDED"
   ],
+  "allowed_freshness_statuses": [
+    "CURRENT",
+    "STALE",
+    "RECONCILIATION_REQUIRED",
+    "INDETERMINATE"
+  ],
+  "required_scope_classes": [
+    "CURRENT_RELEASE",
+    "NEXT_RELEASE",
+    "PARKING_LOT"
+  ],
   "forbidden_repository_paths": [
     "client_data",
     "customer_data",
@@ -44,13 +57,15 @@
   ],
   "source_of_truth": {
     "sequencing": "ROADMAP.md",
-    "current_state": "CURRENT_STATE.md",
+    "current_state_machine": "control/PROJECT_STATE.json",
+    "current_state_human": "CURRENT_STATE.md",
     "workpackage_index": "WORKPACKAGES.md",
     "work_claims": "control/WORK_CLAIMS.json",
     "decisions": "DECISION_LOG.md",
     "changes": "CHANGELOG.md",
     "handovers": "handover/",
     "architecture": "docs/architecture.md",
+    "project_control_architecture": "docs/PROJECT_CONTROL_ARCHITECTURE.md",
     "client_data_architecture": "docs/DATA_ARCHITECTURE.md",
     "cross_project_governance": "market-predictions/control-plane"
   }
