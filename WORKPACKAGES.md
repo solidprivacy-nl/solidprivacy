@@ -2,6 +2,8 @@
 
 This file is the authoritative project-local index of executable workpackages. `ROADMAP.md` owns strategic sequencing; detailed workpackage files define executable scope/acceptance. A roadmap item may be planned before a detailed workpackage exists, but implementation may not become consequential `ACTIVE` work until its workpackage contract and claim are repository-backed.
 
+Project execution state is machine-readable in `control/PROJECT_STATE.json`; this index does not replace current-state/freshness reconstruction.
+
 ## Status semantics
 
 - `PLANNED` — roadmap sequence exists; detailed package may still need authoring.
@@ -17,7 +19,9 @@ This file is the authoritative project-local index of executable workpackages. `
 | ID | Name | Status | Specification / evidence |
 |---|---|---|---|
 | WP0 | Privacy operating architecture | COMPLETE IN DRAFT STACK | PR #1 + repository architecture/source governance |
-| GOVDATA-FOUNDATION-2026-08-11 | POaaS client model + data plane + project governance foundation | ACTIVE | PR #8; `docs/POAAS_REFERENCE_WORKFLOW.md`; `docs/DATA_ARCHITECTURE.md`; `docs/POAAS_OPERATING_ECONOMICS.md`; `control/PROJECT_GOVERNANCE_BOOTSTRAP.md`; claim `SP-WC-0008` |
+| GOVDATA-FOUNDATION-2026-08-11 | POaaS client model + data plane + project governance foundation | ACTIVE | PR #8; `docs/POAAS_REFERENCE_WORKFLOW.md`; `docs/DATA_ARCHITECTURE.md`; `docs/POAAS_OPERATING_ECONOMICS.md`; `docs/PROJECT_CONTROL_ARCHITECTURE.md`; `control/PROJECT_GOVERNANCE_BOOTSTRAP.md`; `control/PROJECT_STATE.json`; claim `SP-WC-0008` |
+
+The Control freshness/machine-state/candidate-identity refinement is part of this existing foundation package. It does **not** create a new product milestone before M1.
 
 ## DPIA reference vertical slice
 
@@ -76,7 +80,7 @@ assurance route
 definition of done
 ```
 
-Then create/reconcile a machine-readable ownership claim in `control/WORK_CLAIMS.json` under the canonical work-claim/branch lifecycle standard.
+Then create/reconcile a machine-readable ownership claim in `control/WORK_CLAIMS.json` under the canonical work-claim/branch lifecycle standard and update `control/PROJECT_STATE.json` with the active objective/scope/next gate.
 
 ## Completion contract
 
@@ -89,4 +93,5 @@ A workpackage is `COMPLETE` only if, where applicable:
 - production action and post-action confirmation are separated and evidenced;
 - claim is `CLOSED`, validly `TRANSFER`red or `SUPERSEDED`;
 - handover/disposition is recorded when ownership/lineage changed;
-- `CURRENT_STATE.md`, `ROADMAP.md`, `CHANGELOG.md` and `DECISION_LOG.md` are reconciled.
+- `control/PROJECT_STATE.json` and `CURRENT_STATE.md` converge with live state;
+- `ROADMAP.md`, `CHANGELOG.md` and `DECISION_LOG.md` are reconciled.
