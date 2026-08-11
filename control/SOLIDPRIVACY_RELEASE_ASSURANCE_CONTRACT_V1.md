@@ -13,7 +13,7 @@ blind_initial_review=true
 
 ## Purpose
 
-SolidPrivacy performs privacy-sensitive AI processing and creates legal/compliance decision-support artefacts. A passing implementation test or a narrative work claim is not sufficient to establish a trustworthy release. Consequential candidates require independent reconstruction against the exact candidate head.
+SolidPrivacy performs privacy-sensitive AI processing and creates legal/compliance decision-support artefacts. A passing implementation test or a narrative work claim is not sufficient to establish a trustworthy release. Consequential candidates require independent reconstruction against exact candidate identity and evidence.
 
 ## Trigger
 
@@ -29,6 +29,7 @@ Use independent release assurance for material changes to:
 - workflow orchestration/audit;
 - production data-plane/storage/security configuration;
 - client-facing deliverable generation;
+- project governance authority, acceptance or release semantics;
 - claims that a workpackage/milestone is complete or production-ready.
 
 Pure editorial documentation can use a proportionate path only when it does not change authority, sequencing, acceptance criteria, security posture or production claims.
@@ -45,22 +46,49 @@ Before recording its initial `PASS | FAIL | INDETERMINATE`, assurance must not r
 Assurance may and should read:
 
 - the principal's requested outcome;
-- project governance bootstrap;
-- current roadmap/workpackage/decision records;
+- project governance bootstrap and project-control architecture;
+- current machine project state, roadmap/workpackage/decision records;
 - candidate source/diff;
 - schemas/contracts;
 - test/eval definitions;
-- raw GitHub Actions evidence on the exact head;
+- raw GitHub Actions evidence on the applicable exact head(s);
 - approved legal/source registries where relevant;
 - live target/data-plane evidence required by the acceptance contract.
 
 After the initial verdict, handover/implementation narrative may be read to check administrative completeness or identify undisclosed scope.
 
-## Exact-head rule
+## Candidate identity and exact-head rule
 
-The assurance verdict binds only to the exact reviewed candidate SHA.
+SolidPrivacy distinguishes:
 
-Any repair, rebase, cherry-pick, dependency reconciliation, generated release-output commit or security/configuration mutation produces a new candidate identity. Required assurance must be rerun on the surviving exact head.
+```text
+implementation_candidate_sha
+release_candidate_sha
+live_branch_head
+administrative_descendant_sha
+```
+
+- `implementation_candidate_sha` is the exact semantic/product/architecture candidate produced by implementation and covered by its substantive test/eval evidence.
+- `release_candidate_sha` is the exact candidate that assurance is asked to certify for merge/release. It may equal the implementation candidate or be a strictly administrative descendant.
+- `live_branch_head` is always reconstructed from GitHub and may move after a recorded reconciliation observation.
+- `administrative_descendant_sha` is a descendant whose diff is limited to claim/state/handover/assurance administration and does not modify product/runtime/security/legal semantics.
+
+The assurance verdict binds only to the exact `release_candidate_sha` it reviewed.
+
+Any functional repair, semantic architecture change, rebase/cherry-pick that changes candidate content, dependency reconciliation affecting authority/contracts, generated client/release output, or security/configuration mutation creates a new implementation/release candidate identity. Required substantive tests and assurance must run again on the surviving candidate as dictated by scope.
+
+### Strictly administrative descendant rule
+
+A later commit may record handover, work-claim or machine-state metadata for an already-tested implementation candidate. In that narrow case assurance may reuse substantive evidence from `implementation_candidate_sha` **only if** it independently verifies all of the following:
+
+1. the implementation candidate is an ancestor of the release candidate;
+2. the intervening diff is strictly administrative/governance metadata and contains no product/runtime/security/legal/configuration/generated-client-output change;
+3. the project governance structural gate passes on the exact `release_candidate_sha`;
+4. any inherited repository regression workflows configured for that release candidate pass as required;
+5. no dependency/target drift invalidates the implementation evidence;
+6. candidate identity and lineage are explicit in project state/work claim/handover records.
+
+If any condition is uncertain, the result is `INDETERMINATE` until fresh exact-head evidence is produced. Administrative classification may not be used to smuggle a semantic change past exact-head assurance.
 
 ## Required assurance dimensions
 
@@ -74,28 +102,29 @@ Depending on scope, reconstruct at least:
 6. **Tenant/data isolation** — cross-tenant negative paths, access policy, retrieval scope, secrets/log boundaries.
 7. **Execution/audit** — run/version/hash lineage and blocked/failure semantics.
 8. **Output/delivery** — generated artefacts represent reviewed state and preserve lineage.
-9. **Governance lifecycle** — roadmap/workpackage/work claim/handover/current-state records agree with live GitHub.
-10. **Post-action confirmation** — merge/deploy/data migration success is separately confirmed on the target state.
+9. **Governance lifecycle** — `PROJECT_STATE`, roadmap/workpackage/work claim/handover/current-state records agree with live GitHub and freshness rules.
+10. **Candidate lineage** — implementation/release/live/admin identities are unambiguous and evidence is bound to the correct SHA.
+11. **Post-action confirmation** — merge/deploy/data migration success is separately confirmed on the target state.
 
 ## Verdict semantics
 
 ### PASS
 
-All required acceptance conditions are evidenced on the exact candidate and no material unresolved contradiction remains.
+All required acceptance conditions are evidenced for the exact release candidate and no material unresolved contradiction remains. When prior substantive evidence is reused under the strictly administrative descendant rule, the PASS must identify both the implementation candidate and release candidate.
 
 ### FAIL
 
-A required acceptance/security/legal/privacy condition is demonstrably violated.
+A required acceptance/security/legal/privacy/governance condition is demonstrably violated.
 
 ### INDETERMINATE
 
-Evidence is insufficient, unavailable, contradictory, stale or not tied to the exact candidate. Missing evidence is never inferred as success.
+Evidence is insufficient, unavailable, contradictory, stale or not correctly tied to candidate identity. Missing evidence is never inferred as success.
 
 ## Implementation/assurance separation
 
 Implementation may repair after `FAIL` or `INDETERMINATE`, but assurance may not silently make the repair itself and then certify its own modification.
 
-The repair is a new candidate and returns through the required assurance path.
+A semantic/product repair is a new implementation candidate and returns through the required assurance path. An assurance-only administrative record may be added only after the verdict and must not alter the certified product semantics.
 
 ## Production data-plane rule
 
@@ -117,9 +146,11 @@ Do not put sensitive target evidence itself into a public repository when it con
 A workpackage is not governance-complete until:
 
 - implementation scope is complete or explicitly deferred;
-- exact-head tests/evidence are available;
+- implementation and release candidate identities are explicit;
+- exact-head/substantive evidence is correctly bound and available;
+- required release-candidate structural/regression evidence is available;
 - required assurance verdict is recorded;
 - work claim is terminal or validly transferred;
 - handover/disposition is complete where required;
-- current state/roadmap/changelog/decision records are reconciled;
+- `control/PROJECT_STATE.json`, current-state/roadmap/changelog/decision records are reconciled;
 - production action and post-action confirmation are distinct and complete where applicable.
