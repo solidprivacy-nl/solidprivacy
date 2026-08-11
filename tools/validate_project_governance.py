@@ -15,6 +15,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "control" / "GOVERNANCE_MANIFEST.json"
 CLAIMS_PATH = ROOT / "control" / "WORK_CLAIMS.json"
+PROJECT_STATE_PATH = ROOT / "control" / "PROJECT_STATE.json"
 
 REQUIRED_CLAIM_FIELDS = {
     "claim_id",
@@ -31,6 +32,23 @@ REQUIRED_CLAIM_FIELDS = {
     "last_reconciled_at",
     "pull_request_or_issue_reference",
     "dependencies",
+}
+
+REQUIRED_PROJECT_STATE_FIELDS = {
+    "schema_version",
+    "project_id",
+    "repository",
+    "state_authority",
+    "mode",
+    "freshness",
+    "current_objective",
+    "active_claim",
+    "integration_line",
+    "candidate_identity",
+    "scope",
+    "next_gate",
+    "decision_plane_boundary",
+    "central_control",
 }
 
 
@@ -61,6 +79,60 @@ def main() -> int:
             errors.append(
                 f"forbidden client-data/secrets repository path exists: {raw_path}"
             )
+
+    if not PROJECT_STATE_PATH.is_file():
+        errors.append("missing control/PROJECT_STATE.json")
+    else:
+        project_state = json.loads(PROJECT_STATE_PATH.read_text(encoding="utf-8"))
+        missing = REQUIRED_PROJECT_STATE_FIELDS - set(project_state)
+        if missing:
+            errors.append(
+                "control/PROJECT_STATE.json missing fields: "
+                + ", ".join(sorted(missing))
+            )
+
+        if project_state.get("repository") != manifest.get("repository"):
+            errors.append("PROJECT_STATE repository does not match governance manifest")
+
+        freshness = project_state.get("freshness", {})
+        freshness_status = freshness.get("status")
+        allowed_freshness = set(manifest.get("allowed_freshness_statuses", []))
+        if allowed_freshness and freshness_status not in allowed_freshness:
+            errors.append(f"invalid project freshness status: {freshness_status}")
+        for field in (
+            "last_reconciled_at",
+            "observed_target_sha",
+            "observed_claim_head_sha",
+            "live_head_policy",
+        ):
+            if field not in freshness:
+                errors.append(f"PROJECT_STATE freshness missing field: {field}")
+
+        scope = project_state.get("scope", {})
+        for scope_class in manifest.get("required_scope_classes", []):
+            if scope_class not in scope:
+                errors.append(f"PROJECT_STATE scope missing class: {scope_class}")
+            elif not isinstance(scope.get(scope_class), list):
+                errors.append(f"PROJECT_STATE scope {scope_class} must be a list")
+
+        next_gate = project_state.get("next_gate", {})
+        for field in ("name", "owner_role", "principal_decision_required", "after_success"):
+            if field not in next_gate:
+                errors.append(f"PROJECT_STATE next_gate missing field: {field}")
+
+        candidate = project_state.get("candidate_identity", {})
+        for field in (
+            "implementation_candidate_sha",
+            "live_branch_head",
+            "administrative_descendant_sha",
+            "rule",
+        ):
+            if field not in candidate:
+                errors.append(f"PROJECT_STATE candidate_identity missing field: {field}")
+
+        boundary = project_state.get("decision_plane_boundary", {})
+        if "project_control" not in boundary or "privacy_runtime" not in boundary:
+            errors.append("PROJECT_STATE must separate project_control and privacy_runtime decisions")
 
     if not CLAIMS_PATH.is_file():
         errors.append("missing control/WORK_CLAIMS.json")
@@ -104,8 +176,17 @@ def main() -> int:
                 "more than one open release_integration claim exists for this repository"
             )
 
+        if PROJECT_STATE_PATH.is_file():
+            project_state = json.loads(PROJECT_STATE_PATH.read_text(encoding="utf-8"))
+            active_claim = project_state.get("active_claim")
+            if active_claim and active_claim not in seen_ids:
+                errors.append(
+                    f"PROJECT_STATE active_claim not found in WORK_CLAIMS: {active_claim}"
+                )
+
     roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8") if (ROOT / "ROADMAP.md").is_file() else ""
     architecture = (ROOT / "docs" / "architecture.md").read_text(encoding="utf-8") if (ROOT / "docs" / "architecture.md").is_file() else ""
+    control_architecture = (ROOT / "docs" / "PROJECT_CONTROL_ARCHITECTURE.md").read_text(encoding="utf-8") if (ROOT / "docs" / "PROJECT_CONTROL_ARCHITECTURE.md").is_file() else ""
     workpackages = (ROOT / "WORKPACKAGES.md").read_text(encoding="utf-8") if (ROOT / "WORKPACKAGES.md").is_file() else ""
 
     for marker in ("Client Data Plane", "M1", "M2", "HMPO"):
@@ -115,6 +196,20 @@ def main() -> int:
     for marker in ("Client Data Plane", "GitHub", "governance"):
         if marker not in architecture:
             errors.append(f"docs/architecture.md missing governance-critical marker: {marker}")
+
+    for marker in (
+        "freshness",
+        "CURRENT_RELEASE",
+        "NEXT_RELEASE",
+        "PARKING_LOT",
+        "implementation_candidate_sha",
+        "privacy/legal",
+    ):
+        if marker not in control_architecture:
+            errors.append(
+                "docs/PROJECT_CONTROL_ARCHITECTURE.md missing governance-critical marker: "
+                + marker
+            )
 
     for marker in ("WP8", "SP-WC-0008"):
         if marker not in workpackages:
