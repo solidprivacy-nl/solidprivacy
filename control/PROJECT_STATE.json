@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "project_id": "solidprivacy",
+  "repository": "solidprivacy-nl/solidprivacy",
+  "state_authority": "project_local",
+  "mode": "ACTIVE",
+  "freshness": {
+    "status": "RECONCILIATION_REQUIRED",
+    "last_reconciled_at": "2026-08-11T10:47:00+02:00",
+    "observed_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
+    "observed_claim_head_sha": "1d441f81fd12cf792126e4e67e5860154d9531c4",
+    "live_head_policy": "reconstruct_from_github_at_mandatory_gates",
+    "note": "This file records semantic reconciliation observations; it does not attempt to contain its own Git commit SHA."
+  },
+  "current_objective": "Close PR #8 architecture/governance alignment under the updated Control freshness and project-control architecture, then hand over an exact candidate for independent assurance.",
+  "active_claim": "SP-WC-0008",
+  "integration_line": {
+    "pull_request": 8,
+    "branch": "agent/poaas-client-operating-roadmap",
+    "target_branch": "agent/privacy-officer-review-package",
+    "claim_type": "release_integration"
+  },
+  "candidate_identity": {
+    "implementation_candidate_sha": null,
+    "live_branch_head": "RECONSTRUCT_FROM_GITHUB",
+    "administrative_descendant_sha": null,
+    "rule": "Assurance binds to an exact implementation/release candidate; later administrative descendants do not retroactively change prior evidence coverage."
+  },
+  "scope": {
+    "CURRENT_RELEASE": [
+      "PR #8 POaaS architecture/data/governance foundation closeout",
+      "Control freshness and machine-state alignment",
+      "candidate identity and exact-head semantics",
+      "scope-protection and project-vs-privacy decision-plane separation"
+    ],
+    "NEXT_RELEASE": [
+      "M1 chained DPIA reference execution with positive and blocked paths",
+      "M1 HMPO/cycle-time/compute telemetry primitives"
+    ],
+    "PARKING_LOT": [
+      "pooled multi-tenant client data optimisation",
+      "large GRC-style management UI",
+      "broad multi-jurisdiction expansion"
+    ]
+  },
+  "next_gate": {
+    "name": "exact_head_ci_then_independent_assurance_handover",
+    "owner_role": "implementation_operations_then_governance_release_assurance",
+    "principal_decision_required": false,
+    "after_success": "Create/reconcile the M1 execution workpackage and claim; do not insert new product scope before M1."
+  },
+  "decision_plane_boundary": {
+    "project_control": "D0-D3 applies to development/project-operation decisions under the canonical Control charter.",
+    "privacy_runtime": "Privacy/legal conclusions remain governed by workflow evidence, Privacy Officer and DPO/FG/legal review contracts; D0-D3 cannot bypass them."
+  },
+  "central_control": {
+    "role": "coordination_and_freshness_bound_cache",
+    "project_local_state_outranks_central_cache": true,
+    "enrollment_follow_up_issue": 9
+  }
+}
