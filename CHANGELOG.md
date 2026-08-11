@@ -4,6 +4,19 @@ Material repository/product changes are recorded here. Durable architecture/prod
 
 ## Unreleased
 
+### 2026-08-11 — Control freshness and machine project-state alignment
+
+- added `docs/PROJECT_CONTROL_ARCHITECTURE.md` as the project-specific control architecture linked to the canonical control-plane doctrine;
+- added `control/PROJECT_STATE.json` as machine-readable coordination state and made `CURRENT_STATE.md` its human-readable projection/context rather than a competing status database;
+- adopted canonical `CURRENT | STALE | RECONCILIATION_REQUIRED | INDETERMINATE` freshness semantics for project coordination;
+- added explicit `current_objective`, `next_gate`, `owner_role`, `principal_decision_required` and `after_success` routing semantics;
+- added `CURRENT_RELEASE / NEXT_RELEASE / PARKING_LOT` scope protection so newly discovered improvements do not silently expand the active release;
+- separated project Control D0–D3 decisions from SolidPrivacy runtime Privacy Officer/DPO/FG/legal decision authority;
+- formalised `implementation_candidate_sha` versus live branch head versus administrative descendant semantics so exact-head evidence remains bound to the candidate actually tested;
+- extended the static governance validator/manifest to require and validate the machine project-state/control-architecture contracts;
+- reopened PR #8 implementation claim for this governance alignment; a fresh exact candidate and assurance handover are required after CI;
+- preserved M1 as the next product implementation gate after PR #8 closeout.
+
 ### 2026-08-11 — POaaS data plane, economics and project-governance foundation
 
 - made the Client Data Plane an explicit architectural boundary rather than an implied future datastore;
