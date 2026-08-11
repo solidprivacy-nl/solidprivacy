@@ -17,11 +17,11 @@
       "branch": "agent/poaas-client-operating-roadmap",
       "base_or_target_branch": "agent/privacy-officer-review-package",
       "last_reconciled_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
-      "current_claim_head_sha": "1d441f81fd12cf792126e4e67e5860154d9531c4",
-      "status": "ACTIVE",
+      "current_claim_head_sha": "c5a1b7adc6f219be92190f3880c32dc6ac539307",
+      "status": "HANDOVER_READY",
       "claim_type": "release_integration",
       "opened_at": "2026-08-11T00:40:54+02:00",
-      "last_reconciled_at": "2026-08-11T10:47:00+02:00",
+      "last_reconciled_at": "2026-08-11T11:02:07+02:00",
       "pull_request_or_issue_reference": "PR #8",
       "dependencies": [
         "PR #7 / WP6 exact-head implementation stack",
@@ -38,12 +38,13 @@
         "control/PROJECT_GOVERNANCE_BOOTSTRAP.md",
         "control/PROJECT_STATE.json",
         "control/SOLIDPRIVACY_RELEASE_ASSURANCE_CONTRACT_V1.md",
-        "tools/validate_project_governance.py"
+        "tools/validate_project_governance.py",
+        "implementation_candidate_sha=c5a1b7adc6f219be92190f3880c32dc6ac539307",
+        "GitHub Actions on c5a1b7adc6f219be92190f3880c32dc6ac539307: Project governance structure gate SUCCESS; WP3 evidence and fact gates SUCCESS; WP4 AI boundary and fact extraction gates SUCCESS; WP5 governed DPIA analysis gates SUCCESS; WP6 Privacy Officer review gates SUCCESS"
       ],
       "unresolved_items": [
-        "Finish Control freshness/project-state alignment and establish a new exact implementation candidate",
-        "Run exact-head machine gates on the new candidate",
-        "Create a fresh assurance handover and obtain independent governance_release_assurance verdict",
+        "Independent governance_release_assurance verdict on the live release candidate descendant of implementation candidate c5a1b7adc6f219be92190f3880c32dc6ac539307",
+        "Claim/stack closeout after assurance",
         "M1 remains the next product execution milestone after PR #8 closeout"
       ],
       "handover_reference": "handover/SP-HO-0008.md"
