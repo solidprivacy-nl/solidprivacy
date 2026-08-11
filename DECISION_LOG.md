@@ -163,3 +163,48 @@ Status: ACCEPTED
 Decision: consequential active work is backed by a machine-readable claim and reconciled against live branch/PR/dependency state under `WORK_CLAIM_AND_BRANCH_LIFECYCLE_STANDARD_V1`. Materially stale integration lines stop accumulating and must be reconciled or superseded with explicit handover.
 
 Reason: closes the gap between roadmap intentions and actual branches/PRs, and prevents orphaned/stale work from remaining implicitly authoritative.
+
+## D-019 — Project status is machine-first and freshness-bound
+
+Date: 2026-08-11  
+Status: ACCEPTED
+
+Decision: `control/PROJECT_STATE.json` is the machine-readable SolidPrivacy coordination state. `CURRENT_STATE.md` is a human-readable projection/context view. Live GitHub is reconstructed at mandatory gates; central Control is a freshness-bound coordination cache, not project-specific authority.
+
+Reason: prevents duplicated narrative status from becoming stale truth and aligns SolidPrivacy with `CONTROL_STATE_FRESHNESS_STANDARD_V1`.
+
+## D-020 — Scope is explicitly protected as CURRENT_RELEASE / NEXT_RELEASE / PARKING_LOT
+
+Date: 2026-08-11  
+Status: ACCEPTED
+
+Decision: newly discovered improvements are classified rather than silently entering the active release. Only work required for the stated outcome, safety/correctness or explicit reprioritisation interrupts the primary objective.
+
+Reason: preserves vertical-slice completion and prevents architecture discovery from indefinitely delaying M1.
+
+## D-021 — Project-control decisions and privacy/legal decisions are different decision planes
+
+Date: 2026-08-11  
+Status: ACCEPTED
+
+Decision: Control D0–D3 classes apply only to project/development decisions. Runtime privacy/legal conclusions remain governed by evidence, validators and accountable Privacy Officer/DPO/FG/legal review contracts.
+
+Reason: avoids a category error in which project autonomy accidentally bypasses legal/professional accountability.
+
+## D-022 — Candidate identity is distinct from live branch head and administrative descendants
+
+Date: 2026-08-11  
+Status: ACCEPTED
+
+Decision: distinguish `implementation_candidate_sha`, live branch head and later administrative descendant commits. Exact-head product evidence binds to the candidate it actually tested; later claim/handover metadata cannot retroactively extend that evidence.
+
+Reason: eliminates ambiguity created when handover/state commits are added after an implementation candidate has already been tested.
+
+## D-023 — M1 remains the next product gate after governance alignment
+
+Date: 2026-08-11  
+Status: ACCEPTED
+
+Decision: the Control freshness/project-state refinement is part of PR #8 closeout and does not create a new product milestone before M1.
+
+Reason: governance must reduce drift and span of control without becoming scope creep that blocks execution of the already selected next vertical-slice gate.
