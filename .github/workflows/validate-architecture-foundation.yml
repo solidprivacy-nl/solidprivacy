@@ -1,0 +1,112 @@
+name: Validate architecture foundation
+
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'contracts/**'
+      - 'control_models/**'
+      - 'docs/**'
+      - 'evals/**'
+      - 'evidence_collectors/**'
+      - 'frameworks/**'
+      - 'jurisdictions/**'
+      - 'legal_sources/**'
+      - 'mappings/**'
+      - 'methodologies/**'
+      - 'provenance/**'
+      - 'skills/**'
+      - 'vocabularies/**'
+      - 'workflows/**'
+      - '.github/workflows/validate-architecture-foundation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify exact candidate identity
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          echo "exact candidate: $EXPECTED_SHA"
+
+      - name: Validate JSON contracts and local references
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract_dir = Path('contracts')
+          files = sorted(contract_dir.glob('*.schema.json'))
+          if not files:
+              raise SystemExit('no contract schemas found')
+
+          ids = set()
+          for path in files:
+              data = json.loads(path.read_text(encoding='utf-8'))
+              if data.get('$schema') != 'https://json-schema.org/draft/2020-12/schema':
+                  raise SystemExit(f'{path}: unexpected or missing $schema')
+              if data.get('type') != 'object':
+                  raise SystemExit(f'{path}: root type must be object')
+              schema_id = data.get('$id')
+              if not isinstance(schema_id, str) or not schema_id:
+                  raise SystemExit(f'{path}: missing $id')
+              if schema_id in ids:
+                  raise SystemExit(f'{path}: duplicate $id {schema_id}')
+              ids.add(schema_id)
+
+              def walk(value):
+                  if isinstance(value, dict):
+                      ref = value.get('$ref')
+                      if isinstance(ref, str) and not ref.startswith(('http://', 'https://', '#')):
+                          target = (path.parent / ref.split('#', 1)[0]).resolve()
+                          if not target.is_file():
+                              raise SystemExit(f'{path}: unresolved local $ref {ref}')
+                      for child in value.values():
+                          walk(child)
+                  elif isinstance(value, list):
+                      for child in value:
+                          walk(child)
+              walk(data)
+          print(f'validated {len(files)} JSON schemas')
+          PY
+
+      - name: Validate governed YAML syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          ruby -e 'require "yaml"; require "date"; ARGV.each { |p| YAML.safe_load(File.read(p), permitted_classes: [Date, Time], aliases: true); puts "validated #{p}" }' \
+            legal_sources/source_registry.yaml \
+            provenance/upstream_manifest.yaml
+
+      - name: Enforce architecture-only scope
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-only "$BASE_SHA"...HEAD > /tmp/changed.txt
+          while IFS= read -r path; do
+            case "$path" in
+              README.md|contracts/*|control_models/*|docs/*|evals/*|evidence_collectors/*|frameworks/*|jurisdictions/*|legal_sources/*|mappings/*|methodologies/*|provenance/*|skills/*|vocabularies/*|workflows/*|.github/workflows/validate-architecture-foundation.yml) ;;
+              *) echo "unexpected non-foundation path: $path"; exit 1 ;;
+            esac
+          done < /tmp/changed.txt
+          echo "architecture-only scope validated"
