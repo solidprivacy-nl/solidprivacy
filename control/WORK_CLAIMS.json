@@ -17,8 +17,8 @@
       "branch": "agent/poaas-client-operating-roadmap",
       "base_or_target_branch": "agent/privacy-officer-review-package",
       "last_reconciled_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
-      "current_claim_head_sha": "50c4d6084bcb0bef8a8156c51fd071a02a754aa3",
-      "status": "ACTIVE",
+      "current_claim_head_sha": "e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+      "status": "HANDOVER_READY",
       "claim_type": "release_integration",
       "opened_at": "2026-08-11T00:40:54+02:00",
       "last_reconciled_at": "2026-08-14T23:47:00+02:00",
@@ -28,26 +28,31 @@
         "Canonical control-plane freshness/lifecycle doctrine on market-predictions/control-plane main"
       ],
       "artifacts_and_evidence": [
+        "docs/ENGAGEMENT_ARCHITECTURE.md",
         "docs/DATA_ARCHITECTURE.md",
         "docs/POAAS_OPERATING_ECONOMICS.md",
         "docs/POAAS_REFERENCE_WORKFLOW.md",
         "docs/PROJECT_CONTROL_ARCHITECTURE.md",
         "docs/architecture.md",
+        "README.md",
         "ROADMAP.md",
         "WORKPACKAGES.md",
+        "CURRENT_STATE.md",
+        "DECISION_LOG.md",
+        "CHANGELOG.md",
         "control/PROJECT_GOVERNANCE_BOOTSTRAP.md",
         "control/PROJECT_STATE.json",
         "control/SOLIDPRIVACY_RELEASE_ASSURANCE_CONTRACT_V1.md",
+        "control/GOVERNANCE_MANIFEST.json",
         "tools/validate_project_governance.py",
-        "historical implementation_candidate_sha=c5a1b7adc6f219be92190f3880c32dc6ac539307 with all prior PR gates SUCCESS; invalidated as the current assurance candidate by the 2026-08-14 semantic refinement"
+        "implementation_candidate_sha=e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+        "GitHub Actions on e2fc5f5a92c43a3aac9ebfc914d0980338726f52: Project governance structure gate SUCCESS run 31844392502; WP3 evidence and fact gates SUCCESS run 31844392539; WP4 AI boundary and fact extraction gates SUCCESS run 31844392477; WP5 governed DPIA analysis gates SUCCESS run 31844392483; WP6 Privacy Officer review gates SUCCESS run 31844392491"
       ],
       "unresolved_items": [
-        "Define PROJECT and MANAGED_SERVICE as first-class engagement modes without creating a parallel DPIA architecture",
-        "Define engagement-scoped state, retention/offboarding and explicit promotion to durable organisation state",
-        "Refine M1 as the first standalone professional-service DPIA execution using a minimal synthetic engagement envelope while leaving generalized production engagement contracts in WP9",
-        "Freeze a new semantic implementation candidate and rerun exact-head machine gates",
-        "Create a fresh assurance handover and obtain independent governance_release_assurance verdict",
-        "M1 remains the next product execution milestone after PR #8 closeout"
+        "Independent governance_release_assurance verdict on the live release candidate descendant of implementation candidate e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+        "Assurance must challenge that PROJECT and MANAGED_SERVICE share one governed workflow core while state scope/retention/promotion/continuation remain explicit",
+        "Claim/stack closeout after assurance",
+        "M1 standalone PROJECT + DPIA remains the next product execution milestone after PR #8 closeout"
       ],
       "handover_reference": "handover/SP-HO-0008.md"
     }
