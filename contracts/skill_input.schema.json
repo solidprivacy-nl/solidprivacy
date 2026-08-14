@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/skill_input.schema.json",
+  "title": "SolidPrivacy Skill Input",
+  "type": "object",
+  "required": ["task_id", "input_type", "content", "context"],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "input_type": {"type": "string", "enum": ["scrubbed_document", "structured_data", "incident", "request", "mixed"]},
+    "content": {},
+    "context": {"type": "object"},
+    "jurisdiction": {"type": ["string", "null"]},
+    "language": {"type": ["string", "null"]},
+    "source_versions": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "object"}
+  },
+  "additionalProperties": true
+}
