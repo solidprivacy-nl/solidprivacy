@@ -19,9 +19,11 @@ Project execution state is machine-readable in `control/PROJECT_STATE.json`; thi
 | ID | Name | Status | Specification / evidence |
 |---|---|---|---|
 | WP0 | Privacy operating architecture | COMPLETE IN DRAFT STACK | PR #1 + repository architecture/source governance |
-| GOVDATA-FOUNDATION-2026-08-11 | POaaS client model + data plane + project governance foundation | ACTIVE | PR #8; `docs/POAAS_REFERENCE_WORKFLOW.md`; `docs/DATA_ARCHITECTURE.md`; `docs/POAAS_OPERATING_ECONOMICS.md`; `docs/PROJECT_CONTROL_ARCHITECTURE.md`; `control/PROJECT_GOVERNANCE_BOOTSTRAP.md`; `control/PROJECT_STATE.json`; claim `SP-WC-0008` |
+| GOVDATA-FOUNDATION-2026-08-11 | POaaS/client engagement model + data plane + project governance foundation | ACTIVE | PR #8; `docs/ENGAGEMENT_ARCHITECTURE.md`; `docs/POAAS_REFERENCE_WORKFLOW.md`; `docs/DATA_ARCHITECTURE.md`; `docs/POAAS_OPERATING_ECONOMICS.md`; `docs/PROJECT_CONTROL_ARCHITECTURE.md`; `control/PROJECT_GOVERNANCE_BOOTSTRAP.md`; `control/PROJECT_STATE.json`; claim `SP-WC-0008` |
 
-The Control freshness/machine-state/candidate-identity refinement is part of this existing foundation package. It does **not** create a new product milestone before M1.
+The Control freshness/machine-state/candidate-identity refinement and the first-class `PROJECT` versus `MANAGED_SERVICE` engagement architecture are part of this existing foundation package. They do **not** create a new product milestone before M1.
+
+`docs/ENGAGEMENT_ARCHITECTURE.md` is authoritative for the distinction between engagement-scoped project state and durable organisation-scoped managed-service state, explicit promotion, retention/offboarding and engagement-aware continuation/change propagation.
 
 ## DPIA reference vertical slice
 
@@ -33,7 +35,9 @@ The Control freshness/machine-state/candidate-identity refinement is part of thi
 | WP4 | Safe AI boundary + fact extraction validator | COMPLETE | `docs/workpackages/WP4_AI_FACT_EXTRACTION.md` |
 | WP5 | Governed legal context + DPIA analysis | COMPLETE | `docs/workpackages/WP5_GOVERNED_DPIA_ANALYSIS.md` |
 | WP6 | Privacy Officer review + report/reinsert | IMPLEMENTED | `docs/workpackages/WP6_PRIVACY_OFFICER_REVIEW.md`; PR #7; integration closeout remains governed by live stack state |
-| M1 | Chained DPIA reference execution milestone | PLANNED / NEXT PRODUCT GATE | Acceptance in `ROADMAP.md`; detailed execution workpackage must be created before activation |
+| M1 | Standalone `PROJECT + DPIA` chained execution milestone | PLANNED / NEXT PRODUCT GATE | Existing acceptance in `ROADMAP.md` plus `docs/ENGAGEMENT_ARCHITECTURE.md`: minimal synthetic project-engagement envelope, reviewed deliverable/audit, no accidental organisation-state promotion, explicit closeout/retention disposition; detailed execution workpackage must be created before activation |
+
+M1 proves the governed DPIA engine as a complete bounded professional-service execution. It does not production-enable real client persistence and does not pull the generalized WP9 engagement platform before the Client Data Plane.
 
 ## Shared operating/client substrate
 
@@ -43,8 +47,8 @@ The numbering below is authoritative once the PR #8 roadmap package is accepted.
 |---|---|---|---|
 | WP7 | Generalized workflow execution + audit model | PLANNED | Create detailed package after M1 PASS |
 | WP8 | Client Data Plane + tenant/security boundary | PLANNED | `docs/workpackages/WP8_CLIENT_DATA_PLANE.md` |
-| WP9 | Client / organisation / engagement operating model | PLANNED | Create before activation |
-| WP10 | Persistent organisational privacy state + dependency graph | PLANNED | Create before activation |
+| WP9 | Client / organisation / engagement operating model | PLANNED | Create before activation; productionize the generic engagement envelope and `PROJECT | MANAGED_SERVICE` persistence/retention/promotion policies on the assured WP8 data plane |
+| WP10 | Persistent organisational privacy state + dependency graph | PLANNED | Create before activation; organisation-scoped state is distinct from engagement-scoped project state |
 | WP11 | Executable control/evidence/finding/remediation model | PLANNED | Create before activation |
 | WP12 | Model gateway + privacy-policy hardening | PLANNED | Create before activation |
 
@@ -52,14 +56,14 @@ The numbering below is authoritative once the PR #8 roadmap package is accepted.
 
 | ID | Name | Status | Detailed spec requirement |
 |---|---|---|---|
-| WP13 | Engagement onboarding + evidence request orchestration | PLANNED | Create before activation |
+| WP13 | Engagement onboarding + evidence request orchestration | PLANNED | Create before activation; consume the generalized WP9 engagement contract |
 | WP14 | RoPA / processing inventory backbone | PLANNED | Create before activation |
 | WP15 | Privacy baseline + action plan + deliverable projection | PLANNED | Create before activation |
-| M2 | Synthetic medium-sized Dutch home-care POaaS onboarding acceptance | PLANNED | Acceptance in `ROADMAP.md`; include unit-economics report |
+| M2 | Synthetic medium-sized Dutch home-care POaaS onboarding acceptance | PLANNED | Acceptance in `ROADMAP.md`; `MANAGED_SERVICE` reference; include unit-economics report |
 
 ## Later workflow expansion
 
-After M2, create separately claimed workpackages for breach, vendor/Article 28, DSAR, transfers, retention/deletion and AI privacy/rights-assessment coordination. Do not activate them as bespoke agents outside the shared client-state/data-plane substrate.
+After M2, create separately claimed workpackages for breach, vendor/Article 28, DSAR, transfers, retention/deletion and AI privacy/rights-assessment coordination. These workflow capabilities must be reusable under either a bounded `PROJECT` engagement or, where contracted, `MANAGED_SERVICE`; do not create separate legal workflow implementations for each service mode.
 
 ## Workpackage creation contract
 
