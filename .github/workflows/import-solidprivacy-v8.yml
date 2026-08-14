@@ -18,28 +18,28 @@ jobs:
         with:
           ref: website/baseline-v8
 
-      - name: Fetch deployed v8 website
+      - name: Fetch byte-identical deployed v8 assets
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p website/site/fonts website/site/scrub
           base='https://solidprivacy.nl'
+          # These files were verified byte-identical to the principal-supplied v8 ZIP.
           curl -fsSL "$base/index.html" -o website/site/index.html
           curl -fsSL "$base/favicon.svg" -o website/site/favicon.svg
           curl -fsSL "$base/apple-touch-icon.png" -o website/site/apple-touch-icon.png
           curl -fsSL "$base/og-image.png" -o website/site/og-image.png
-          curl -fsSL "$base/robots.txt" -o website/site/robots.txt
           curl -fsSL "$base/sitemap.xml" -o website/site/sitemap.xml
-          curl -fsSL "$base/solidprivacy-kennismaking.html" -o website/site/solidprivacy-kennismaking.html
-          curl -fsSL "$base/solidprivacy-privacyverklaring.html" -o website/site/solidprivacy-privacyverklaring.html
           curl -fsSL "$base/scrub/index.html" -o website/site/scrub/index.html
           curl -fsSL "$base/fonts/fonts.css" -o website/site/fonts/fonts.css
           curl -fsSL "$base/fonts/archivo-latin-wght-italic.woff2" -o website/site/fonts/archivo-latin-wght-italic.woff2
           curl -fsSL "$base/fonts/archivo-latin-wght-normal.woff2" -o website/site/fonts/archivo-latin-wght-normal.woff2
           curl -fsSL "$base/fonts/fraunces-latin-standard-italic.woff2" -o website/site/fonts/fraunces-latin-standard-italic.woff2
           curl -fsSL "$base/fonts/fraunces-latin-standard-normal.woff2" -o website/site/fonts/fraunces-latin-standard-normal.woff2
+          # robots.txt, kennismaking and privacy statement differ on the live site;
+          # their exact v8 versions are committed directly from the supplied ZIP.
 
-      - name: Verify against principal-supplied v8 package
+      - name: Verify complete baseline against principal-supplied v8 package
         shell: bash
         run: |
           set -euo pipefail
