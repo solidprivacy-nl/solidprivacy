@@ -1,0 +1,77 @@
+name: Import SolidPrivacy website v8 baseline
+
+on:
+  push:
+    branches:
+      - website/baseline-v8
+    paths:
+      - .github/workflows/import-solidprivacy-v8.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: website/baseline-v8
+
+      - name: Fetch deployed v8 website
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p website/site/fonts website/site/scrub
+          base='https://solidprivacy.nl'
+          curl -fsSL "$base/index.html" -o website/site/index.html
+          curl -fsSL "$base/favicon.svg" -o website/site/favicon.svg
+          curl -fsSL "$base/apple-touch-icon.png" -o website/site/apple-touch-icon.png
+          curl -fsSL "$base/og-image.png" -o website/site/og-image.png
+          curl -fsSL "$base/robots.txt" -o website/site/robots.txt
+          curl -fsSL "$base/sitemap.xml" -o website/site/sitemap.xml
+          curl -fsSL "$base/solidprivacy-kennismaking.html" -o website/site/solidprivacy-kennismaking.html
+          curl -fsSL "$base/solidprivacy-privacyverklaring.html" -o website/site/solidprivacy-privacyverklaring.html
+          curl -fsSL "$base/scrub/index.html" -o website/site/scrub/index.html
+          curl -fsSL "$base/fonts/fonts.css" -o website/site/fonts/fonts.css
+          curl -fsSL "$base/fonts/archivo-latin-wght-italic.woff2" -o website/site/fonts/archivo-latin-wght-italic.woff2
+          curl -fsSL "$base/fonts/archivo-latin-wght-normal.woff2" -o website/site/fonts/archivo-latin-wght-normal.woff2
+          curl -fsSL "$base/fonts/fraunces-latin-standard-italic.woff2" -o website/site/fonts/fraunces-latin-standard-italic.woff2
+          curl -fsSL "$base/fonts/fraunces-latin-standard-normal.woff2" -o website/site/fonts/fraunces-latin-standard-normal.woff2
+
+      - name: Verify against principal-supplied v8 package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd website/site
+          cat > /tmp/v8.sha256 <<'EOF'
+          36526fad600b66561dd25cb8efa8d1ac3cc30b0721d54821b08793e2f0dfd5bf  apple-touch-icon.png
+          270a070e96dec814af05d45182ef4bfcaacf94f0cbd47904bd0faef28e054c6f  favicon.svg
+          3d109f97a71d3d3d04d16e5c4b95be8f89146a55ebbed239b90f5a8c5d4f437a  fonts/archivo-latin-wght-italic.woff2
+          8f704806dbedeaaeca334b11ec348bc3ac3a439d6431544b3afb54f534ee4967  fonts/archivo-latin-wght-normal.woff2
+          6b17409ab52e29a8d67f73e77beb27464640784ce493880f24ea0707b55a116f  fonts/fonts.css
+          066710ce7ed235a339d3d6cdcc8b55c0bea5632232662d83aacea25852108271  fonts/fraunces-latin-standard-italic.woff2
+          7234ed860a9cc83045413c4faee63c960a8f2d1917adcf728119307d56e0d783  fonts/fraunces-latin-standard-normal.woff2
+          18851e3d019b030d1d307d659d3681704e4af3f98cb90d1932f478ceaec62d7e  index.html
+          a219ff312793a3b60a59cbd596b815dfbc98a8cd746b46318b8ef5cb97f3a2b7  og-image.png
+          2c2f319354b0adcf5d53c03e1c4c93a64df5c974aceda09b1c89b41a46efeb7a  robots.txt
+          06b76497e390289b496375e8187b18cbcd9e398c9fe8884d73c9821154862b77  scrub/index.html
+          70b2cc71eb7cde5a341b89211ca0695a46ffc0c15dc9412d5e831204ae8a77d7  sitemap.xml
+          06de04e0f91dd4f6ad18a69583c9b5560e09fb5b140ab58de8c8d06448641614  solidprivacy-kennismaking.html
+          9404cee82cdea8352cda436923e32db6b71c2eac37d8ce3e924236b193aefdd1  solidprivacy-privacyverklaring.html
+          EOF
+          sha256sum -c /tmp/v8.sha256
+
+      - name: Commit exact baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'SolidPrivacy website baseline importer'
+          git config user.email 'noreply@solidprivacy.nl'
+          git add website/site
+          if git diff --cached --quiet; then
+            echo 'Baseline already present.'
+            exit 0
+          fi
+          git commit -m 'website: import exact solidprivacy.nl v8 baseline'
+          git push origin HEAD:website/baseline-v8
