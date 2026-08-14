@@ -10,6 +10,7 @@ work_claim_standard_location=https://github.com/market-predictions/control-plane
 state_freshness_standard=CONTROL_STATE_FRESHNESS_STANDARD_V1
 state_freshness_standard_location=https://github.com/market-predictions/control-plane/blob/main/control/CONTROL_STATE_FRESHNESS_STANDARD_V1.md
 project_control_architecture=docs/PROJECT_CONTROL_ARCHITECTURE.md
+engagement_architecture=docs/ENGAGEMENT_ARCHITECTURE.md
 project_machine_state=control/PROJECT_STATE.json
 project_repository=solidprivacy-nl/solidprivacy
 project_risk_class=privacy_sensitive_ai_processing_and_client_record_decision_support
@@ -59,7 +60,7 @@ For consequential planning, implementation, assurance, release or roadmap work:
 7. Read `CHANGELOG.md` and `DECISION_LOG.md` for durable changes affecting the assignment.
 8. Read `control/WORK_CLAIMS.json` and live-reconcile relevant claims/branches/PRs under the canonical lifecycle standard.
 9. Read relevant records under `handover/`.
-10. Read `docs/architecture.md`, `docs/DATA_ARCHITECTURE.md` and other architecture contracts relevant to scope.
+10. Read `docs/architecture.md`, `docs/ENGAGEMENT_ARCHITECTURE.md`, `docs/DATA_ARCHITECTURE.md` and other architecture contracts relevant to scope.
 11. Inspect actual source, live GitHub branches/PRs/issues, tests, Actions and exact-head evidence; narrative completion claims are insufficient.
 
 Do not ask the principal to restate information reconstructable from these sources.
@@ -73,6 +74,7 @@ Do not ask the principal to restate information reconstructable from these sourc
 - `control/WORK_CLAIMS.json` is the machine-readable claim/ownership register; live branch/PR state outranks stale recorded heads.
 - `DECISION_LOG.md` records durable architecture/product/governance decisions and why they were made.
 - `CHANGELOG.md` records material repository/product changes; it is not a substitute for the decision log.
+- `docs/ENGAGEMENT_ARCHITECTURE.md` is authoritative for `PROJECT | MANAGED_SERVICE` engagement semantics, state scope, retention/offboarding, explicit promotion and continuation policy; it does not replace workflow/legal contracts.
 - `handover/` records explicit CLOSE/TRANSFER/SUPERSEDE transitions and unresolved next actions.
 - GitHub Actions/raw exact-head evidence outranks implementation handovers and work claims for verification status.
 - No chat message, assistant memory, PR body or external planning document may silently override repository/live state.
@@ -106,7 +108,7 @@ PARKING_LOT
 
 New insight does not automatically become current implementation scope. Only safety/correctness requirements, explicit reprioritisation or work required for the stated outcome may interrupt the primary objective. Valid deferrable work is recorded rather than silently absorbed.
 
-The current control-governance refinement belongs to PR #8 closeout. It must not expand the M1 privacy-engine implementation; M1 remains the next product gate after PR #8 assurance/closeout.
+The current PR #8 closeout includes the Control-governance refinement and the engagement-architecture refinement requested before assurance. Neither creates a new product milestone before M1. M1 remains the next product gate and uses only a minimal synthetic `PROJECT + DPIA` engagement envelope; generalized production engagement/client contracts remain sequenced for WP9 after the assured Client Data Plane.
 
 ## Role and decision-plane boundary
 
