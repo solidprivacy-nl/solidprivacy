@@ -4,6 +4,20 @@ Material repository/product changes are recorded here. Durable architecture/prod
 
 ## Unreleased
 
+### 2026-08-14 — First-class project versus managed-service engagement architecture
+
+- added `docs/ENGAGEMENT_ARCHITECTURE.md` as the canonical engagement-layer architecture above the shared governed workflow engine;
+- introduced `PROJECT` and `MANAGED_SERVICE` as first-class engagement modes separate from service/workflow type;
+- established that standalone and managed-service DPIAs share one methodology/legal/evidence/validation/human-review implementation rather than separate legal workflow stacks;
+- distinguished `RUN_SCOPED`, `ENGAGEMENT_SCOPED` and `ORGANISATION_SCOPED` client state;
+- made promotion from project engagement state into durable organisation state an explicit governed transition preserving provenance, review, scope and retention authority;
+- made retention/offboarding and continuous change propagation engagement-aware, so closed project work does not create an implicit monitoring obligation;
+- clarified that both engagement modes use the same private Client Data Plane security boundary when real client data is processed;
+- refined M1 as the first complete standalone professional-service execution: synthetic `PROJECT + DPIA` from bounded scope through reviewed deliverable/audit and explicit closeout/retention disposition;
+- preserved generalized production organisation/engagement contracts for WP9 after independent assurance of WP8 Client Data Plane;
+- added the engagement architecture to the governance manifest/static gate and updated workpackage/project-control records;
+- withdrew the prior PR #8 assurance handover because this semantic architecture change requires a new implementation candidate, exact-head CI and fresh independent assurance.
+
 ### 2026-08-11 — Control freshness and machine project-state alignment
 
 - added `docs/PROJECT_CONTROL_ARCHITECTURE.md` as the project-specific control architecture linked to the canonical control-plane doctrine;
