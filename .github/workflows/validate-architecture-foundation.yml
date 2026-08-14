@@ -31,7 +31,18 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify exact candidate identity
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          echo "exact candidate: $EXPECTED_SHA"
 
       - name: Validate JSON contracts and local references
         shell: bash
@@ -80,7 +91,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ruby -e 'require "yaml"; ARGV.each { |p| YAML.safe_load(File.read(p), permitted_classes: [Date, Time], aliases: true); puts "validated #{p}" }' \
+          ruby -e 'require "yaml"; require "date"; ARGV.each { |p| YAML.safe_load(File.read(p), permitted_classes: [Date, Time], aliases: true); puts "validated #{p}" }' \
             legal_sources/source_registry.yaml \
             provenance/upstream_manifest.yaml
 
