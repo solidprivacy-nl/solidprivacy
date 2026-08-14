@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "project_id": "solidprivacy",
+  "repository": "solidprivacy-nl/solidprivacy",
+  "state_authority": "project_local",
+  "mode": "ACTIVE",
+  "freshness": {
+    "status": "CURRENT",
+    "last_reconciled_at": "2026-08-14T23:47:00+02:00",
+    "observed_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
+    "observed_claim_head_sha": "e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+    "live_head_policy": "reconstruct_from_github_at_mandatory_gates",
+    "note": "The observed claim head is the frozen semantic implementation candidate containing the standalone PROJECT versus MANAGED_SERVICE engagement refinement. Subsequent state/claim/handover-only commits are administrative descendants; assurance must reconstruct the exact live release candidate."
+  },
+  "current_objective": "Obtain independent governance_release_assurance for PR #8 including the first-class PROJECT versus MANAGED_SERVICE engagement architecture; M1 remains the next product gate after closeout.",
+  "active_claim": "SP-WC-0008",
+  "integration_line": {
+    "pull_request": 8,
+    "branch": "agent/poaas-client-operating-roadmap",
+    "target_branch": "agent/privacy-officer-review-package",
+    "claim_type": "release_integration"
+  },
+  "candidate_identity": {
+    "implementation_candidate_sha": "e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+    "live_branch_head": "RECONSTRUCT_FROM_GITHUB",
+    "administrative_descendant_sha": "RECONSTRUCT_FROM_GITHUB_IF_PRESENT",
+    "rule": "Substantive evidence is bound to implementation_candidate_sha. Assurance certifies the exact live release candidate and may reuse substantive evidence for a strictly administrative descendant only under the project assurance contract."
+  },
+  "scope": {
+    "CURRENT_RELEASE": [
+      "PR #8 POaaS architecture/data/governance foundation closeout",
+      "Control freshness and machine-state alignment",
+      "candidate identity and exact-head semantics",
+      "scope-protection and project-vs-privacy decision-plane separation",
+      "first-class PROJECT versus MANAGED_SERVICE engagement architecture",
+      "engagement-scoped state, retention/offboarding and explicit promotion to durable organisation state",
+      "M1 positioning as first standalone professional-service DPIA execution without implementing the later generalized engagement platform",
+      "independent assurance and claim/handover closeout"
+    ],
+    "NEXT_RELEASE": [
+      "M1 chained standalone PROJECT + DPIA reference execution with positive and blocked paths plus a minimal synthetic engagement envelope",
+      "M1 HMPO/cycle-time/compute telemetry primitives",
+      "WP9 generalized production client/organisation/engagement contracts after the assured Client Data Plane"
+    ],
+    "PARKING_LOT": [
+      "pooled multi-tenant client data optimisation",
+      "large GRC-style management UI",
+      "broad multi-jurisdiction expansion"
+    ]
+  },
+  "next_gate": {
+    "name": "independent_governance_release_assurance",
+    "owner_role": "governance_release_assurance",
+    "principal_decision_required": false,
+    "after_success": "Close/reconcile PR #8 claim and stack, then create/reconcile the M1 standalone PROJECT + DPIA execution workpackage and claim; do not insert new product scope before M1."
+  },
+  "decision_plane_boundary": {
+    "project_control": "D0-D3 applies to development/project-operation decisions under the canonical Control charter.",
+    "privacy_runtime": "Privacy/legal conclusions remain governed by workflow evidence, Privacy Officer and DPO/FG/legal review contracts; D0-D3 cannot bypass them."
+  },
+  "central_control": {
+    "role": "coordination_and_freshness_bound_cache",
+    "project_local_state_outranks_central_cache": true,
+    "enrollment_follow_up_issue": 9
+  }
+}

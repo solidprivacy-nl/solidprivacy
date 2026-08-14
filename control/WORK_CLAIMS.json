@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "canonical_standard": "WORK_CLAIM_AND_BRANCH_LIFECYCLE_STANDARD_V1",
+  "repository": "solidprivacy-nl/solidprivacy",
+  "notes": [
+    "This register is authoritative for consequential work from PR #8 governance adoption onward.",
+    "Live GitHub branch/PR state must be reconstructed at mandatory reconciliation gates; recorded head SHAs are observations, not self-referential promises.",
+    "Candidate identity is separate from live branch head; see docs/PROJECT_CONTROL_ARCHITECTURE.md and control/PROJECT_STATE.json."
+  ],
+  "claims": [
+    {
+      "claim_id": "SP-WC-0008",
+      "workpackage_id": "GOVDATA-FOUNDATION-2026-08-11",
+      "repository": "solidprivacy-nl/solidprivacy",
+      "owner_role": "implementation_operations",
+      "scope": "Align the SolidPrivacy operating architecture with the private Client Data Plane, unit-economics instrumentation, GitHub/Control governance, machine project state, scope/candidate semantics, and first-class PROJECT versus MANAGED_SERVICE engagement modes with bounded state/retention/promotion behavior.",
+      "branch": "agent/poaas-client-operating-roadmap",
+      "base_or_target_branch": "agent/privacy-officer-review-package",
+      "last_reconciled_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
+      "current_claim_head_sha": "e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+      "status": "HANDOVER_READY",
+      "claim_type": "release_integration",
+      "opened_at": "2026-08-11T00:40:54+02:00",
+      "last_reconciled_at": "2026-08-14T23:47:00+02:00",
+      "pull_request_or_issue_reference": "PR #8",
+      "dependencies": [
+        "PR #7 / WP6 exact-head implementation stack",
+        "Canonical control-plane freshness/lifecycle doctrine on market-predictions/control-plane main"
+      ],
+      "artifacts_and_evidence": [
+        "docs/ENGAGEMENT_ARCHITECTURE.md",
+        "docs/DATA_ARCHITECTURE.md",
+        "docs/POAAS_OPERATING_ECONOMICS.md",
+        "docs/POAAS_REFERENCE_WORKFLOW.md",
+        "docs/PROJECT_CONTROL_ARCHITECTURE.md",
+        "docs/architecture.md",
+        "README.md",
+        "ROADMAP.md",
+        "WORKPACKAGES.md",
+        "CURRENT_STATE.md",
+        "DECISION_LOG.md",
+        "CHANGELOG.md",
+        "control/PROJECT_GOVERNANCE_BOOTSTRAP.md",
+        "control/PROJECT_STATE.json",
+        "control/SOLIDPRIVACY_RELEASE_ASSURANCE_CONTRACT_V1.md",
+        "control/GOVERNANCE_MANIFEST.json",
+        "tools/validate_project_governance.py",
+        "implementation_candidate_sha=e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+        "GitHub Actions on e2fc5f5a92c43a3aac9ebfc914d0980338726f52: Project governance structure gate SUCCESS run 31844392502; WP3 evidence and fact gates SUCCESS run 31844392539; WP4 AI boundary and fact extraction gates SUCCESS run 31844392477; WP5 governed DPIA analysis gates SUCCESS run 31844392483; WP6 Privacy Officer review gates SUCCESS run 31844392491"
+      ],
+      "unresolved_items": [
+        "Independent governance_release_assurance verdict on the live release candidate descendant of implementation candidate e2fc5f5a92c43a3aac9ebfc914d0980338726f52",
+        "Assurance must challenge that PROJECT and MANAGED_SERVICE share one governed workflow core while state scope/retention/promotion/continuation remain explicit",
+        "Claim/stack closeout after assurance",
+        "M1 standalone PROJECT + DPIA remains the next product execution milestone after PR #8 closeout"
+      ],
+      "handover_reference": "handover/SP-HO-0008.md"
+    }
+  ]
+}
