@@ -1,0 +1,52 @@
+version: 1
+methodology_id: nl_rijksmodel_dpia
+jurisdiction: NL
+reviewed_at: 2026-08-10
+sources:
+  - id: minbzk-par-dpia-form
+    repository: https://github.com/MinBZK/par-dpia-form
+    pinned_commit: d8d690989da03287b8879ba1319f78ca8a404bd5
+    license: EUPL-1.2
+    reuse_mode: reference_and_mapping_only
+    files:
+      - path: sources/dpia.yaml
+        blob_sha: aecc3699ecdb87c98587d77b7cc5bb42b04ab5d1
+        declared_model_version: "3.0"
+        urn: urn:nl:dpia
+      - path: sources/prescan.yaml
+        declared_model_version: "2.0"
+        urn: urn:nl:prescan
+      - path: schemas/assessment-definition.v2.schema.json
+        blob_sha: 25731df5278015ffa6bcf08311bfe4c42f1bcb93
+    note: >-
+      The adapter references field identifiers and model relationships. It does not vendor
+      the upstream questionnaire text or application code. Any future reproduction or
+      modification of EUPL-covered content requires an explicit licensing/provenance review.
+
+  - id: jenv-dpia-information-model
+    canonical_url: https://modellen.jenvgegevens.nl/dpia/
+    authority: Ministerie van Justitie en Veiligheid / Privacy Adviseurs Rijk
+    published_version: 1.0.0
+    publication_date: 2025-06-01
+    status: official_information_model
+    reuse_mode: semantic_reference
+
+  - id: dpv-v2-final-report
+    canonical_url: https://www.w3.org/community/reports/dpvcg/CG-FINAL-dpv-20240801/
+    authority: W3C Data Privacy Vocabularies and Controls Community Group
+    publication_date: 2024-08-01
+    status: community_final_specification
+    reuse_mode: semantic_mapping_reference
+    note: DPV supplies vocabulary semantics and does not itself determine legal authority.
+
+legal_authority_sources:
+  - eu-gdpr-eurlex
+  - edpb-general-guidance
+  - nl-ap
+
+classification_policy:
+  source_methodology_field: OFFICIAL_METHODOLOGY
+  binding_legal_requirement: LAW_REQUIRED
+  regulator_interpretation: REGULATOR_GUIDANCE
+  organisation_choice: ORGANISATION_POLICY
+  recommended_practice: BEST_PRACTICE

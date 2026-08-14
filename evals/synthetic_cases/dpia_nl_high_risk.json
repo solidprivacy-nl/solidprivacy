@@ -1,0 +1,130 @@
+{
+  "id": "SYN-DPIA-NL-002",
+  "title": "Synthetische DPIA AI-triage zorgaanvragen",
+  "status": "draft",
+  "jurisdiction": ["EU/EEA", "NL"],
+  "methodology": {
+    "id": "nl_rijksmodel_dpia",
+    "version": "3.0",
+    "source_refs": [
+      {
+        "source_id": "nl-government-par-dpia-model",
+        "source_status": "official_methodology",
+        "jurisdiction": "NL",
+        "version": "3.0@d8d690989da03287b8879ba1319f78ca8a404bd5",
+        "verified_at": "2026-08-10T22:00:00+02:00",
+        "locator": "sources/dpia.yaml"
+      }
+    ]
+  },
+  "proposal": "Een synthetisch AI-systeem prioriteert binnenkomende zorgaanvragen voor menselijke beoordeling.",
+  "processing_activities": [
+    {
+      "id": "PA-101",
+      "name": "AI-ondersteunde triage",
+      "description": "Analyse van aanvraaggegevens en gezondheidsinformatie om een prioriteitscategorie voor een medewerker voor te stellen.",
+      "purposes": [{"id": "PUR-101", "description": "Ondersteunen van tijdige behandeling van zorgaanvragen"}],
+      "personal_data": [
+        {"id": "PD-101", "name": "Contactgegevens", "category": "identificatie en contact", "sensitivity": "ordinary", "data_subject_ids": ["DS-101"], "original_purpose": "Behandeling zorgaanvraag", "source": "aanvrager", "source_party": null},
+        {"id": "PD-102", "name": "Gezondheidsgegevens", "category": "gezondheid", "sensitivity": "special_category", "data_subject_ids": ["DS-101"], "original_purpose": "Behandeling zorgaanvraag", "source": "aanvrager", "source_party": null}
+      ],
+      "data_subjects": [{"id": "DS-101", "name": "Zorgaanvragers", "vulnerable": true, "vulnerability_context": "De verwerking kan personen in een afhankelijke of kwetsbare positie raken."}],
+      "parties": [
+        {"id": "PTY-101", "name": "Zorgorganisatie", "roles": ["controller"], "functions_or_departments": ["Intake"]},
+        {"id": "PTY-102", "name": "AI-dienstverlener", "roles": ["processor"], "functions_or_departments": []}
+      ],
+      "processing_operations": ["collect", "analyse", "classify", "store"],
+      "technologies": ["ai_system", "automated_scoring", "cloud_service"],
+      "locations": [{"country": "Netherlands", "eea": true}],
+      "transfers": [],
+      "legal_bases": [{"basis": "other", "rationale": "Onopgeloste synthetische casus: rechtsgrond en uitzonderingsgrond voor gezondheidsgegevens moeten door een privacyprofessional worden vastgesteld.", "legal_reference": null}],
+      "retention": [{"purpose_ids": ["PUR-101"], "data_subject_ids": ["DS-101"], "personal_data_ids": ["PD-101", "PD-102"], "period": "onbekend", "rationale": "Nog vast te stellen", "owner": null, "end_action": null}],
+      "rights_procedures": [
+        {"right": "access", "procedure_status": "unknown", "procedure": null, "restriction_basis": null},
+        {"right": "automated_decision_making", "procedure_status": "unknown", "procedure": null, "restriction_basis": null}
+      ],
+      "source_references": []
+    }
+  ],
+  "legal_policy_context": [],
+  "necessity_proportionality": {
+    "assessment": "Nog niet aangetoond dat AI-scoring noodzakelijk en evenredig is ten opzichte van minder ingrijpende triage-alternatieven.",
+    "less_intrusive_alternatives": ["Handmatige triage", "Regelgebaseerde prioritering zonder modelprofilering"],
+    "data_minimisation": "Nog te onderbouwen welke gezondheidsvelden voor de score noodzakelijk zijn.",
+    "balancing_or_public_interest_reasoning": null
+  },
+  "special_data_assessment": [
+    {"processing_activity_ids": ["PA-101"], "personal_data_ids": ["PD-102"], "data_subject_ids": ["DS-101"], "data_type": "gezondheidsgegevens", "exception_or_authorisation": "onbekend", "legal_reference": null}
+  ],
+  "purpose_compatibility": [{"processing_activity_id": "PA-101", "decision": "unknown", "rationale": "Compatibiliteit en eventuele verdere modeltraining zijn nog niet beoordeeld."}],
+  "risks": [
+    {
+      "id": "R-101",
+      "processing_activity_ids": ["PA-101"],
+      "description": "Onjuiste of discriminerende prioritering kan toegang tot tijdige zorg beïnvloeden",
+      "origin": "Modelbias, datakwaliteit of onvoldoende menselijke controle",
+      "likelihood": "medium",
+      "impact": "high",
+      "inherent_level": "high",
+      "rationale": "De uitkomst kan materiële gevolgen hebben voor een mogelijk kwetsbare groep.",
+      "affected_rights": ["privacy", "non_discrimination", "access_to_care"],
+      "affected_data_subjects": ["DS-101"]
+    },
+    {
+      "id": "R-102",
+      "processing_activity_ids": ["PA-101"],
+      "description": "Onbevoegde toegang tot gezondheidsgegevens",
+      "origin": "Te brede toegang of onvoldoende scheiding van omgevingen",
+      "likelihood": "medium",
+      "impact": "high",
+      "inherent_level": "high",
+      "rationale": "Gezondheidsgegevens zijn bijzonder gevoelig.",
+      "affected_rights": ["privacy", "confidentiality"],
+      "affected_data_subjects": ["DS-101"]
+    }
+  ],
+  "measures": [
+    {
+      "id": "M-101",
+      "description": "Verplichte menselijke beoordeling vóór een triage-uitkomst effect heeft",
+      "risk_ids": ["R-101"],
+      "measure_types": ["organisational", "technical"],
+      "owner": "Intake",
+      "implementation_status": "planned",
+      "evidence_refs": [],
+      "residual_level": "high",
+      "residual_rationale": "De effectiviteit van menselijke controle is nog niet aangetoond."
+    },
+    {
+      "id": "M-102",
+      "description": "Least-privilege toegang en gescheiden logging voor gezondheidsgegevens",
+      "risk_ids": ["R-102"],
+      "measure_types": ["technical", "organisational"],
+      "owner": "ICT",
+      "implementation_status": "partial",
+      "evidence_refs": [],
+      "residual_level": "medium",
+      "residual_rationale": "Technische verificatie ontbreekt nog."
+    }
+  ],
+  "residual_risk_conclusion": {
+    "level": "high",
+    "rationale": "Minstens één hoog restrisico blijft open; productie-goedkeuring is niet passend zonder nadere beoordeling en maatregelen.",
+    "prior_consultation_required": null,
+    "prior_consultation_reference": null
+  },
+  "dpo_advice": null,
+  "management_summary": null,
+  "evidence": [],
+  "legal_claims": [],
+  "human_review": {
+    "required": true,
+    "status": "pending",
+    "reviewer_role": "dpo_or_privacy_officer",
+    "reviewed_at": null,
+    "rationale": null,
+    "changes_required": [],
+    "unresolved_issues": ["rechtsgrond", "uitzonderingsgrond bijzondere persoonsgegevens", "noodzaak en evenredigheid", "effectiviteit human oversight", "voorafgaande raadpleging"]
+  },
+  "source_versions": ["nl_rijksmodel_dpia:3.0@d8d690989da03287b8879ba1319f78ca8a404bd5"]
+}

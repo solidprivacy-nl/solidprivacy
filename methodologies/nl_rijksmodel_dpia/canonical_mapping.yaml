@@ -1,0 +1,183 @@
+version: 1
+adapter_id: nl_rijksmodel_dpia_to_solidprivacy
+source_methodology: nl_rijksmodel_dpia
+source_version: "3.0"
+source_commit: d8d690989da03287b8879ba1319f78ca8a404bd5
+target_contracts:
+  - contracts/dpia_assessment.schema.json
+  - contracts/privacy_processing_activity.schema.json
+rules:
+  - source_id: "1"
+    source_label: Voorstel
+    target: $.proposal
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+
+  - source_id: "2"
+    source_label: Persoonsgegevens
+    target: $.processing_activities[*].personal_data
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    child_mappings:
+      "2.1.1": name
+      "2.1.2": data_subject_ids
+      "2.1.3": category
+      "2.1.4": sensitivity
+      "2.1.5": original_purpose
+      "2.1.7": source_party
+      "2.1.8": source
+    note: Human-readable data-subject labels from the source must be resolved to canonical data-subject IDs.
+
+  - source_id: "3"
+    source_label: Gegevensverwerking
+    target: $.processing_activities[*]
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    child_mappings:
+      "3.1.1": name
+      "3.1.2": description
+      "3.1.3": personal_data_references
+
+  - source_id: "4"
+    source_label: Technieken en methoden
+    target: $.processing_activities[*].technologies
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: partial
+    note: Canonical model stores technology facts without turning technology use itself into a legal conclusion.
+
+  - source_id: "5"
+    source_label: Verwerkingsdoeleinden
+    target: $.processing_activities[*].purposes
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+
+  - source_id: "6"
+    source_label: Betrokken partijen
+    target: $.processing_activities[*].parties
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    child_mappings:
+      "6.1.1.1": name
+      "6.1.1.2": roles
+      "6.1.1.3": functions_or_departments
+
+  - source_id: "7"
+    source_label: Belangen bij de gegevensverwerkingen
+    target: $.necessity_proportionality.balancing_or_public_interest_reasoning
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: partial
+
+  - source_id: "8"
+    source_label: Verwerkingslocaties
+    targets:
+      - $.processing_activities[*].locations
+      - $.processing_activities[*].transfers
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    child_mappings:
+      "8.1.1.1": locations[*].country
+      "8.1.1.2": transfers[*].mechanism
+      "8.1.1.3": transfers[*].supplementary_measures
+
+  - source_id: "9"
+    source_label: Juridisch en beleidsmatig kader
+    target: $.legal_policy_context
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+
+  - source_id: "10"
+    source_label: Bewaartermijnen
+    target: $.processing_activities[*].retention
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    child_mappings:
+      "10.1.1.1": purpose_ids
+      "10.1.1.2": data_subject_ids
+      "10.1.1.3": personal_data_ids
+      "10.1.1.4": period
+      "10.1.1.5": rationale
+    note: Source labels are resolved to canonical IDs before persistence.
+
+  - source_id: "11"
+    source_label: Rechtsgrond
+    target: $.processing_activities[*].legal_bases
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    legal_validation_required: true
+    note: Selection in the methodology is not itself proof that the chosen legal basis is valid.
+
+  - source_id: "12"
+    source_label: Bijzondere, strafrechtelijke en nationale identificatiegegevens
+    target: $.special_data_assessment
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    legal_validation_required: true
+
+  - source_id: "13"
+    source_label: Doelbinding
+    target: $.purpose_compatibility
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    legal_validation_required: true
+
+  - source_id: "14"
+    source_label: Noodzaak en evenredigheid
+    target: $.necessity_proportionality
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    legal_validation_required: true
+
+  - source_id: "15"
+    source_label: Rechten van betrokkenen
+    target: $.processing_activities[*].rights_procedures
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    legal_validation_required: true
+
+  - source_id: "16"
+    source_label: Risico's voor betrokkenen
+    target: $.risks
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: exact
+    child_mappings:
+      "16.1.1": description
+      "16.1.2": origin
+      "16.1.3": likelihood
+      "16.1.4": likelihood_rationale
+      "16.1.5": impact
+      "16.1.6": impact_rationale
+      "16.1.7": inherent_level
+      "16.1.8": rationale
+
+  - source_id: "17"
+    source_label: Maatregelen
+    targets:
+      - $.measures
+      - $.residual_risk_conclusion
+    classification: OFFICIAL_METHODOLOGY
+    mapping_quality: structural
+    child_mappings:
+      "17.1.1": measures[*].risk_ids
+      "17.1.3": measures[*].description
+      "17.1.4": measures[*].residual_level
+      "17.1.7": measures[*].owner
+      "17.3": residual_risk_conclusion.rationale
+
+supplementary_fields:
+  - source_id: "18"
+    source_label: Managementsamenvatting
+    target: $.management_summary
+    source_is_official_id: false
+  - source_id: "19.5"
+    source_label: Advies FG
+    target: $.dpo_advice
+    source_is_official_id: false
+
+prescan_relationship:
+  source_urn: urn:nl:prescan
+  source_version: "2.0"
+  contract_role: intake_and_dpia_triggering
+  note: >-
+    The upstream pre-scan definition already carries references into DPIA fields.
+    SolidPrivacy preserves those relationships as adapter metadata rather than
+    duplicating answer values across separate AI prompts.

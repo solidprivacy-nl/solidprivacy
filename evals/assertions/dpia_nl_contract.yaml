@@ -1,0 +1,36 @@
+version: 1
+suite: dpia_nl_canonical_contract
+contract: contracts/dpia_assessment.schema.json
+cases:
+  - id: SYN-DPIA-NL-001
+    file: evals/synthetic_cases/dpia_nl_basic.json
+    assertions:
+      - json_schema_valid
+      - methodology_source_is_pinned
+      - methodology_source_status_is_official_methodology
+      - human_review.required == true
+      - risks[*].inherent_level in [low, medium, high, unknown]
+      - measures[*].risk_ids reference existing risks
+      - residual_risk_conclusion.level == low
+      - no_real_personal_data
+
+  - id: SYN-DPIA-NL-002
+    file: evals/synthetic_cases/dpia_nl_high_risk.json
+    assertions:
+      - json_schema_valid
+      - methodology_source_is_pinned
+      - human_review.required == true
+      - residual_risk_conclusion.level == high
+      - residual_risk_conclusion.prior_consultation_required == null
+      - human_review.status == pending
+      - human_review.unresolved_issues is_not_empty
+      - every_high_risk_has_at_least_one_measure
+      - legal_uncertainty_is_not_silently_resolved
+      - no_real_personal_data
+
+cross_case_invariants:
+  - A methodology field must not be emitted as LAW_REQUIRED without a separate approved legal source.
+  - A DPV mapping must not be used as legal authority.
+  - A high residual risk must force human review and block autonomous final approval.
+  - Missing legal basis or special-category justification must remain explicit missing information.
+  - Synthetic evaluation data must not contain real personal data.

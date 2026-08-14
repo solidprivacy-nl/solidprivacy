@@ -1,4 +1,4 @@
-version: 2
+version: 3
 last_reviewed: 2026-08-10
 upstreams:
   - id: privacy-data-protection-skills
@@ -17,17 +17,26 @@ upstreams:
 
   - id: minbzk-par-dpia-form
     repository: https://github.com/MinBZK/par-dpia-form
+    pinned_commit: d8d690989da03287b8879ba1319f78ca8a404bd5
     license: EUPL-1.2
     role: official_methodology_and_machine_readable_assessment_donor
     imported: false
-    policy: Primary Dutch DPIA/pre-scan methodology donor. Reuse requires EUPL/provenance review and separation of methodology fields from binding legal claims.
+    reuse_mode: reference_and_mapping_only
+    referenced_files:
+      - sources/dpia.yaml@aecc3699ecdb87c98587d77b7cc5bb42b04ab5d1
+      - sources/prescan.yaml
+      - schemas/assessment-definition.v2.schema.json@25731df5278015ffa6bcf08311bfe4c42f1bcb93
+    policy: Primary Dutch DPIA/pre-scan methodology donor. WP1 references field identifiers and relationships but does not vendor questionnaire/application content. EUPL-covered reproduction or adaptation requires explicit licensing review.
 
   - id: w3c-dpv
     repository: https://github.com/w3c-cg/dpv
+    pinned_commit: c85ffacc97041b90a7a3afb3b6417f0b4d9fafbc
+    referenced_path: 2.1/dpv/dpv.csv
     license: verify_before_vendoring
     role: semantic_vocabulary_reference
     imported: false
-    policy: Prefer mappings/adapters over wholesale vendoring until exact reuse terms and subset strategy are approved.
+    reuse_mode: semantic_mapping_reference
+    policy: Use DPV for semantic interoperability, never as legal authority. Prefer mappings/adapters over wholesale vendoring until exact reuse terms and subset strategy are approved.
 
   - id: meta-secpriv
     repository: https://github.com/facebookresearch/secpriv-skill

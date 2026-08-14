@@ -1,0 +1,102 @@
+{
+  "id": "SYN-DPIA-NL-001",
+  "title": "Synthetische DPIA medewerkersportaal",
+  "status": "draft",
+  "jurisdiction": ["EU/EEA", "NL"],
+  "methodology": {
+    "id": "nl_rijksmodel_dpia",
+    "version": "3.0",
+    "source_refs": [
+      {
+        "source_id": "nl-government-par-dpia-model",
+        "source_status": "official_methodology",
+        "jurisdiction": "NL",
+        "version": "3.0@d8d690989da03287b8879ba1319f78ca8a404bd5",
+        "verified_at": "2026-08-10T22:00:00+02:00",
+        "locator": "sources/dpia.yaml"
+      }
+    ]
+  },
+  "proposal": "Een intern portaal waarmee medewerkers hun contactgegevens en opleidingsinschrijvingen beheren.",
+  "processing_activities": [
+    {
+      "id": "PA-001",
+      "name": "Beheer medewerkersprofiel",
+      "description": "Opslaan en wijzigen van zakelijke profielgegevens.",
+      "purposes": [{"id": "PUR-001", "description": "Personeelsadministratie en toegang tot interne dienstverlening"}],
+      "personal_data": [
+        {"id": "PD-001", "name": "Naam", "category": "contactgegevens", "sensitivity": "ordinary", "data_subject_ids": ["DS-001"], "original_purpose": "Personeelsadministratie", "source": "medewerker", "source_party": null},
+        {"id": "PD-002", "name": "Zakelijk e-mailadres", "category": "contactgegevens", "sensitivity": "ordinary", "data_subject_ids": ["DS-001"], "original_purpose": "Identiteits- en accountbeheer", "source": "identiteitsbeheer", "source_party": "werkgever"}
+      ],
+      "data_subjects": [{"id": "DS-001", "name": "Medewerkers", "vulnerable": false, "vulnerability_context": null}],
+      "parties": [
+        {"id": "PTY-001", "name": "Werkgever", "roles": ["controller"], "functions_or_departments": ["HR"]},
+        {"id": "PTY-002", "name": "Portaalleverancier", "roles": ["processor"], "functions_or_departments": []}
+      ],
+      "processing_operations": ["collect", "store", "update", "retrieve"],
+      "technologies": ["web_application"],
+      "locations": [{"country": "Netherlands", "eea": true}],
+      "transfers": [],
+      "legal_bases": [{"basis": "contract", "rationale": "Synthetische testaanname; juridische geldigheid moet in een echte DPIA afzonderlijk worden beoordeeld.", "legal_reference": null}],
+      "retention": [{"purpose_ids": ["PUR-001"], "data_subject_ids": ["DS-001"], "personal_data_ids": ["PD-001", "PD-002"], "period": "tot einde dienstverband plus vastgestelde administratieve termijn", "rationale": "Synthetische beleidsaanname", "owner": "HR", "end_action": "delete_or_archive_per_policy"}],
+      "rights_procedures": [{"right": "access", "procedure_status": "implemented", "procedure": "Interne privacyprocedure", "restriction_basis": null}],
+      "source_references": []
+    }
+  ],
+  "legal_policy_context": [],
+  "necessity_proportionality": {
+    "assessment": "De verwerking is beperkt tot gegevens die nodig zijn voor de interne dienstverlening.",
+    "less_intrusive_alternatives": ["Alleen noodzakelijke profielvelden verplicht maken"],
+    "data_minimisation": "Niet-benodigde vrije tekstvelden worden vermeden.",
+    "balancing_or_public_interest_reasoning": null
+  },
+  "special_data_assessment": [],
+  "purpose_compatibility": [{"processing_activity_id": "PA-001", "decision": "same_purpose", "rationale": "Geen verdere verwerking in de synthetische casus."}],
+  "risks": [
+    {
+      "id": "R-001",
+      "processing_activity_ids": ["PA-001"],
+      "description": "Onbevoegde inzage in medewerkersprofielen",
+      "origin": "Onvoldoende autorisatie",
+      "likelihood": "low",
+      "impact": "medium",
+      "inherent_level": "medium",
+      "rationale": "Beperkte gegevensset, maar ongeautoriseerde inzage kan medewerkers schaden.",
+      "affected_rights": ["privacy", "confidentiality"],
+      "affected_data_subjects": ["DS-001"]
+    }
+  ],
+  "measures": [
+    {
+      "id": "M-001",
+      "description": "Role-based access control en periodieke toegangsreview",
+      "risk_ids": ["R-001"],
+      "measure_types": ["technical", "organisational"],
+      "owner": "ICT",
+      "implementation_status": "implemented",
+      "evidence_refs": [],
+      "residual_level": "low",
+      "residual_rationale": "Toegang is beperkt en periodiek gecontroleerd."
+    }
+  ],
+  "residual_risk_conclusion": {
+    "level": "low",
+    "rationale": "Synthetische casus: resterend risico is laag na toegangsmaatregelen.",
+    "prior_consultation_required": false,
+    "prior_consultation_reference": null
+  },
+  "dpo_advice": null,
+  "management_summary": null,
+  "evidence": [],
+  "legal_claims": [],
+  "human_review": {
+    "required": true,
+    "status": "pending",
+    "reviewer_role": "privacy_officer",
+    "reviewed_at": null,
+    "rationale": null,
+    "changes_required": [],
+    "unresolved_issues": []
+  },
+  "source_versions": ["nl_rijksmodel_dpia:3.0@d8d690989da03287b8879ba1319f78ca8a404bd5"]
+}

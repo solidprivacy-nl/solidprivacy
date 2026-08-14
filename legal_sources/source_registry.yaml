@@ -1,4 +1,4 @@
-version: 2
+version: 3
 policy: legal_sources/verification_policy.md
 last_catalog_review: 2026-08-10
 sources:
@@ -44,8 +44,9 @@ sources:
     jurisdiction: EU/EEA
     kind: methodology_template
     canonical_url: https://www.edpb.europa.eu/our-work-tools/documents/public-consultations/2026/edpb-dpia-template_en
-    status: consultation_draft
-    adoption_stage: adopted_for_public_consultation
+    status: consultation_closed_pending_finalisation
+    adoption_stage: public_consultation_closed_finalisation_pending
+    feedback_period: 2026-04-14/2026-06-09
     last_verified: 2026-08-10
     production_use: forward_compatibility_only
 
@@ -84,6 +85,10 @@ sources:
     kind: official_methodology
     canonical_url: https://github.com/MinBZK/par-dpia-form
     status: official_methodology
+    pinned_commit: d8d690989da03287b8879ba1319f78ca8a404bd5
+    model_version: "3.0"
+    prescan_version: "2.0"
+    dpia_blob_sha: aecc3699ecdb87c98587d77b7cc5bb42b04ab5d1
     last_verified: 2026-08-10
     note: Methodology/template source; individual fields are not automatically binding-law requirements.
 
@@ -94,6 +99,8 @@ sources:
     kind: official_information_model
     canonical_url: https://modellen.jenvgegevens.nl/dpia/
     status: official_methodology
+    published_version: 1.0.0
+    publication_date: 2025-06-01
     last_verified: 2026-08-10
 
   - id: eu-commission-scc
