@@ -21,6 +21,7 @@ Use independent release assurance for material changes to:
 
 - legal-source or legal-rule handling;
 - canonical privacy contracts/state;
+- engagement mode, state scope, persistence, retention/offboarding or state-promotion semantics;
 - evidence/provenance handling;
 - model-call/egress/privacy policy;
 - tenant/client-data isolation;
@@ -47,6 +48,7 @@ Assurance may and should read:
 
 - the principal's requested outcome;
 - project governance bootstrap and project-control architecture;
+- `docs/ENGAGEMENT_ARCHITECTURE.md` when engagement/state lifecycle is in scope;
 - current machine project state, roadmap/workpackage/decision records;
 - candidate source/diff;
 - schemas/contracts;
@@ -102,9 +104,10 @@ Depending on scope, reconstruct at least:
 6. **Tenant/data isolation** — cross-tenant negative paths, access policy, retrieval scope, secrets/log boundaries.
 7. **Execution/audit** — run/version/hash lineage and blocked/failure semantics.
 8. **Output/delivery** — generated artefacts represent reviewed state and preserve lineage.
-9. **Governance lifecycle** — `PROJECT_STATE`, roadmap/workpackage/work claim/handover/current-state records agree with live GitHub and freshness rules.
-10. **Candidate lineage** — implementation/release/live/admin identities are unambiguous and evidence is bound to the correct SHA.
-11. **Post-action confirmation** — merge/deploy/data migration success is separately confirmed on the target state.
+9. **Engagement lifecycle** — `PROJECT` and `MANAGED_SERVICE` use the same governed workflow core; state scope, retention/offboarding, promotion and continuing-monitoring obligations are explicit and cannot silently widen from a bounded project into organisation-wide managed state.
+10. **Governance lifecycle** — `PROJECT_STATE`, roadmap/workpackage/work claim/handover/current-state records agree with live GitHub and freshness rules.
+11. **Candidate lineage** — implementation/release/live/admin identities are unambiguous and evidence is bound to the correct SHA.
+12. **Post-action confirmation** — merge/deploy/data migration success is separately confirmed on the target state.
 
 ## Verdict semantics
 
@@ -131,12 +134,14 @@ A semantic/product repair is a new implementation candidate and returns through 
 For a candidate that enables real client data processing, code/CI PASS alone is insufficient. The assurance package must include target-environment evidence appropriate to scope, for example:
 
 - tenant isolation configuration and negative test;
+- engagement/organisation state-scope enforcement where enabled;
 - EU/EEA storage/backup configuration;
 - key/secrets posture;
 - retrieval-index tenant binding;
 - provider/model egress policy;
 - logging/telemetry content policy;
-- deletion/retention behaviour;
+- deletion/retention/offboarding behaviour;
+- controlled state-promotion behaviour where project state can become organisation state;
 - deployment health/migration result.
 
 Do not put sensitive target evidence itself into a public repository when it contains secrets or customer data. Store sanitized proofs/hashes/opaque references and keep sensitive evidence in the approved private assurance store.
