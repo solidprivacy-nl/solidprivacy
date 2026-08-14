@@ -59,11 +59,13 @@ Reason: accountability and legal/professional judgement cannot be delegated to p
 ## D-007 — Workflow runs are temporary; client privacy state is durable
 
 Date: 2026-08-11  
-Status: ACCEPTED
+Status: ACCEPTED, QUALIFIED BY D-025
 
 Decision: a POaaS customer becomes a durable versioned organisational privacy state over which multiple governed workflows operate. Workflow runs may propose reviewed state changes but do not own private copies of organisation truth.
 
 Reason: prevents DPIA/RoPA/vendor/breach/DSAR workflow islands and creates cumulative customer knowledge.
+
+Qualification: D-025 clarifies that this durable organisation-state rule applies only where the engagement authorises organisation-scoped persistence. A bounded project may instead retain only engagement-scoped state.
 
 ## D-008 — Documents are evidence/projections, not independent sources of operational truth
 
@@ -208,3 +210,39 @@ Status: ACCEPTED
 Decision: the Control freshness/project-state refinement is part of PR #8 closeout and does not create a new product milestone before M1.
 
 Reason: governance must reduce drift and span of control without becoming scope creep that blocks execution of the already selected next vertical-slice gate.
+
+## D-024 — PROJECT and MANAGED_SERVICE are first-class engagement modes over one governed engine
+
+Date: 2026-08-14  
+Status: ACCEPTED
+
+Decision: SolidPrivacy supports at least `PROJECT` and `MANAGED_SERVICE` as engagement modes. Engagement mode is separate from workflow/service type. A standalone DPIA and a DPIA performed inside POaaS must use the same DPIA methodology, legal-source, evidence/provenance, validation and human-review contracts for equivalent facts.
+
+Reason: enables bounded professional-service work without duplicating legal logic or allowing standalone and managed-service implementations to drift apart.
+
+## D-025 — Client state has run, engagement and organisation scopes; promotion is explicit
+
+Date: 2026-08-14  
+Status: ACCEPTED
+
+Decision: distinguish `RUN_SCOPED`, `ENGAGEMENT_SCOPED` and `ORGANISATION_SCOPED` state. A bounded project defaults to engagement-scoped accepted state. Reuse as durable organisation-scoped managed state requires an explicit governed promotion preserving provenance, review lineage, scope limitations, effective dates and retention authority.
+
+Reason: a one-off DPIA must not silently create or maintain an organisation-wide privacy dossier, while useful reviewed knowledge can still be reused when the client and service scope authorise it.
+
+## D-026 — Retention, closeout and change propagation are engagement-aware
+
+Date: 2026-08-14  
+Status: ACCEPTED
+
+Decision: every engagement must define persistence/retention/closeout semantics. `MANAGED_SERVICE` may maintain dependency-driven reassessment according to contracted scope; a closed `PROJECT` has no implicit continuing monitoring obligation. Post-completion data outcomes are explicit per data class, including delete, bounded retention, restricted archive, legal hold, return/export or authorised promotion.
+
+Reason: possession of historical project data must not be confused with an ongoing service obligation or permission to retain/monitor indefinitely.
+
+## D-027 — M1 proves standalone PROJECT + DPIA; generalized production engagement remains WP9
+
+Date: 2026-08-14  
+Status: ACCEPTED
+
+Decision: M1 remains the next product gate and is interpreted as the first complete standalone professional-service execution: a synthetic `PROJECT + DPIA` from bounded engagement scope through reviewed deliverable, audit and explicit closeout/retention disposition. M1 uses only a minimal synthetic engagement envelope. Generalized real-client organisation/engagement contracts remain sequenced for WP9 after independent assurance of the WP8 Client Data Plane.
+
+Reason: proves a commercially usable bounded service flow early without bypassing the security/data-plane dependency or prematurely generalising a platform contract before the DPIA vertical slice is proven.
