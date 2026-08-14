@@ -187,6 +187,7 @@ def main() -> int:
     roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8") if (ROOT / "ROADMAP.md").is_file() else ""
     architecture = (ROOT / "docs" / "architecture.md").read_text(encoding="utf-8") if (ROOT / "docs" / "architecture.md").is_file() else ""
     control_architecture = (ROOT / "docs" / "PROJECT_CONTROL_ARCHITECTURE.md").read_text(encoding="utf-8") if (ROOT / "docs" / "PROJECT_CONTROL_ARCHITECTURE.md").is_file() else ""
+    engagement_architecture = (ROOT / "docs" / "ENGAGEMENT_ARCHITECTURE.md").read_text(encoding="utf-8") if (ROOT / "docs" / "ENGAGEMENT_ARCHITECTURE.md").is_file() else ""
     workpackages = (ROOT / "WORKPACKAGES.md").read_text(encoding="utf-8") if (ROOT / "WORKPACKAGES.md").is_file() else ""
 
     for marker in ("Client Data Plane", "M1", "M2", "HMPO"):
@@ -208,6 +209,23 @@ def main() -> int:
         if marker not in control_architecture:
             errors.append(
                 "docs/PROJECT_CONTROL_ARCHITECTURE.md missing governance-critical marker: "
+                + marker
+            )
+
+    for marker in (
+        "PROJECT",
+        "MANAGED_SERVICE",
+        "ENGAGEMENT_SCOPED",
+        "ORGANISATION_SCOPED",
+        "promotion",
+        "retention",
+        "standalone DPIA",
+        "M1",
+        "WP9",
+    ):
+        if marker not in engagement_architecture:
+            errors.append(
+                "docs/ENGAGEMENT_ARCHITECTURE.md missing engagement-critical marker: "
                 + marker
             )
 
