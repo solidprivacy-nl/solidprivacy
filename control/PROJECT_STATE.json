@@ -5,14 +5,14 @@
   "state_authority": "project_local",
   "mode": "ACTIVE",
   "freshness": {
-    "status": "CURRENT",
-    "last_reconciled_at": "2026-08-11T11:02:07+02:00",
+    "status": "RECONCILIATION_REQUIRED",
+    "last_reconciled_at": "2026-08-14T23:47:00+02:00",
     "observed_target_sha": "fca9a8d33ba2f0f3fec0126dd6694435303469c7",
-    "observed_claim_head_sha": "c5a1b7adc6f219be92190f3880c32dc6ac539307",
+    "observed_claim_head_sha": "50c4d6084bcb0bef8a8156c51fd071a02a754aa3",
     "live_head_policy": "reconstruct_from_github_at_mandatory_gates",
-    "note": "The observed claim head is the frozen semantic implementation candidate. Subsequent claim/state/handover-only commits are administrative descendants and the live release candidate must be reconstructed from GitHub."
+    "note": "PR #8 was live-reconciled before reopening implementation. The prior assurance handover is no longer current because a semantic architecture refinement is being added; a new exact implementation candidate and fresh handover are required."
   },
-  "current_objective": "Obtain independent governance_release_assurance for PR #8 after the POaaS architecture/data/governance and Control freshness alignment; M1 remains the next product gate after closeout.",
+  "current_objective": "Add first-class PROJECT and MANAGED_SERVICE engagement modes, engagement-scoped state/retention/promotion semantics, and define M1 as the first standalone professional-service DPIA execution without adding a new milestone before M1.",
   "active_claim": "SP-WC-0008",
   "integration_line": {
     "pull_request": 8,
@@ -21,10 +21,10 @@
     "claim_type": "release_integration"
   },
   "candidate_identity": {
-    "implementation_candidate_sha": "c5a1b7adc6f219be92190f3880c32dc6ac539307",
+    "implementation_candidate_sha": null,
     "live_branch_head": "RECONSTRUCT_FROM_GITHUB",
-    "administrative_descendant_sha": "RECONSTRUCT_FROM_GITHUB_IF_PRESENT",
-    "rule": "Substantive evidence is bound to implementation_candidate_sha. Assurance certifies the exact live release candidate and may reuse substantive evidence for a strictly administrative descendant only under the project assurance contract."
+    "administrative_descendant_sha": "50c4d6084bcb0bef8a8156c51fd071a02a754aa3",
+    "rule": "The previous candidate/handover lineage is historical implementation evidence only after reopening. A semantic engagement-architecture change creates a new implementation candidate and requires fresh exact-head assurance."
   },
   "scope": {
     "CURRENT_RELEASE": [
@@ -32,11 +32,14 @@
       "Control freshness and machine-state alignment",
       "candidate identity and exact-head semantics",
       "scope-protection and project-vs-privacy decision-plane separation",
-      "independent assurance and claim/handover closeout"
+      "first-class PROJECT versus MANAGED_SERVICE engagement architecture",
+      "engagement-scoped state, retention/offboarding and explicit promotion to durable organisation state",
+      "M1 positioning as first standalone professional-service DPIA execution without implementing the later generalized engagement platform"
     ],
     "NEXT_RELEASE": [
-      "M1 chained DPIA reference execution with positive and blocked paths",
-      "M1 HMPO/cycle-time/compute telemetry primitives"
+      "M1 chained DPIA reference execution with positive and blocked paths plus a minimal synthetic project-engagement envelope",
+      "M1 HMPO/cycle-time/compute telemetry primitives",
+      "WP9 generalized production client/organisation/engagement contracts after the assured Client Data Plane"
     ],
     "PARKING_LOT": [
       "pooled multi-tenant client data optimisation",
@@ -45,10 +48,10 @@
     ]
   },
   "next_gate": {
-    "name": "independent_governance_release_assurance",
-    "owner_role": "governance_release_assurance",
+    "name": "complete_engagement_architecture_refinement_then_exact_head_ci",
+    "owner_role": "implementation_operations",
     "principal_decision_required": false,
-    "after_success": "Close/reconcile PR #8 claim and stack, then create/reconcile the M1 execution workpackage and claim; do not insert new product scope before M1."
+    "after_success": "Freeze a new semantic implementation candidate, reconcile the claim, create a fresh assurance handover, and route governance_release_assurance; M1 remains the next product implementation milestone."
   },
   "decision_plane_boundary": {
     "project_control": "D0-D3 applies to development/project-operation decisions under the canonical Control charter.",
