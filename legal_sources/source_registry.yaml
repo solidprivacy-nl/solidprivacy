@@ -1,4 +1,4 @@
-version: 3
+version: 4
 policy: legal_sources/verification_policy.md
 last_catalog_review: 2026-08-10
 sources:
@@ -28,6 +28,18 @@ sources:
     canonical_url: https://www.edpb.europa.eu/our-work-tools/general-guidance_en
     status: authoritative_guidance
     last_verified: 2026-08-10
+
+  - id: edpb-dpia-guidelines-wp248
+    title: Guidelines on Data Protection Impact Assessment and determining likely high risk (WP248 rev.01)
+    authority: European Data Protection Board / Article 29 Working Party
+    jurisdiction: EU/EEA
+    kind: regulator_guidance
+    canonical_url: https://www.edpb.europa.eu/endorsed-wp29-guidelines_en
+    status: authoritative_guidance
+    document_reference: WP248 rev.01
+    endorsed_by_edpb: 2018-05-25
+    last_verified: 2026-08-10
+    note: The EDPB SME guidance states that in most cases processing meeting two of the nine criteria should be assessed through a DPIA; one criterion may still suffice depending on context.
 
   - id: edpb-right-of-access-01-2022
     title: Guidelines 01/2022 on data subject rights - Right of access
@@ -69,6 +81,18 @@ sources:
     status: authoritative_guidance
     last_verified: 2026-08-10
 
+  - id: nl-ap-dpia-mandatory-list-2019
+    title: Besluit inzake lijst van verwerkingen waarvoor een DPIA verplicht is
+    authority: Autoriteit Persoonsgegevens
+    jurisdiction: NL
+    kind: regulator_decision
+    canonical_url: https://zoek.officielebekendmakingen.nl/stcrt-2019-64418.html
+    status: authoritative
+    publication: Staatscourant 2019, 64418
+    publication_date: 2019-11-27
+    last_verified: 2026-08-10
+    note: A verified match with a processing type on this list is treated as a mandatory DPIA trigger. Verification means that the full conditions of the listed processing type, not merely a category keyword, have been assessed.
+
   - id: nl-ap-data-breach
     title: Autoriteit Persoonsgegevens - datalek guidance and notification
     authority: Autoriteit Persoonsgegevens
@@ -89,8 +113,9 @@ sources:
     model_version: "3.0"
     prescan_version: "2.0"
     dpia_blob_sha: aecc3699ecdb87c98587d77b7cc5bb42b04ab5d1
+    prescan_blob_sha: c34c6f65055a331b2934015f846a77d339dfc79a
     last_verified: 2026-08-10
-    note: Methodology/template source; individual fields are not automatically binding-law requirements.
+    note: Methodology/template source; individual fields and assessment outcomes are not automatically binding-law requirements.
 
   - id: nl-government-dpia-information-model
     title: Dutch Government DPIA information model

@@ -1,0 +1,22 @@
+{
+  "source_model": "nl_rijksmodel_prescan",
+  "source_version": "2.0",
+  "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+  "answers": {
+    "0.1": false,
+    "3.1": [],
+    "4.1": [
+      "Lijst EDPB: Gebruik van nieuwe technologieën",
+      "Lijst EDPB: Verwerking van persoonsgegevens over kwetsbare groepen of personen"
+    ]
+  },
+  "legal_context": {
+    "article_35_3": {
+      "systematic_extensive_automated_evaluation_significant_effect": false,
+      "large_scale_special_or_criminal_data": false,
+      "large_scale_systematic_public_monitoring": false
+    },
+    "law_or_regulation_requires_dpia": false,
+    "ap_list_selection_verified": false
+  }
+}

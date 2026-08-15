@@ -1,0 +1,191 @@
+[
+  {
+    "name": "ap_unverified",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": ["Lijst AP: Gezondheidsgegevens"], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": null
+      }
+    },
+    "expected": {"methodology_level": "required", "legal_decision": "NEEDS_REVIEW"}
+  },
+  {
+    "name": "ap_verified",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": ["Lijst AP: Gezondheidsgegevens"], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": true
+      }
+    },
+    "expected": {"methodology_level": "required", "legal_decision": "DPIA_REQUIRED"}
+  },
+  {
+    "name": "article_35_3_direct",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": [], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": true,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "not_indicated", "legal_decision": "DPIA_REQUIRED"}
+  },
+  {
+    "name": "edpb_one",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": [], "4.1": ["Lijst EDPB: Gebruik van nieuwe technologieën"]},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "recommended", "legal_decision": "DPIA_RECOMMENDED"}
+  },
+  {
+    "name": "edpb_two",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {
+        "0.1": false,
+        "3.1": [],
+        "4.1": [
+          "Lijst EDPB: Gebruik van nieuwe technologieën",
+          "Lijst EDPB: Verwerking van persoonsgegevens over kwetsbare groepen of personen"
+        ]
+      },
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "required", "legal_decision": "DPIA_RECOMMENDED"}
+  },
+  {
+    "name": "incomplete_legal_context",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": [], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": null,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "not_indicated", "legal_decision": "NEEDS_REVIEW"}
+  },
+  {
+    "name": "new_legislation_scope",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": true, "3.1": [], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "required", "legal_decision": "NEEDS_REVIEW"}
+  },
+  {
+    "name": "no_indicators",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {"0.1": false, "3.1": [], "4.1": []},
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "not_indicated", "legal_decision": "DPIA_NOT_INDICATED"}
+  },
+  {
+    "name": "rijksmodel_risk_score",
+    "input": {
+      "source_model": "nl_rijksmodel_prescan",
+      "source_version": "2.0",
+      "source_commit": "d8d690989da03287b8879ba1319f78ca8a404bd5",
+      "answers": {
+        "0.1": false,
+        "3.1": [],
+        "4.1": [],
+        "1.2.1": true,
+        "1.2.2": ["special-0", "special-1", "special-2", "special-3", "special-4", "special-5", "special-6"],
+        "1.4.1": [
+          "Categorie betrokkenen: Kinderen jonger dan 16 jaar",
+          "Categorie betrokkenen: Andere kwetsbare groepen (gehandicapten, minderheden, etc.)"
+        ],
+        "1.5.1": true
+      },
+      "legal_context": {
+        "article_35_3": {
+          "systematic_extensive_automated_evaluation_significant_effect": false,
+          "large_scale_special_or_criminal_data": false,
+          "large_scale_systematic_public_monitoring": false
+        },
+        "law_or_regulation_requires_dpia": false,
+        "ap_list_selection_verified": false
+      }
+    },
+    "expected": {"methodology_level": "required", "legal_decision": "NEEDS_REVIEW"}
+  }
+]

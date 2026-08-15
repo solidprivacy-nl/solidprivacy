@@ -1,0 +1,56 @@
+name: WP2 executable privacy gates
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "methodologies/nl_rijksmodel_dpia/**"
+      - "legal_sources/**"
+      - "pyproject.toml"
+      - "docs/workpackages/WP2_EXECUTABLE_DPIA_PRESCAN.md"
+      - ".github/workflows/wp2-contract-gate.yml"
+  push:
+    branches:
+      - "agent/**"
+    paths:
+      - "src/**"
+      - "contracts/**"
+      - "evals/**"
+      - "tests/**"
+      - "methodologies/nl_rijksmodel_dpia/**"
+      - "legal_sources/**"
+      - "pyproject.toml"
+      - "docs/workpackages/WP2_EXECUTABLE_DPIA_PRESCAN.md"
+      - ".github/workflows/wp2-contract-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contract-and-prescan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install runtime and test dependencies
+        run: python -m pip install -e ".[test]"
+
+      - name: Run deterministic tests
+        run: python -m pytest
+
+      - name: Validate canonical DPIA fixtures
+        run: |
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_basic.json
+          solidprivacy validate-dpia evals/synthetic_cases/dpia_nl_high_risk.json
+
+      - name: Smoke-test pre-scan decision
+        run: solidprivacy prescan evals/prescan_smoke_input.json
