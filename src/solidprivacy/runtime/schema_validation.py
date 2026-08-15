@@ -75,3 +75,11 @@ def validate_prescan_input(instance: Any) -> None:
 
 def validate_prescan_decision(instance: Any) -> None:
     validate_contract("prescan_decision.schema.json", instance)
+
+
+def validate_privacy_fact(instance: Any) -> None:
+    validate_contract("privacy_fact.schema.json", instance)
+
+
+def validate_evidence_pack(instance: Any) -> None:
+    validate_contract("evidence_pack.schema.json", instance)

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/evidence_pack.schema.json",
+  "title": "SolidPrivacy Evidence Pack",
+  "type": "object",
+  "required": [
+    "id",
+    "case_id",
+    "jurisdiction",
+    "evidence",
+    "facts",
+    "contradictions",
+    "missing_information",
+    "readiness",
+    "human_review",
+    "source_versions"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "jurisdiction": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence": {"type": "array", "items": {"$ref": "evidence.schema.json"}},
+    "facts": {"type": "array", "items": {"$ref": "privacy_fact.schema.json"}},
+    "contradictions": {"type": "array", "items": {"$ref": "#/$defs/contradiction"}},
+    "missing_information": {"type": "array", "items": {"$ref": "#/$defs/missingInformation"}},
+    "readiness": {"$ref": "#/$defs/readiness"},
+    "human_review": {"$ref": "human_review.schema.json"},
+    "source_versions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "notes": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "contradiction": {
+      "type": "object",
+      "required": ["id", "fact_ids", "severity", "status", "description"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "fact_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "severity": {"type": "string", "enum": ["normal", "high", "critical"]},
+        "status": {"type": "string", "enum": ["open", "resolved", "accepted_uncertainty"]},
+        "description": {"type": "string", "minLength": 1},
+        "resolution": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "missingInformation": {
+      "type": "object",
+      "required": ["id", "target_path", "question", "criticality", "blocks_stage", "status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "target_path": {"type": "string", "minLength": 1},
+        "question": {"type": "string", "minLength": 1},
+        "criticality": {"type": "string", "enum": ["normal", "high", "critical"]},
+        "blocks_stage": {"type": "string", "enum": ["none", "analysis", "finalisation"]},
+        "status": {"type": "string", "enum": ["open", "resolved", "not_applicable"]},
+        "resolution": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["stage", "status", "blockers", "rationale"],
+      "properties": {
+        "stage": {"type": "string", "enum": ["analysis", "finalisation"]},
+        "status": {"type": "string", "enum": ["ready", "needs_review", "blocked"]},
+        "blockers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
