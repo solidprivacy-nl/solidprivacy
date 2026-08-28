@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/client_dossier.schema.json",
+  "title": "SolidPrivacy Governed Client Dossier",
+  "description": "Minimal multi-client dossier contract for repository-level architecture and validation only. It does not authorize real-client-data processing or production deployment.",
+  "type": "object",
+  "required": [
+    "tenant_id",
+    "client",
+    "engagement",
+    "dossier",
+    "evidence_refs",
+    "control_refs",
+    "retention",
+    "audit"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable tenant boundary. Every related record must resolve within this tenant."
+    },
+    "client": {
+      "$ref": "#/$defs/client"
+    },
+    "engagement": {
+      "$ref": "#/$defs/engagement"
+    },
+    "dossier": {
+      "$ref": "#/$defs/dossier"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "control_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "workflow_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true,
+      "default": []
+    },
+    "retention": {
+      "$ref": "#/$defs/retention"
+    },
+    "audit": {
+      "$ref": "#/$defs/audit"
+    },
+    "backup_class": {
+      "type": "string",
+      "enum": ["STANDARD_ENCRYPTED_OFFSITE"],
+      "default": "STANDARD_ENCRYPTED_OFFSITE",
+      "description": "Planning assumption only; implementation and production deployment remain separate authority."
+    }
+  },
+  "$defs": {
+    "client": {
+      "type": "object",
+      "required": ["client_id", "display_name", "status"],
+      "properties": {
+        "client_id": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["prospect", "onboarding", "active", "inactive"]}
+      },
+      "additionalProperties": false
+    },
+    "engagement": {
+      "type": "object",
+      "required": ["engagement_id", "client_id", "purpose", "status"],
+      "properties": {
+        "engagement_id": {"type": "string", "minLength": 1},
+        "client_id": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["onboarding", "active", "closed"]}
+      },
+      "additionalProperties": false
+    },
+    "dossier": {
+      "type": "object",
+      "required": ["dossier_id", "engagement_id", "kind", "status"],
+      "properties": {
+        "dossier_id": {"type": "string", "minLength": 1},
+        "engagement_id": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "enum": ["onboarding", "assessment", "review", "remediation"]},
+        "status": {"type": "string", "enum": ["draft", "active", "closed"]}
+      },
+      "additionalProperties": false
+    },
+    "retention": {
+      "type": "object",
+      "required": ["policy_ref", "review_at"],
+      "properties": {
+        "policy_ref": {"type": "string", "minLength": 1},
+        "review_at": {"type": "string", "format": "date"},
+        "delete_after": {"type": ["string", "null"], "format": "date"},
+        "legal_hold": {"type": "boolean", "default": false}
+      },
+      "additionalProperties": false
+    },
+    "audit": {
+      "type": "object",
+      "required": ["created_at", "created_by", "updated_at", "updated_by"],
+      "properties": {
+        "created_at": {"type": "string", "format": "date-time"},
+        "created_by": {"type": "string", "minLength": 1},
+        "updated_at": {"type": "string", "format": "date-time"},
+        "updated_by": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "description": "Application/database enforcement must additionally require engagement.client_id == client.client_id and dossier.engagement_id == engagement.engagement_id within the same tenant_id. JSON Schema alone is not used as an authorization boundary."
+    }
+  ],
+  "additionalProperties": false
+}
