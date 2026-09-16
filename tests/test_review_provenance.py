@@ -58,6 +58,13 @@ def test_exact_approved_review_package_is_valid() -> None:
     validate_dpia(approved_case())
 
 
+def test_final_dpia_rejects_approved_with_changes() -> None:
+    case = approved_case()
+    case["human_review"]["status"] = "approved_with_changes"
+    with pytest.raises(ContractValidationError, match="final DPIA requires approved human professional review"):
+        validate_dpia(case)
+
+
 def test_material_change_invalidates_prior_approval() -> None:
     case = approved_case()
     case["residual_risk_conclusion"]["rationale"] = "Materially changed conclusion after professional approval."

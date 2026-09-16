@@ -146,15 +146,16 @@ def _dpia_review_errors(instance: dict[str, Any]) -> list[str]:
 
     review_required = review.get("required") is True
     review_status = review.get("status")
-    approved = review_status in {"approved", "approved_with_changes"}
+    review_complete = review_status in {"approved", "approved_with_changes"}
+    final_approved = review_status == "approved"
 
     if review_required and review_status == "not_required":
         errors.append("$.human_review: required review cannot be marked not_required")
 
-    if instance.get("status") == "final" and not (review_required and approved):
+    if instance.get("status") == "final" and not (review_required and final_approved):
         errors.append("$.human_review: final DPIA requires approved human professional review")
 
-    if not approved:
+    if not review_complete:
         return errors
 
     artifact_id = instance.get("id")

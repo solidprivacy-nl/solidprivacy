@@ -26,7 +26,7 @@ The executable rule is simple: a material professional output may become final o
 - all bound `evidence_ids` and `source_reference_ids`;
 - `decision_ref` for the professional approval decision.
 
-A review marked not required cannot satisfy a required professional review.
+A review marked not required cannot satisfy a required professional review. `approved_with_changes` remains a governed review state, but it is not a final approval: the work must return through professional review and reach `approved` before the DPIA can become `final`.
 
 ## Deterministic provenance
 
@@ -45,11 +45,13 @@ Accordingly a material change after approval cannot inherit an earlier approval 
 A canonical DPIA with lifecycle `status=final` requires:
 
 1. `human_review.required=true`;
-2. review status `approved` or `approved_with_changes`;
+2. review status exactly `approved`;
 3. explicit human reviewer identity/responsibility;
 4. exact artifact/version/content binding;
 5. exact current evidence/source provenance binding;
 6. an attributable professional `decision_ref`.
+
+`approved_with_changes` cannot satisfy the final gate; outstanding changes must pass back through the canonical GAP-30 professional-review path before final approval.
 
 AI preparation remains proposal-only under GAP-30. Nothing in this candidate authorizes an AI actor to create the final professional approval.
 
@@ -59,6 +61,7 @@ Focused tests in `tests/test_review_provenance.py` prove that:
 
 - existing pending-review fixtures remain valid;
 - a final DPIA without approved human review fails closed;
+- a final DPIA with `approved_with_changes` fails closed until review status reaches `approved`;
 - a correctly bound approved review validates;
 - material content changes invalidate prior approval;
 - missing current source provenance fails closed;
@@ -74,4 +77,4 @@ This candidate introduces no real-client data processing, production deployment,
 ## Acceptance mapping
 
 - **Evidence provenance and review responsibility are deterministic:** exact evidence/source sets, artifact/version, decision responsibility and review-content fingerprint are machine-validated through the existing contracts/runtime path.
-- **Material professional conclusions remain human-reviewed:** `final` fails closed unless the exact professional content has an attributable `HUMAN` approval.
+- **Material professional conclusions remain human-reviewed:** `final` fails closed unless the exact professional content has an attributable `HUMAN` approval with review status exactly `approved`.
