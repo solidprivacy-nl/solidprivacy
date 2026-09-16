@@ -100,3 +100,61 @@ def test_approved_review_is_human_and_exact_version_bound() -> None:
     stale_version["artifact_version"] = "v2"
     with pytest.raises(ContractValidationError, match="does not match current artifact version"):
         validate_dpia(stale_version)
+
+
+def test_measure_evidence_reference_must_resolve() -> None:
+    case = load_case()
+    case["measures"][0]["evidence_refs"] = ["EVID-MISSING"]
+    with pytest.raises(ContractValidationError, match="unresolved evidence reference"):
+        validate_dpia(case)
+
+
+def test_evidence_identity_must_be_unambiguous() -> None:
+    case = load_case()
+    evidence = {
+        "id": "EVID-DUPLICATE",
+        "kind": "automated_check",
+        "source": "synthetic-validator",
+        "locator": "synthetic://review/duplicate",
+        "content_hash": "b" * 64,
+        "contains_personal_data": False,
+        "metadata": {},
+    }
+    case["evidence"] = [evidence, deepcopy(evidence)]
+    with pytest.raises(ContractValidationError, match="evidence ids must be unique"):
+        validate_dpia(case)
+
+
+def test_legal_claim_source_must_have_structured_provenance() -> None:
+    case = load_case()
+    case["legal_claims"] = [{
+        "claim": "Synthetic legal claim",
+        "classification": "LAW_REQUIRED",
+        "jurisdiction": "NL",
+        "authority": "Synthetic authority",
+        "source_id": "missing-source",
+        "citation": None,
+        "effective_date": "2026-01-01",
+        "verified_at": "2026-09-02T10:00:00+02:00",
+        "supersedes": None,
+        "notes": None,
+    }]
+    with pytest.raises(ContractValidationError, match="unresolved structured source reference"):
+        validate_dpia(case)
+
+
+def test_legal_claim_can_bind_existing_structured_source() -> None:
+    case = load_case()
+    case["legal_claims"] = [{
+        "claim": "Synthetic claim tied to the methodology source",
+        "classification": "REGULATOR_GUIDANCE",
+        "jurisdiction": "NL",
+        "authority": "Synthetic authority",
+        "source_id": "nl-government-par-dpia-model",
+        "citation": None,
+        "effective_date": "2026-01-01",
+        "verified_at": "2026-09-02T10:00:00+02:00",
+        "supersedes": None,
+        "notes": None,
+    }]
+    validate_dpia(case)
