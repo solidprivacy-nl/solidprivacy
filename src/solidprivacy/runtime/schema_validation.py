@@ -82,18 +82,60 @@ def reviewable_content_sha256(instance: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def _source_reference_ids(value: Any) -> set[str]:
+def _structured_source_reference_ids(value: Any) -> set[str]:
+    """Collect IDs only from full SourceReference-shaped objects, not loose source_id fields."""
     found: set[str] = set()
     if isinstance(value, dict):
-        source_id = value.get("source_id")
-        if isinstance(source_id, str) and source_id:
-            found.add(source_id)
+        source_fields = {"source_id", "source_status", "jurisdiction", "version", "verified_at", "locator"}
+        if source_fields.issubset(value):
+            source_id = value.get("source_id")
+            if isinstance(source_id, str) and source_id:
+                found.add(source_id)
         for child in value.values():
-            found.update(_source_reference_ids(child))
+            found.update(_structured_source_reference_ids(child))
     elif isinstance(value, list):
         for child in value:
-            found.update(_source_reference_ids(child))
+            found.update(_structured_source_reference_ids(child))
     return found
+
+
+def _dpia_provenance_errors(instance: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+
+    evidence = instance.get("evidence", [])
+    evidence_ids = [
+        item.get("id")
+        for item in evidence
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    ]
+    if len(evidence_ids) != len(set(evidence_ids)):
+        errors.append("$.evidence: evidence ids must be unique")
+    known_evidence_ids = set(evidence_ids)
+
+    for index, measure in enumerate(instance.get("measures", [])):
+        if not isinstance(measure, dict):
+            continue
+        for evidence_ref in measure.get("evidence_refs", []):
+            if evidence_ref not in known_evidence_ids:
+                errors.append(
+                    f"$.measures[{index}].evidence_refs: unresolved evidence reference {evidence_ref!r}"
+                )
+
+    source_ids = _structured_source_reference_ids({
+        key: value
+        for key, value in instance.items()
+        if key != "human_review"
+    })
+    for index, claim in enumerate(instance.get("legal_claims", [])):
+        if not isinstance(claim, dict):
+            continue
+        source_id = claim.get("source_id")
+        if source_id not in source_ids:
+            errors.append(
+                f"$.legal_claims[{index}].source_id: unresolved structured source reference {source_id!r}"
+            )
+
+    return errors
 
 
 def _dpia_review_errors(instance: dict[str, Any]) -> list[str]:
@@ -137,7 +179,7 @@ def _dpia_review_errors(instance: dict[str, Any]) -> list[str]:
     if not isinstance(reviewed_evidence_ids, list) or set(reviewed_evidence_ids) != evidence_ids:
         errors.append("$.human_review.evidence_ids: must exactly bind current evidence provenance")
 
-    source_ids = _source_reference_ids({
+    source_ids = _structured_source_reference_ids({
         key: value
         for key, value in instance.items()
         if key != "human_review"
@@ -153,7 +195,7 @@ def validate_dpia(instance: Any) -> None:
     validate_contract("dpia_assessment.schema.json", instance)
     if not isinstance(instance, dict):
         return
-    errors = _dpia_review_errors(instance)
+    errors = _dpia_provenance_errors(instance) + _dpia_review_errors(instance)
     if errors:
         raise ContractValidationError("dpia_assessment.schema.json", errors)
 
