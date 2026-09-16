@@ -7,6 +7,7 @@
   "properties": {
     "id": {"type": "string", "minLength": 1},
     "title": {"type": "string", "minLength": 1},
+    "artifact_version": {"type": ["string", "null"], "minLength": 1},
     "status": {"type": "string", "enum": ["draft", "review", "final"]},
     "jurisdiction": {"type": "array", "items": {"type": "string"}},
     "methodology": {
