@@ -7,11 +7,57 @@
   "properties": {
     "required": {"type": "boolean"},
     "status": {"type": "string", "enum": ["not_required", "pending", "approved", "approved_with_changes", "rejected"]},
+    "reviewer_id": {"type": ["string", "null"]},
+    "reviewer_actor_type": {"type": ["string", "null"], "enum": ["HUMAN", null]},
     "reviewer_role": {"type": ["string", "null"]},
     "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
     "rationale": {"type": ["string", "null"]},
+    "reviewed_artifact_id": {"type": ["string", "null"]},
+    "reviewed_artifact_version": {"type": ["string", "null"]},
+    "reviewed_content_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "source_reference_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "decision_ref": {"type": ["string", "null"]},
     "changes_required": {"type": "array", "items": {"type": "string"}},
     "unresolved_issues": {"type": "array", "items": {"type": "string"}}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"required": {"const": false}}, "required": ["required"]},
+      "then": {"properties": {"status": {"const": "not_required"}}}
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["approved", "approved_with_changes"]}}, "required": ["status"]},
+      "then": {
+        "required": [
+          "reviewer_id",
+          "reviewer_actor_type",
+          "reviewer_role",
+          "reviewed_at",
+          "rationale",
+          "reviewed_artifact_id",
+          "reviewed_artifact_version",
+          "reviewed_content_sha256",
+          "evidence_ids",
+          "source_reference_ids",
+          "decision_ref"
+        ],
+        "properties": {
+          "required": {"const": true},
+          "reviewer_id": {"type": "string", "minLength": 1},
+          "reviewer_actor_type": {"const": "HUMAN"},
+          "reviewer_role": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "format": "date-time"},
+          "rationale": {"type": "string", "minLength": 1},
+          "reviewed_artifact_id": {"type": "string", "minLength": 1},
+          "reviewed_artifact_version": {"type": "string", "minLength": 1},
+          "reviewed_content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "source_reference_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "decision_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ],
   "additionalProperties": false
 }

@@ -95,7 +95,7 @@ jobs:
             legal_sources/source_registry.yaml \
             provenance/upstream_manifest.yaml
 
-      - name: Enforce architecture-only scope
+      - name: Enforce bounded foundation scope
         if: ${{ github.event_name == 'pull_request' }}
         shell: bash
         env:
@@ -105,8 +105,8 @@ jobs:
           git diff --name-only "$BASE_SHA"...HEAD > /tmp/changed.txt
           while IFS= read -r path; do
             case "$path" in
-              README.md|contracts/*|control_models/*|docs/*|evals/*|evidence_collectors/*|frameworks/*|jurisdictions/*|legal_sources/*|mappings/*|methodologies/*|provenance/*|skills/*|vocabularies/*|workflows/*|.github/workflows/validate-architecture-foundation.yml) ;;
-              *) echo "unexpected non-foundation path: $path"; exit 1 ;;
+              README.md|contracts/*|control_models/*|docs/*|evals/*|evidence_collectors/*|frameworks/*|jurisdictions/*|legal_sources/*|mappings/*|methodologies/*|provenance/*|skills/*|src/*|tests/*|vocabularies/*|workflows/*|.github/workflows/validate-architecture-foundation.yml) ;;
+              *) echo "unexpected out-of-scope path: $path"; exit 1 ;;
             esac
           done < /tmp/changed.txt
-          echo "architecture-only scope validated"
+          echo "bounded foundation scope validated"
