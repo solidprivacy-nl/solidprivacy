@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solidprivacy.nl/schemas/pilot_readiness.schema.json",
+  "title": "SolidPrivacy Pilot Readiness Assessment",
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "required": ["status", "evidence_refs", "rationale"],
+      "properties": {
+        "status": {"type": "string", "enum": ["PASS", "BLOCKED", "UNKNOWN"]},
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "blocker": {
+      "type": "object",
+      "required": ["id", "description", "owner", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1},
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": ["id", "status", "description", "owner"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["OPEN", "RESOLVED"]},
+        "description": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["readiness_version", "assessment_id", "assessed_at", "scope", "status", "gates", "blockers", "decisions"],
+  "properties": {
+    "readiness_version": {"const": "1.0"},
+    "assessment_id": {"type": "string", "minLength": 1},
+    "assessed_at": {"type": "string", "format": "date-time"},
+    "scope": {
+      "type": "object",
+      "required": ["mission_id", "mission_revision", "gap_id", "repository"],
+      "properties": {
+        "mission_id": {"const": "SOLID_PRIVACY_PLATFORM"},
+        "mission_revision": {"const": "2026-09-02-r3"},
+        "gap_id": {"const": "SPP-GAP-50"},
+        "repository": {"const": "solidprivacy-nl/solidprivacy"}
+      },
+      "additionalProperties": false
+    },
+    "status": {"type": "string", "enum": ["NOT_READY", "READY"]},
+    "gates": {
+      "type": "object",
+      "required": [
+        "workflow_model",
+        "evidence_provenance",
+        "human_professional_review",
+        "source_lineage",
+        "synthetic_pilot_validation"
+      ],
+      "properties": {
+        "workflow_model": {"$ref": "#/$defs/gate"},
+        "evidence_provenance": {"$ref": "#/$defs/gate"},
+        "human_professional_review": {"$ref": "#/$defs/gate"},
+        "source_lineage": {"$ref": "#/$defs/gate"},
+        "synthetic_pilot_validation": {"$ref": "#/$defs/gate"}
+      },
+      "additionalProperties": false
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/blocker"}
+    },
+    "decisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/decision"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "READY"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "gates": {
+            "properties": {
+              "workflow_model": {"properties": {"status": {"const": "PASS"}}},
+              "evidence_provenance": {"properties": {"status": {"const": "PASS"}}},
+              "human_professional_review": {"properties": {"status": {"const": "PASS"}}},
+              "source_lineage": {"properties": {"status": {"const": "PASS"}}},
+              "synthetic_pilot_validation": {"properties": {"status": {"const": "PASS"}}}
+            }
+          },
+          "blockers": {"maxItems": 0},
+          "decisions": {
+            "items": {"properties": {"status": {"const": "RESOLVED"}}}
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
